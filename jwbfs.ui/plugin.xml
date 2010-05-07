@@ -64,15 +64,5 @@
          </property>
       </product>
    </extension>
-   <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="jwbfs.ui.interfaces.MainViewEditor"
-            default="false"
-            icon="icons/alt_launcher.ico"
-            id="jwbfs.ui.editors.MainViewEditor"
-            name="MainViewEditor">
-      </editor>
-   </extension>
-
+  
 </plugin>

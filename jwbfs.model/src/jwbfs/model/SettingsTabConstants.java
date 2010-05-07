@@ -43,7 +43,6 @@ public class SettingsTabConstants {
 													 "-ld0","-ld1","-ld2"};;
 	public static final  String[] TXT_LAYOUT_Text = {"ID.ext",
 												"ID_TITLE.ext",
-												"ID_TITLE.ext",
 												"TITLE [ID].ext",
 												"ID/ID.ext",
 												"ID_TITLE/ID.ext",

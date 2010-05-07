@@ -44,24 +44,25 @@ public class WBFStoISOView  extends WBFStoISOTab implements ITabView{
 
 		Composite composite  = WidgetCreator.createComposite(parent);
 		
-		Group fileGrp = WidgetCreator.createGroup(composite, "File Selection");
-		Text fileLbl = WidgetCreator.createText(fileGrp,false,getTabBean(),"filePath");
-		Button fileBtn = WidgetCreator.createButton(fileGrp, "open");
-		addActionFile(fileBtn);
+		Group group = WidgetCreator.createGroup(composite, "File Selection");
+		@SuppressWarnings("unused")
+		Text text = WidgetCreator.createText(group,false,getTabBean(),"filePath");
+		Button button = WidgetCreator.createButton(group, "open");
+		addActionFile(button);
 		
-		Group folderGrp = WidgetCreator.createGroup(composite, "Output Folder Selection");
-		Text folderLbl = WidgetCreator.createText(folderGrp,false,getTabBean(),"folderPath");
-		Button folderBtn = WidgetCreator.createButton(folderGrp,"open");
-		addActionFolder(folderBtn);
+		group = WidgetCreator.createGroup(composite, "Output Folder Selection");
+		text = WidgetCreator.createText(group,false,getTabBean(),"folderPath");
+		button = WidgetCreator.createButton(group,"open");
+		addActionFolder(button);
 		
-		Group processGrp = WidgetCreator.createGroup(composite, "Process");
-		Button processBtn = WidgetCreator.createButton(processGrp,"convert");
-		addActionExec(processBtn);
+		group = WidgetCreator.createGroup(composite, "Process");
+		button = WidgetCreator.createButton(group,"convert");
+		addActionExec(button);
 
-		Group infoGrp = WidgetCreator.createGroup(composite, "Game Info");
-		Text id = WidgetCreator.createText(infoGrp,false,getTabBean(),"id");
-		Text title = WidgetCreator.createText(infoGrp,false,getTabBean(),"title");
-		Text scrubGb = WidgetCreator.createText(infoGrp,false,getTabBean(),"scrubGb");
+		group = WidgetCreator.createGroup(composite, "Game Info");
+		text = WidgetCreator.createText(group,false,getTabBean(),"id");
+		text = WidgetCreator.createText(group,false,getTabBean(),"title");
+		text = WidgetCreator.createText(group,false,getTabBean(),"scrubGb");
 				
 		progressBar = WidgetCreator.createProgressBar(composite);
 		

@@ -1,11 +1,7 @@
 package jwbfs.rcp.views.tabs;
 
-import java.beans.PropertyChangeEvent;
-import java.io.File;
-
 import jwbfs.model.SettingsTabConstants;
 import jwbfs.model.beans.SettingsTab;
-import jwbfs.rcp.utils.Utils;
 import jwbfs.rcp.views.WidgetCreator;
 import jwbfs.ui.interfaces.ITabView;
 
@@ -34,19 +30,20 @@ public class SettingsTabView extends SettingsTab implements ITabView{
 
 		Composite composite = WidgetCreator.createComposite(parent);
 		
-		Group splitGrp = WidgetCreator.createGroup(composite, "Partitions");
-		Label fileLbl = WidgetCreator.createLabel(splitGrp,"Split Size");
-		Combo combo =  WidgetCreator.createCombo(splitGrp, SettingsTabConstants.SPLITSIZE_Text, (SettingsTab) getTabBean(), "splitSize");
-		fileLbl = WidgetCreator.createLabel(splitGrp,"Copy Partitions");
-		combo =  WidgetCreator.createCombo(splitGrp, SettingsTabConstants.COPY_PARTITIONS_Text, (SettingsTab) getTabBean(), "copyPartitions");
-
-		Group txtGroup = WidgetCreator.createGroup(composite, "TXT file Creation");
-		fileLbl = WidgetCreator.createLabel(txtGroup,"Enable txt file creation");
-		combo =  WidgetCreator.createCombo(txtGroup, SettingsTabConstants.ENABLE_TXT_CREATION_Text, (SettingsTab) getTabBean(), "enableTXT");
-		fileLbl = WidgetCreator.createLabel(txtGroup,"txt file layout");
-		combo =  WidgetCreator.createCombo(txtGroup, SettingsTabConstants.TXT_LAYOUT_Text, (SettingsTab) getTabBean(), "txtLayout");
+		Group group = WidgetCreator.createGroup(composite, "Partitions");
+		@SuppressWarnings("unused")
+		Label label = WidgetCreator.createLabel(group,"Split Size");
+		@SuppressWarnings("unused")
+		Combo combo =  WidgetCreator.createCombo(group, SettingsTabConstants.SPLITSIZE_Text, (SettingsTab) getTabBean(), "splitSize");
+		label = WidgetCreator.createLabel(group,"Copy Partitions");
+		combo =  WidgetCreator.createCombo(group, SettingsTabConstants.COPY_PARTITIONS_Text, (SettingsTab) getTabBean(), "copyPartitions");
+	
+		group = WidgetCreator.createGroup(composite, "TXT file Creation");
+		label = WidgetCreator.createLabel(group,"Enable txt file creation");
+		combo =  WidgetCreator.createCombo(group, SettingsTabConstants.ENABLE_TXT_CREATION_Text, (SettingsTab) getTabBean(), "enableTXT");
+		label = WidgetCreator.createLabel(group,"txt file layout");
+		combo =  WidgetCreator.createCombo(group, SettingsTabConstants.TXT_LAYOUT_Text, (SettingsTab) getTabBean(), "txtLayout");
 		
-
 		return composite;
 
 	}
