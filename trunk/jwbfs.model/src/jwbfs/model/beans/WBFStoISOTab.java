@@ -63,7 +63,7 @@ public class WBFStoISOTab extends AbstractTab  {
 	}
 
 	protected AbstractTab getTabBean() {
-		return (AbstractTab) ((LinkedHashMap<Integer, AbstractTab>)getModel()).get(this.INDEX);
+		return (AbstractTab) ((LinkedHashMap<Integer, AbstractTab>)getModel()).get(WBFStoISOTab.INDEX);
 	}
 	
 }

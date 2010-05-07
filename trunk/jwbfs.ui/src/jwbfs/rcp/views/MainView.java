@@ -20,6 +20,7 @@ public class MainView extends ViewPart {
 	
 	public void createPartControl(Composite parent) {
 		
+		@SuppressWarnings("unused")
 		Model model = new Model();
 		
 		parent = WidgetCreator.formatComposite(parent);
@@ -36,7 +37,6 @@ public class MainView extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
 		
 	}
 

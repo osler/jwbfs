@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-import javax.swing.text.View;
-
 import jwbfs.model.Model;
 import jwbfs.model.SettingsTabConstants;
 import jwbfs.model.beans.SettingsTab;
@@ -17,10 +15,8 @@ import jwbfs.rcp.views.MainView;
 import jwbfs.rcp.views.tabs.ISOtoWBFSTabView;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 

@@ -1,30 +1,18 @@
 package jwbfs.rcp.views;
 
-import java.io.File;
-import java.io.IOException;
-
-import jwbfs.model.beans.ISOtoWBFSTab;
 import jwbfs.model.beans.AbstractTab;
 import jwbfs.model.beans.SettingsTab;
-import jwbfs.model.beans.WBFStoISOTab;
-import jwbfs.rcp.controls.Exec;
-import jwbfs.rcp.controls.FileNotSelectedException;
-import jwbfs.rcp.controls.NotValidDiscException;
-import jwbfs.rcp.controls.WBFSException;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
