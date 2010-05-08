@@ -1,4 +1,4 @@
-package jwbfs.rcp.controls;
+package jwbfs.ui.exceptions;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;

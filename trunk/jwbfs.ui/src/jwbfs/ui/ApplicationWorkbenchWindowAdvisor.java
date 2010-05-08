@@ -1,6 +1,6 @@
 package jwbfs.ui;
 
-import jwbfs.rcp.controls.Exec;
+import jwbfs.ui.controls.Exec;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;

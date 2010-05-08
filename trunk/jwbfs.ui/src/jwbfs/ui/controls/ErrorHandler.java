@@ -1,4 +1,6 @@
-package jwbfs.rcp.controls;
+package jwbfs.ui.controls;
+
+import jwbfs.ui.exceptions.WBFSException;
 
 public class ErrorHandler {
 

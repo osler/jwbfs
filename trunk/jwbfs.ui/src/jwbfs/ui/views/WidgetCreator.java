@@ -1,4 +1,4 @@
-package jwbfs.rcp.views;
+package jwbfs.ui.views;
 
 import jwbfs.model.beans.AbstractTab;
 import jwbfs.model.beans.SettingsTab;
@@ -161,6 +161,25 @@ public class WidgetCreator {
 		
 		return txtFile;	
 	}
+	
+	public static Button createRadio(Composite parent, String text, AbstractTab bean, String valueToBind){
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalSpan = 1;
+		gridData.verticalAlignment = GridData.CENTER;
+
+		Button radio = new Button(parent, SWT.RADIO);
+		radio.setText(text);
+		radio.setLayoutData(gridData);
+		
+		DataBindingContext dbc = new DataBindingContext();
+		dbc.bindValue(SWTObservables.observeSelection(radio),
+				BeansObservables.observeValue(bean,valueToBind),null,null);
+		
+		return radio;	
+	}
+	
 	
 	public static TabFolder createTabFolder(Composite parent){
 

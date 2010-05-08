@@ -1,4 +1,4 @@
-package jwbfs.rcp.controls;
+package jwbfs.ui.controls;
 
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.resource.ImageDescriptor;

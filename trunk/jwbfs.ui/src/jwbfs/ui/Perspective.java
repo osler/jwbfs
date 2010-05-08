@@ -1,6 +1,6 @@
 package jwbfs.ui;
 
-import jwbfs.rcp.views.MainView;
+import jwbfs.ui.views.MainView;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;

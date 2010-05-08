@@ -1,7 +1,8 @@
-package jwbfs.rcp.utils;
+package jwbfs.ui.utils;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.ui.handlers.IHandlerService;
 
 
 
@@ -125,5 +126,11 @@ public class Utils {
 			
 			return path;
 }
+
+	public static IHandlerService getHandlerService() {
+		IHandlerService handlerService = (IHandlerService) GuiUtils.getMainView().getSite()
+		.getService(IHandlerService.class);
+		return handlerService;
+	}
 
 }

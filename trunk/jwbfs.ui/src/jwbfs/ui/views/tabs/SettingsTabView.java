@@ -1,9 +1,9 @@
-package jwbfs.rcp.views.tabs;
+package jwbfs.ui.views.tabs;
 
 import jwbfs.model.SettingsTabConstants;
 import jwbfs.model.beans.SettingsTab;
-import jwbfs.rcp.views.WidgetCreator;
 import jwbfs.ui.interfaces.ITabView;
+import jwbfs.ui.views.WidgetCreator;
 
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
