@@ -3,7 +3,6 @@
 
 <product name="jwbfs" uid="jwbfs" id="jwbfs.ui.product" application="jwbfs.ui.application" useFeatures="false" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -13,13 +12,22 @@
 
    <windowImages/>
 
-
+   <splash
+      location="jwbfs.ui"
+      startupProgressRect="5,275,445,15"
+      startupMessageRect="7,252,445,20"
+      startupForegroundColor="000000" />
    <launcher name="jwbfs">
+      <linux icon="/jwbfs.ui/icons/jwbfs.xpm"/>
       <solaris/>
-      <win useIco="false">
+      <win useIco="true">
+         <ico path="/jwbfs.ui/icons/jwbfs.ico"/>
          <bmp/>
       </win>
    </launcher>
+
+   <vm>
+   </vm>
 
    <license>
         <url>http://code.google.com/p/jwbfs/</url>

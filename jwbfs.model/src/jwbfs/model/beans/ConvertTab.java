@@ -4,11 +4,11 @@ import java.util.LinkedHashMap;
 
 
 
-public class WBFStoISOTab extends AbstractTab  {
-	
-	
-	public static final int INDEX = 1;
+public class ConvertTab extends AbstractTab  {
 
+	public static final int INDEX = 0;
+	private boolean isoToWbfs = true;
+	private boolean wbfsToIso = false;
 	private String filePath;
 	private String folderPath;
 	private String id;
@@ -63,7 +63,38 @@ public class WBFStoISOTab extends AbstractTab  {
 	}
 
 	protected AbstractTab getTabBean() {
-		return (AbstractTab) ((LinkedHashMap<Integer, AbstractTab>)getModel()).get(WBFStoISOTab.INDEX);
+		return (AbstractTab) ((LinkedHashMap<Integer, AbstractTab>)getModel()).get(ConvertTab.INDEX);
+	}
+
+	public boolean isIsoToWbfs() {
+		return isoToWbfs;
+	}
+
+	public boolean isWbfsToIso() {
+		return wbfsToIso;
 	}
 	
+	public void setIsoToWbfs(boolean isoToWbfs) {
+		//Reset filePath
+		setFilePath("");
+		setId("");
+		setTitle("");
+		setScrubGb("");
+		propertyChangeSupport.firePropertyChange("isoToWbfs", this.isoToWbfs,
+		this.isoToWbfs = isoToWbfs);
+	}
+
+	public void setWbfsToIso(boolean wbfsToIso) {
+		//Reset filePath
+		setFilePath("");
+		setId("");
+		setTitle("");
+		setScrubGb("");
+		propertyChangeSupport.firePropertyChange("wbfsToIso", this.wbfsToIso,
+		this.wbfsToIso = wbfsToIso);
+	}
+
+
+	
+
 }
