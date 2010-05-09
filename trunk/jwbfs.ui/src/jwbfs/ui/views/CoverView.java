@@ -2,7 +2,15 @@ package jwbfs.ui.views;
 
 
 import jwbfs.model.Model;
+import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.SettingsBean;
+import jwbfs.ui.listeners.ConvertButtonListener;
+import jwbfs.ui.utils.GuiUtils;
+import jwbfs.ui.utils.Utils;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -11,31 +19,57 @@ import org.eclipse.ui.part.ViewPart;
 
 public class CoverView extends ViewPart {
 
-	public static final String ID = "jwbfs.ui.CoverView";
-
+	public static final String ID = "CoverView";
+	protected ProcessBean processBean = null;
+	protected SettingsBean settingsBean = null;
+	
+	
 	public CoverView() {
-		// TODO Auto-generated constructor stub
+		processBean = (ProcessBean) getProcessBean() ;
+		settingsBean = (SettingsBean) getSettingsBean() ;
+
+	}
+
+	private SettingsBean getSettingsBean() {
+		return (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+	}
+
+	private ProcessBean getProcessBean() {
+		return (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 		
-		Model model = new Model();
-		
 		parent = WidgetCreator.formatComposite(parent);
 
-		Group group =  WidgetCreator.createGroup(parent, "Game Info",3);
+		Group group =  WidgetCreator.createGroup(parent, "Cover Controls",3);
+		@SuppressWarnings("unused")
 		Label text = WidgetCreator.createLabel(group, "last updated:");
 		text = WidgetCreator.createLabel(group, "never");
+		@SuppressWarnings("unused")
 		Button button = WidgetCreator.createButton(group, "update");
+		addHandlerUpdate(button);
 
-
+		group =  WidgetCreator.createGroup(parent, "Cover",1);
+		
+		Image image = new Image(GuiUtils.getDisplay(), Utils.getRoot("jwbfs.ui")+"icons/noimg.png");
+		button = WidgetCreator.createImage(group);
+		button.setImage(image);
+		
 	}
 
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
 
+	}
+
+	private void addHandlerUpdate(Button button) {
+		
+		button.addSelectionListener(new ConvertButtonListener(ID,processBean));
+	
+		
 	}
 
 }

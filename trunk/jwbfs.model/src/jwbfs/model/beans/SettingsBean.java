@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 import jwbfs.model.SettingsTabConstants;
 
-public class SettingsTab extends AbstractTab {
+public class SettingsBean extends AbstractTab {
 	
 	public static final int INDEX = 2;
 	
@@ -13,7 +13,7 @@ public class SettingsTab extends AbstractTab {
 	private String enableTXT = SettingsTabConstants.ENABLE_TXT_CREATION_Text[0];
 	private String txtLayout = SettingsTabConstants.TXT_LAYOUT_Text[0];
 	
-	public SettingsTab(){
+	public SettingsBean(){
 		this.addPropertyChangeListener(this);
 	}
 	
@@ -47,7 +47,7 @@ public class SettingsTab extends AbstractTab {
 	}
 	
 	protected AbstractTab getTabBean() {
-		return (AbstractTab) ((LinkedHashMap<Integer, AbstractTab>)getModel()).get(SettingsTab.INDEX);
+		return (AbstractTab) ((LinkedHashMap<Integer, AbstractTab>)getModel()).get(SettingsBean.INDEX);
 	}
 	
 }
