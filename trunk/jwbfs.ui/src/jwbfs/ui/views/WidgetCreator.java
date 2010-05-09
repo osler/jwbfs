@@ -81,13 +81,17 @@ public class WidgetCreator {
 	
 
 	public static Group createGroup(Composite composite, String title) {
+		return createGroup(composite,title,2);
+	}
+	
+	public static Group createGroup(Composite composite, String title,int numColumns) {
 
 		GridData gridGrp = new GridData();
 		gridGrp.horizontalAlignment = GridData.FILL;
 		gridGrp.grabExcessHorizontalSpace = true;
 		gridGrp.verticalAlignment = GridData.CENTER;
 		Group group1 = new Group(composite, SWT.NONE);
-		group1.setLayout(new GridLayout(2, false));
+		group1.setLayout(new GridLayout(numColumns, false));
 		group1.setLayoutData(gridGrp);
 		group1.setText(title);
 

@@ -39,8 +39,14 @@
          point="org.eclipse.ui.views">
       <view
             class="jwbfs.ui.views.MainView"
-            id="jwbfs.ui.view"
+            id="jwbfs.ui.ConvertView"
             name="MainView"
+            restorable="true">
+      </view>
+      <view
+            class="jwbfs.ui.views.CoverView"
+            id="jwbfs.ui.CoverView"
+            name="Cover view"
             restorable="true">
       </view>
    </extension>
