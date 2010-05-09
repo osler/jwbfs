@@ -1,10 +1,12 @@
 package jwbfs.ui.views;
 
 
+import jwbfs.model.Constants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.ProcessBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.listeners.ConvertButtonListener;
+import jwbfs.ui.listeners.UpdateCoverListener;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
 
@@ -22,6 +24,7 @@ public class CoverView extends ViewPart {
 	public static final String ID = "CoverView";
 	protected ProcessBean processBean = null;
 	protected SettingsBean settingsBean = null;
+	protected Button imageButton ;
 	
 	
 	public CoverView() {
@@ -53,9 +56,10 @@ public class CoverView extends ViewPart {
 
 		group =  WidgetCreator.createGroup(parent, "Cover",1);
 		
-		Image image = new Image(GuiUtils.getDisplay(), Utils.getRoot("jwbfs.ui")+"icons/noimg.png");
-		button = WidgetCreator.createImage(group);
-		button.setImage(image);
+		Image image = new Image( GuiUtils.getDisplay(),Constants.NOIMAGE);
+		imageButton = WidgetCreator.createImage(group);
+		imageButton.setImage(image);
+		addHandlerUpdate(imageButton);
 		
 	}
 
@@ -67,9 +71,17 @@ public class CoverView extends ViewPart {
 
 	private void addHandlerUpdate(Button button) {
 		
-		button.addSelectionListener(new ConvertButtonListener(ID,processBean));
+		button.addSelectionListener(new UpdateCoverListener(ID,processBean));
 	
 		
+	}
+
+	public Button getImageButton() {
+		return imageButton;
+	}
+
+	public void setImageButton(Button imageButton) {
+		this.imageButton = imageButton;
 	}
 
 }

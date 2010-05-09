@@ -135,22 +135,22 @@ public class ToISOConvertHandler extends AbstractHandler {
 //		
 //		par[0] = bin; 
 //		
-//		par[1] = SettingsTabConstants.decodeValue(tab.getCopyPartitions(), 
-//				SettingsTabConstants.COPY_PARTITIONS_Text, 
-//				SettingsTabConstants.COPY_PARTITIONS_Values);
+//		par[1] = Constants.decodeValue(tab.getCopyPartitions(), 
+//				Constants.COPY_PARTITIONS_Text, 
+//				Constants.COPY_PARTITIONS_Values);
 //		
-//		par[2] = SettingsTabConstants.decodeValue(tab.getSplitSize(), 
-//				SettingsTabConstants.SPLITSIZE_Text, 
-//				SettingsTabConstants.SPLITSIZE_Values);
+//		par[2] = Constants.decodeValue(tab.getSplitSize(), 
+//				Constants.SPLITSIZE_Text, 
+//				Constants.SPLITSIZE_Values);
 //	
 //		
-//		par[3] = SettingsTabConstants.decodeValue(tab.getEnableTXT(), 
-//				SettingsTabConstants.ENABLE_TXT_CREATION_Text, 
-//				SettingsTabConstants.ENABLE_TXT_CREATION_Values);
+//		par[3] = Constants.decodeValue(tab.getEnableTXT(), 
+//				Constants.ENABLE_TXT_CREATION_Text, 
+//				Constants.ENABLE_TXT_CREATION_Values);
 //	
-//		par[4] =  SettingsTabConstants.decodeValue(tab.getTxtLayout(), 
-//				SettingsTabConstants.TXT_LAYOUT_Text, 
-//				SettingsTabConstants.TXT_LAYOUT_Values);
+//		par[4] =  Constants.decodeValue(tab.getTxtLayout(), 
+//				Constants.TXT_LAYOUT_Text, 
+//				Constants.TXT_LAYOUT_Values);
 //		
 //		par[5] = path;
 //		
