@@ -7,31 +7,26 @@ import java.io.InputStreamReader;
 
 import jwbfs.model.Model;
 import jwbfs.model.SettingsTabConstants;
-import jwbfs.model.beans.ConvertTab;
-import jwbfs.model.beans.SettingsTab;
+import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
 import jwbfs.ui.exceptions.WBFSException;
+import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
-import jwbfs.ui.views.MainView;
-import jwbfs.ui.views.tabs.ConvertTabView;
+import jwbfs.ui.views.folder.ProcessView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
-/**
- * Our sample handler extends AbstractHandler, an IHandler base class.
- * @see org.eclipse.core.commands.IHandler
- * @see org.eclipse.core.commands.AbstractHandler
- */
 public class ToWBFSConvertHandler extends AbstractHandler {
-	/**
-	 * The constructor.
-	 */
+
+
+	public static final String ID = "toWbfs";
+
 	public ToWBFSConvertHandler() {
 	}
 
@@ -42,7 +37,7 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
 
-		ConvertTab bean = (ConvertTab) Model.getTabs().get(ConvertTab.INDEX);
+		ProcessBean bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
 
 		String filePath = bean.getFilePath();
 		String folderPath = bean.getFolderPath();
@@ -84,21 +79,15 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 		  catch (WBFSException err) {
 			  return null;
 		    } catch (IOException e) {
-				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
-	
-		
-//		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-//		MessageDialog.openInformation(
-//				window.getShell(),
-//				"ui",
-//				"Hello, Eclipse world");
 		return null;
 	}
 
-	private static boolean checkProcessMessages(Process p) throws IOException, WBFSException {
+	private static boolean checkProcessMessages(Process p) throws IOException, WBFSException,Exception {
 	
 		  String line;
 		
@@ -114,10 +103,8 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 			      int bar = 0;
 			      bar = Utils.getPercentual(line); 
 			      
-			      MainView view = (MainView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(MainView.ID);
-			      
-			      ((ConvertTabView) view.getTabs().get(ConvertTabView.INDEX)).getProgressBar().setSelection(bar);
-	
+			      ((ProcessView) GuiUtils.getView(ProcessView.ID)).getProgressBar().setSelection(bar);
+					
 		      }
 		      input.close();
 			return true;
@@ -139,7 +126,7 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 	
 		String[] par = new String[8];
 	
-		SettingsTab tab = (SettingsTab) Model.getTabs().get(SettingsTab.INDEX);
+		SettingsBean tab = (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
 		
 		par[0] = bin; 
 		

@@ -1,20 +1,10 @@
 package jwbfs.ui.controls;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Properties;
 
-import jwbfs.ui.exceptions.WBFSException;
-import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.Utils;
-import jwbfs.ui.views.MainView;
-import jwbfs.ui.views.tabs.ConvertTabView;
-
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 
 public class Exec {

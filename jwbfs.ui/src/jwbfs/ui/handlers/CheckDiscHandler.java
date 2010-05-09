@@ -6,28 +6,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import jwbfs.model.Model;
-import jwbfs.model.beans.ConvertTab;
+import jwbfs.model.beans.ProcessBean;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.WBFSException;
-import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
-import jwbfs.ui.views.MainView;
-import jwbfs.ui.views.tabs.ConvertTabView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.ui.PlatformUI;
 
-/**
- * Our sample handler extends AbstractHandler, an IHandler base class.
- * @see org.eclipse.core.commands.IHandler
- * @see org.eclipse.core.commands.AbstractHandler
- */
 public class CheckDiscHandler extends AbstractHandler {
-	/**
-	 * The constructor.
-	 */
+
+
+	public static final String ID = "checkDisk";
+	
 	public CheckDiscHandler() {
 	}
 
@@ -41,7 +33,7 @@ public class CheckDiscHandler extends AbstractHandler {
 		String[] info = new String [3];
 		try {
 
-			ConvertTab bean = (ConvertTab) Model.getTabs().get(ConvertTab.INDEX);
+			ProcessBean bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
 
 			String path = new File(bean.getFilePath()).getAbsolutePath();			  	  			  
 			String bin = Utils.getWBFSpath();
@@ -108,8 +100,8 @@ public class CheckDiscHandler extends AbstractHandler {
 //				int bar = 0;
 //				bar = Utils.getPercentual(line); 
 //
-//				((ConvertTabView) ((MainView) GuiUtils.getMainView())
-//						.getTabs().get(ConvertTabView.INDEX))
+//				((ConvertView) ((MainView) GuiUtils.getMainView())
+//						.getTabs().get(ConvertView.INDEX))
 //						.getProgressBar().setSelection(bar);
 
 				line =input.readLine();
@@ -118,40 +110,12 @@ public class CheckDiscHandler extends AbstractHandler {
 
 
 		} catch (WBFSException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 
 		return info;
 
-	}
-
-	private static boolean checkProcessMessages(Process p) throws IOException, WBFSException {
-	
-		  String line;
-		
-	      BufferedReader input =
-		        new BufferedReader
-		          (new InputStreamReader(p.getInputStream()));
-		      while ((line = input.readLine()) != null) {
-		    	  
-			      System.out.println(line);
-			      
-			      ErrorHandler.processError(line);
-			      
-			      int bar = 0;
-			      bar = Utils.getPercentual(line); 
-			      
-			      MainView view = (MainView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(MainView.ID);
-			      
-			      ((ConvertTabView) view.getTabs().get(ConvertTab.INDEX)).getProgressBar().setSelection(bar);
-	
-		      }
-		      input.close();
-			return true;
-		
 	}
 }

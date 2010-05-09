@@ -1,7 +1,6 @@
 package jwbfs.ui.utils;
 
-import jwbfs.ui.views.MainView;
-
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -9,15 +8,18 @@ public class GuiUtils {
 
 	
 	public static ViewPart getView(String ID){
-	    
-		MainView view = (MainView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ID);
-		  
-		return view; 
+		ViewPart view = null;
+		try{
+			view = (ViewPart) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ID);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return view;
 	}
-	
-	
-	public static ViewPart getMainView(){
-		return getView(MainView.ID);
+
+	public static Device getDisplay() {
+		return PlatformUI.getWorkbench().getDisplay();
 	}
-	
+
 }

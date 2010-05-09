@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 
 
-public class ConvertTab extends AbstractTab  {
+public class ProcessBean extends AbstractTab  {
 
 	public static final int INDEX = 0;
 	private boolean isoToWbfs = true;
@@ -14,6 +14,10 @@ public class ConvertTab extends AbstractTab  {
 	private String id;
 	private String title;
 	private String scrubGb;
+	
+	public ProcessBean(){
+		this.addPropertyChangeListener(this);
+	}
 	
 	
 	public String getId() {
@@ -63,7 +67,7 @@ public class ConvertTab extends AbstractTab  {
 	}
 
 	protected AbstractTab getTabBean() {
-		return (AbstractTab) ((LinkedHashMap<Integer, AbstractTab>)getModel()).get(ConvertTab.INDEX);
+		return (AbstractTab) ((LinkedHashMap<Integer, AbstractTab>)getModel()).get(ProcessBean.INDEX);
 	}
 
 	public boolean isIsoToWbfs() {

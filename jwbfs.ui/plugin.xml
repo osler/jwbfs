@@ -45,64 +45,90 @@
       </view>
       <view
             class="jwbfs.ui.views.CoverView"
-            id="jwbfs.ui.CoverView"
-            name="Cover view"
+            id="CoverView"
+            name="Cover"
+            restorable="true">
+      </view>
+      <view
+            class="jwbfs.ui.views.folder.SettingsView"
+            id="SettingsView"
+            name="Settings"
+            restorable="true">
+      </view>
+      <view
+            class="jwbfs.ui.views.folder.ProcessView"
+            id="ProcessView"
+            name="ProcessView"
+            restorable="true">
+      </view>
+      <view
+            class="jwbfs.ui.views.ManagerView"
+            id="ManagerView"
+            name="Disk Manager"
             restorable="true">
       </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <category
-            id="jwbfs.ui.commands.category.convert"
+            id="convert"
             name="Convert">
       </category>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="jwbfs.ui.commands.toWbfs"
+            id="toWbfs"
             name="Iso To wbfs">
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="jwbfs.ui.commands.toIso"
+            id="toIso"
             name="Wbfs To Iso">
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="jwbfs.ui.commands.checkDisk"
+            id="checkDisk"
             name="Check Disk">
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="jwbfs.ui.commands.fileDialog"
+            id="fileDialog"
             name="File Dialog">
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="jwbfs.ui.commands.folderDialog"
+            id="folderDialog"
             name="Folder Dialog">
       </command>
+      <category
+            id="updateCover"
+            name="UpdateCover">
+      </category>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="jwbfs.ui.handlers.ToWBFSConvertHandler"
-            commandId="jwbfs.ui.commands.toWbfs">
+            commandId="toWbfs">
       </handler>
       <handler
             class="jwbfs.ui.handlers.ToISOConvertHandler"
-            commandId="jwbfs.ui.commands.toIso">
+            commandId="toIso">
       </handler>
       <handler
             class="jwbfs.ui.handlers.CheckDiscHandler"
-            commandId="jwbfs.ui.commands.checkDisk">
+            commandId="checkDisk">
       </handler>
       <handler
             class="jwbfs.ui.handlers.FileDialogHandler"
-            commandId="jwbfs.ui.commands.fileDialog">
+            commandId="fileDialog">
       </handler>
       <handler
             class="jwbfs.ui.handlers.FolderDialogHandler"
-            commandId="jwbfs.ui.commands.folderDialog">
+            commandId="folderDialog">
+      </handler>
+      <handler
+            class="jwbfs.ui.handlers.UpdateCoverHandler"
+            commandId="updateCover">
       </handler>
    </extension>
   

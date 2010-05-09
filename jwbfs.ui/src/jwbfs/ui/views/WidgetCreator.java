@@ -1,7 +1,7 @@
 package jwbfs.ui.views;
 
 import jwbfs.model.beans.AbstractTab;
-import jwbfs.model.beans.SettingsTab;
+import jwbfs.model.beans.SettingsBean;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -101,7 +101,7 @@ public class WidgetCreator {
 
 	
 	
-	public static Combo createCombo(Composite composite, String[] items, final SettingsTab bean, String valueToBind) {
+	public static Combo createCombo(Composite composite, String[] items, final SettingsBean bean, String valueToBind) {
 		
 		GridData gridBtn = new GridData();
 		gridBtn.horizontalAlignment = GridData.CENTER;
@@ -208,17 +208,36 @@ public class WidgetCreator {
 			return tabItem;
 
 	}
+	
+	public static Button createButton(Group group, String text){
+		return createButton(group, text,100);
+	}
 
-	public static Button createButton(Group group, String text) {
+	public static Button createButton(Group group, String text,int widthHint) {
 		
 		GridData gridBtn = new GridData();
 		gridBtn.horizontalAlignment = GridData.CENTER;
-		gridBtn.widthHint = 100;
+		gridBtn.widthHint = widthHint;
 		gridBtn.horizontalSpan = 1;
 		gridBtn.verticalAlignment = GridData.CENTER;
 	
 		Button button = new Button(group, SWT.NONE);
 		button.setText(text);
+		button.setLayoutData(gridBtn);
+		
+		return button;
+	}
+	
+	public static Button createImage(Group group) {
+		
+		GridData gridBtn = new GridData();
+		gridBtn.grabExcessHorizontalSpace = true;
+		gridBtn.grabExcessVerticalSpace = true;
+		gridBtn.horizontalAlignment = GridData.CENTER;
+		gridBtn.verticalAlignment = GridData.CENTER;
+		gridBtn.horizontalSpan = 1;
+	
+		Button button = new Button(group, SWT.ICON);
 		button.setLayoutData(gridBtn);
 		
 		return button;

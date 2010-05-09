@@ -91,13 +91,13 @@ public class Utils {
 			String os = System.getProperty("os.name").toLowerCase();
 			
 			if(os.contains("linux")){
-				path = path + "linux/wbfs_file";
+				path = path + "wbfs_file/linux/wbfs_file";
 			}
 			if(os.contains("windows")){
-				path = path + "win/wbfs_file.exe";
+				path = path + "wbfs_file/win/wbfs_file.exe";
 			}
 			if(os.contains("osx")){
-				path = path + "mac_osx/wbfs_file";
+				path = path + "wbfs_file/mac_osx/wbfs_file";
 			}
 			
 			System.out.println(path);
@@ -119,6 +119,9 @@ public class Utils {
 			path = FileLocator.toFileURL (
 			Platform.getBundle (pluginID). getEntry ("wbfs_file")). getPath ();
 //			path = path.substring (path.indexOf ("/") + 1, path.length ());
+			
+			path = path.replaceAll("wbfs_file", "");
+			
 			} catch (Exception e) {
 				e.printStackTrace ();
 					
@@ -127,10 +130,18 @@ public class Utils {
 			return path;
 }
 
-	public static IHandlerService getHandlerService() {
-		IHandlerService handlerService = (IHandlerService) GuiUtils.getMainView().getSite()
-		.getService(IHandlerService.class);
+	public static IHandlerService getHandlerService(String viewID) {
+		try {
+		IHandlerService handlerService = (IHandlerService) GuiUtils.getView(viewID).getSite()
+			.getService(IHandlerService.class);
+
 		return handlerService;
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }
