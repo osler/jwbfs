@@ -16,3 +16,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: jwbfs.model,
  jwbfs.model.beans
 Bundle-ClassPath: .
+Export-Package: jwbfs.model,
+ jwbfs.model.beans

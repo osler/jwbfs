@@ -1,7 +1,7 @@
 package jwbfs.ui.views.folder;
 
 import jwbfs.model.Model;
-import jwbfs.model.SettingsTabConstants;
+import jwbfs.model.Constants;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.views.WidgetCreator;
 
@@ -31,15 +31,15 @@ public class SettingsView extends ViewPart{
 		@SuppressWarnings("unused")
 		Label label = WidgetCreator.createLabel(group,"Split Size");
 		@SuppressWarnings("unused")
-		Combo combo =  WidgetCreator.createCombo(group, SettingsTabConstants.SPLITSIZE_Text, (SettingsBean) getTabBean(), "splitSize");
+		Combo combo =  WidgetCreator.createCombo(group, Constants.SPLITSIZE_Text, (SettingsBean) getTabBean(), "splitSize");
 		label = WidgetCreator.createLabel(group,"Copy Partitions");
-		combo =  WidgetCreator.createCombo(group, SettingsTabConstants.COPY_PARTITIONS_Text, (SettingsBean) getTabBean(), "copyPartitions");
+		combo =  WidgetCreator.createCombo(group, Constants.COPY_PARTITIONS_Text, (SettingsBean) getTabBean(), "copyPartitions");
 	
 		group = WidgetCreator.createGroup(composite, "TXT file Creation");
 		label = WidgetCreator.createLabel(group,"Enable txt file creation");
-		combo =  WidgetCreator.createCombo(group, SettingsTabConstants.ENABLE_TXT_CREATION_Text, (SettingsBean) getTabBean(), "enableTXT");
+		combo =  WidgetCreator.createCombo(group, Constants.ENABLE_TXT_CREATION_Text, (SettingsBean) getTabBean(), "enableTXT");
 		label = WidgetCreator.createLabel(group,"txt file layout");
-		combo =  WidgetCreator.createCombo(group, SettingsTabConstants.TXT_LAYOUT_Text, (SettingsBean) getTabBean(), "txtLayout");
+		combo =  WidgetCreator.createCombo(group, Constants.TXT_LAYOUT_Text, (SettingsBean) getTabBean(), "txtLayout");
 		
 	}
 
