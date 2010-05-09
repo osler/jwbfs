@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.ui.part.ViewPart;
 
 public class MainView extends ViewPart {
-	public static final String ID = "jwbfs.ui.view";
+	public static final String ID = "jwbfs.ui.ConvertView";
 
 	private LinkedHashMap<Integer, AbstractTab> tabs = new LinkedHashMap<Integer, AbstractTab>();
 	
