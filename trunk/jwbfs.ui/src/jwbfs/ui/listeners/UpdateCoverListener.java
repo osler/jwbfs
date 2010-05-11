@@ -4,8 +4,10 @@ import jwbfs.model.beans.ProcessBean;
 import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
 import jwbfs.ui.handlers.UpdateCoverHandler;
+import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
@@ -45,6 +47,7 @@ public class UpdateCoverListener extends SelectionAdapter {
 		} catch (FileNotSelectedException e1) {
 	
 		} catch (Exception ex) {
+			GuiUtils.showInfo(ex.getMessage(),SWT.ERROR);
 			throw new RuntimeException("Command not Found");
 		}
 	

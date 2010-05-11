@@ -144,4 +144,19 @@ public class Utils {
 		return null;
 	}
 
+	public static String getGB(long bytes) {
+		double gb = Double.valueOf(bytes)/1073741824;
+		String ret = String.valueOf(gb);
+		return ret.substring(0, ret.indexOf(".")+3);
+	}
+
+	public static String getMB(long bytes) {
+		long mb = bytes/1048576;
+		return String.valueOf(mb);
+	}
+	
+	public static String getKB(long bytes) {
+		long kb = bytes/1024;
+		return String.valueOf(kb);
+	}
 }

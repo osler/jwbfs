@@ -1,7 +1,10 @@
 package jwbfs.ui.handlers;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -9,6 +12,7 @@ import jwbfs.model.Model;
 import jwbfs.model.beans.ProcessBean;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.WBFSException;
+import jwbfs.ui.utils.FileUtils;
 import jwbfs.ui.utils.Utils;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -19,7 +23,7 @@ public class CheckDiscHandler extends AbstractHandler {
 
 
 	public static final String ID = "checkDisk";
-	
+
 	public CheckDiscHandler() {
 	}
 
@@ -29,29 +33,87 @@ public class CheckDiscHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
+		ProcessBean bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
 
-		String[] info = new String [3];
+		if(bean.isWbfsToIso()){
+			checkWbfs(bean);
+		}else {
+			checkIso(bean);
+		}
+
+
+		return null;
+
+	}
+
+	private void checkWbfs(ProcessBean bean) {
+
+//		String infoCmd = "id_title";
+		
 		try {
 
-			ProcessBean bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
+			String[] info = new String [3];
 
-			String path = new File(bean.getFilePath()).getAbsolutePath();			  	  			  
+			File fileWbfs = new File(bean.getFilePath());
+		
+			String fileTxt = FileUtils.getTxtFile(fileWbfs);
+
+			File fileTxtPath = new File(fileTxt);
+			
+			FileReader fis = new FileReader(fileTxtPath); 			
+			BufferedReader input = new BufferedReader(fis);
+			
+			String line = input.readLine();
+			while ( line != null) {
+
+				System.out.println(line);
+
+					info[0] = fileWbfs.getName().replace(".wbfs", "");
+					info[1] = line.substring(line.indexOf("=")+1, line.length()).trim();
+					info[2] = Utils.getGB(fileWbfs.length());	
+
+
+				bean.setId(info[0]);
+				bean.setTitle(info[1]);
+				bean.setScrubGb(info[2]);
+
+				line =input.readLine();
+			}
+			input.close();
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	
+
+		
+	}
+
+	private void checkIso(ProcessBean bean) {
+
+		try {
+
+			String[] info = new String [3];
+			
+			String filePath = bean.getFilePath();
+			if(filePath == null || filePath.equals("")){
+				return;
+			}
+
+			String path = new File(filePath).getAbsolutePath();			  	  			  
 			String bin = Utils.getWBFSpath();
 
 			new File(bin).setExecutable(true);
 
-			String infoCmd;
-			if(bean.isWbfsToIso()){
-				infoCmd = "id_title";
-			}else {
-				infoCmd = "iso_info";
-			}
+			String infoCmd = "iso_info";
 
 			String[] checkIso = {bin,path,infoCmd};
 			Process pCheck;
 			pCheck = Runtime.getRuntime().exec(checkIso);
-//			checkProcessMessages(pCheck);
-			
+			//		checkProcessMessages(pCheck);
+
 			String line;
 
 			BufferedReader input =
@@ -64,48 +126,38 @@ public class CheckDiscHandler extends AbstractHandler {
 
 				ErrorHandler.processError(line);
 
-				if(bean.isWbfsToIso()){
-
-					info[0] = line;
-					info[1] = "";
-					info[2] = "";
-				}else{
-
-					if(line.contains("id:")){
-						line = line.substring(line.indexOf("id:"),line.length());
-						info[0] = line;
-					}
-
-					if(line.contains("title:")){
-						line = line.substring(line.indexOf("title:"),line.length());
-						info[1] = line;
-					}
-
-					if(line.contains("scrub gb:")){
-						line = line.substring(line.indexOf("scrub gb:"),line.length());
-						info[2] = line;
-					}
-
-					if(line.toLowerCase().contains("not a wii disc") ||
-							(info[0] == null && info[1] == null && info[2] == null )){
-						info[0] = "not a wii disc";
-					}
-
+				String control = "id:";
+				if(line.contains(control)){
+					line = line.substring(line.indexOf(control),line.length());
+					info[0] = line.replaceAll(control, "").trim();
 				}
-				
+
+				control = "title:";
+				if(line.contains(control)){
+					line = line.substring(line.indexOf(control),line.length());
+					info[1] = line.replaceAll(control, "").trim();
+				}
+
+				control = "scrub gb:";
+				if(line.contains(control)){
+					line = line.substring(line.indexOf(control),line.length());
+					info[2] = line.replaceAll(control, "").trim();
+				}
+
+				control = "not a wii disc:";
+				if(line.toLowerCase().contains(control) ||
+						(info[0] == null && info[1] == null && info[2] == null )){
+					info[0] = control.trim();
+				}
+
 				bean.setId(info[0]);
 				bean.setTitle(info[1]);
 				bean.setScrubGb(info[2]);
 
-//				int bar = 0;
-//				bar = Utils.getPercentual(line); 
-//
-//				((ConvertView) ((MainView) GuiUtils.getMainView())
-//						.getTabs().get(ConvertView.INDEX))
-//						.getProgressBar().setSelection(bar);
-
 				line =input.readLine();
+				
 			}
+
 			input.close();
 
 
@@ -113,9 +165,7 @@ public class CheckDiscHandler extends AbstractHandler {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
-
-		return info;
+		}
 
 	}
 }
