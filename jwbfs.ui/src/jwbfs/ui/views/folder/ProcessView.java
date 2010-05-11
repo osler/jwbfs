@@ -59,9 +59,12 @@ public class ProcessView extends ViewPart {
 		button = WidgetCreator.createButton(group,"convert");
 		addHandlerConvert(button);
 		
-		group = WidgetCreator.createGroup(composite, "Game Info");
+		group = WidgetCreator.createGroup(composite, "Game Info",4);
+		text = WidgetCreator.createText(group,false,null,"id:");
 		text = WidgetCreator.createText(group,false,getTabBean(),"id");
+		text = WidgetCreator.createText(group,false,null,"title:");
 		text = WidgetCreator.createText(group,false,getTabBean(),"title");
+		text = WidgetCreator.createText(group,false,null,"scrubbed size:");
 		text = WidgetCreator.createText(group,false,getTabBean(),"scrubGb");
 				
 		progressBar = WidgetCreator.createProgressBar(composite);

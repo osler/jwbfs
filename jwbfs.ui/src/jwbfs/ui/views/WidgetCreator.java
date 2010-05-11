@@ -129,10 +129,15 @@ public class WidgetCreator {
 	}
 	
 	public static Text createText(Composite parent, boolean enabled,AbstractTab bean, String valueToBind){
+		return createText(parent, enabled, bean, valueToBind, 1);
+	}
+	
+
+	public static Text createText(Composite parent, boolean enabled,AbstractTab bean, String valueToBind,int horizontalSpan){
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalSpan = 1;
+		gridData.horizontalSpan = horizontalSpan;
 		gridData.verticalAlignment = GridData.CENTER;
 
 		Text txtFile = new Text(parent, SWT.NONE);
@@ -152,10 +157,14 @@ public class WidgetCreator {
 	}
 	
 	public static Label createLabel(Composite parent, String text){
+		return createLabel(parent, text, 1);
+	}
+	
+	public static Label createLabel(Composite parent, String text,int horizontalSpan){
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalSpan = 1;
+		gridData.horizontalSpan = horizontalSpan;
 		gridData.verticalAlignment = GridData.CENTER;
 
 		Label txtFile = new Label(parent, SWT.NONE);

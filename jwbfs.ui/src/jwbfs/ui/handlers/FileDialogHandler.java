@@ -49,18 +49,19 @@ public class FileDialogHandler extends AbstractHandler {
 			d.setFilterExtensions(new String[]{"*.wbfs","*.WBFS"});	
 		}
 		
-
+			String oldValue = bean.getFilePath();
 			String line = d.open();
+			
+			//If cancel, set the old value
+			if(line == null || line.equals("")){
+				line = oldValue;
+			}
+			
 			bean.setFilePath(line);
 			  try {
 				  String[] info = 
 						(String[]) Utils.getHandlerService(ProcessView.ID)
 						.executeCommand(CheckDiscHandler.ID, null);
-
-				bean.setId(info[0]);
-				bean.setTitle(info[1]);
-				bean.setScrubGb(info[2]);
-				bean.setFilePath(line);
 			
 				
 			} catch (NotDefinedException e) {

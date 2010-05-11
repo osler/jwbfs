@@ -1,10 +1,8 @@
 package jwbfs.ui.listeners;
 
-import jwbfs.ui.handlers.CheckDiscHandler;
-import jwbfs.ui.handlers.FileDialogHandler;
-import jwbfs.ui.handlers.UpdateCoverHandler;
+import jwbfs.ui.handlers.FolderCoverDialogHandler;
+import jwbfs.ui.handlers.FolderDialogHandler;
 import jwbfs.ui.utils.Utils;
-import jwbfs.ui.views.folder.ProcessView;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -13,45 +11,36 @@ import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class FileDialogListener extends SelectionAdapter {
-
+public class FolderCoverDialogListener extends SelectionAdapter {
 
 	private String viewID;
 
-	public FileDialogListener(String viewID){
+	public FolderCoverDialogListener(String viewID){
 		this.viewID = viewID;
 	}
-
-
+	
 	@Override
 	public void widgetSelected(SelectionEvent e) {
-	
 
-		
+		System.out.println("Launching Cover Folder Selection Dialog");
 		try {
-			Utils.getHandlerService(viewID).executeCommand(FileDialogHandler.ID, null);
-
-			Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);
-			
+			Utils.getHandlerService(viewID).executeCommand(FolderCoverDialogHandler.ID, null);
 		} catch (ExecutionException e1) {
-		
+
 			e1.printStackTrace();
 		} catch (NotDefinedException e1) {
-		
+
 			e1.printStackTrace();
 		} catch (NotEnabledException e1) {
-		
+
 			e1.printStackTrace();
 		} catch (NotHandledException e1) {
-		
+
 			e1.printStackTrace();
 		}
 
 
-
-
-	
-
 	}
+
 
 }

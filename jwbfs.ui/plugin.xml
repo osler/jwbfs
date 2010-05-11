@@ -71,7 +71,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            id="convert"
+            id="jwbfs.ui.commands.category.convert"
             name="Convert">
       </category>
       <command
@@ -99,10 +99,15 @@
             id="folderDialog"
             name="Folder Dialog">
       </command>
-      <category
+            <command
+            categoryId="jwbfs.ui.commands.category.convert"
+            id="folderCoverDialog"
+            name="Folder Cover Dialog">
+      </command>
+      <command
             id="updateCover"
-            name="UpdateCover">
-      </category>
+            name="updateCover">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -125,6 +130,10 @@
       <handler
             class="jwbfs.ui.handlers.FolderDialogHandler"
             commandId="folderDialog">
+      </handler>
+       <handler
+            class="jwbfs.ui.handlers.FolderCoverDialogHandler"
+            commandId="folderCoverDialog">
       </handler>
       <handler
             class="jwbfs.ui.handlers.UpdateCoverHandler"
