@@ -175,6 +175,24 @@ public class WidgetCreator {
 		return txtFile;	
 	}
 	
+	public static Button createCheck(Composite parent, String text, AbstractTab bean, String valueToBind){
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.CENTER;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalSpan = 1;
+		gridData.verticalAlignment = GridData.CENTER;
+
+		Button radio = new Button(parent, SWT.CHECK);
+		radio.setText(text);
+		radio.setLayoutData(gridData);
+		
+		DataBindingContext dbc = new DataBindingContext();
+		dbc.bindValue(SWTObservables.observeSelection(radio),
+				BeansObservables.observeValue(bean,valueToBind),null,null);
+		
+		return radio;	
+	}
+	
 	public static Button createRadio(Composite parent, String text, AbstractTab bean, String valueToBind){
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
