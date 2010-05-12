@@ -113,6 +113,30 @@ public class Utils {
 		return path; 
 	}
 	
+	public static String getTitlesTXTpath(){
+		String path = "";
+		
+			System.out.println(Platform.getInstanceLocation (). getURL (). getPath ()); 
+			
+			path = getRoot("jwbfs.ui");
+			
+			String os = System.getProperty("os.name").toLowerCase();
+			
+			if(os.contains("linux")){
+				path = path + "wbfs_file/linux/titles.txt";
+			}
+			if(os.contains("windows")){
+				path = path + "wbfs_file/win/titles.txt";
+			}
+			if(os.contains("osx")){
+				path = path + "wbfs_file/mac_osx/titles.txt";
+			}
+			
+			System.out.println(path);
+			
+		return path; 
+	}
+	
 	public static String getRoot (String pluginID) {
 			String path = null;
 			try {

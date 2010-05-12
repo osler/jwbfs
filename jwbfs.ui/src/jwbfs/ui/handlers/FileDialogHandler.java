@@ -57,21 +57,7 @@ public class FileDialogHandler extends AbstractHandler {
 				line = oldValue;
 			}
 			
-			bean.setFilePath(line);
-			  try {
-				  String[] info = 
-						(String[]) Utils.getHandlerService(ProcessView.ID)
-						.executeCommand(CheckDiscHandler.ID, null);
-			
-				
-			} catch (NotDefinedException e) {
-					e.printStackTrace();
-			} catch (NotEnabledException e) {
-				e.printStackTrace();
-			} 	catch (NotHandledException e) {
-				e.printStackTrace();
-			}
-			
+			bean.setFilePath(line);			
 		}
 		
 

@@ -1,6 +1,8 @@
 package jwbfs.ui.listeners;
 
+import jwbfs.model.Model;
 import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
 import jwbfs.ui.handlers.UpdateCoverHandler;
@@ -39,6 +41,7 @@ public class UpdateCoverListener extends SelectionAdapter {
 
 		}
 
+		((SettingsBean)Model.getTabs().get(SettingsBean.INDEX)).setUpdateCover(true);
 		Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);
 		
 
@@ -48,6 +51,7 @@ public class UpdateCoverListener extends SelectionAdapter {
 	
 		} catch (Exception ex) {
 			GuiUtils.showInfo(ex.getMessage(),SWT.ERROR);
+			ex.printStackTrace();
 			throw new RuntimeException("Command not Found");
 		}
 	

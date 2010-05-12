@@ -4,7 +4,7 @@ import jwbfs.model.Constants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.listeners.FolderCoverDialogListener;
-import jwbfs.ui.listeners.FolderDialogListener;
+import jwbfs.ui.listeners.UpdateTitlesTXTListener;
 import jwbfs.ui.views.WidgetCreator;
 
 import org.eclipse.swt.widgets.Button;
@@ -40,19 +40,39 @@ public class SettingsView extends ViewPart{
 		combo =  WidgetCreator.createCombo(group, Constants.COPY_PARTITIONS_Text, (SettingsBean) getTabBean(), "copyPartitions");
 	
 		group = WidgetCreator.createGroup(composite, "TXT file Creation");
-		label = WidgetCreator.createLabel(group,"Enable txt file creation");
-		combo =  WidgetCreator.createCombo(group, Constants.ENABLE_TXT_CREATION_Text, (SettingsBean) getTabBean(), "enableTXT");
+		label = WidgetCreator.createLabel(group,"");
+		Button button = WidgetCreator.createCheck(group, "Enable txt file creation", getTabBean(), "enableTXT");
+//		combo =  WidgetCreator.createCombo(group, Constants.ENABLE_TXT_CREATION_Text, (SettingsBean) getTabBean(), "enableTXT");
 		label = WidgetCreator.createLabel(group,"txt file layout");
 		combo =  WidgetCreator.createCombo(group, Constants.TXT_LAYOUT_Text, (SettingsBean) getTabBean(), "txtLayout");
 		
 		
 		group = WidgetCreator.createGroup(composite, "Cover Settings - (wiitdb)");
+	
+		label = WidgetCreator.createLabel(group,"");
+		button = WidgetCreator.createCheck(group, "Enable Cover Download", getTabBean(), "automaticCoverDownload");
+		
 		label = WidgetCreator.createLabel(group,"Region");
 		combo =  WidgetCreator.createCombo(group, Constants.REGIONS, (SettingsBean) getTabBean(), "region");
+		
+		label = WidgetCreator.createLabel(group,"titles.TXT");
+		button = WidgetCreator.createButton(group,"Update");
+		addHandlerUpdateTXT(button);
+		
+		button = WidgetCreator.createCheck(group, "3D Cover Download", getTabBean(), "cover3D");
+		button = WidgetCreator.createCheck(group, "Disc Cover Download", getTabBean(), "coverDiscs");
+		
+		
+		
 		label = WidgetCreator.createLabel(group,"Cover save Path");
-		Button button = WidgetCreator.createButton(group,"open");
+		button = WidgetCreator.createButton(group,"open");
 		addHandlerFolder(button);
 		Text text =  WidgetCreator.createText(group, false, (SettingsBean) getTabBean(), "coverPath",2);
+		
+	}
+
+	private void addHandlerUpdateTXT(Button button) {
+		button.addSelectionListener(new UpdateTitlesTXTListener(ID));
 		
 	}
 

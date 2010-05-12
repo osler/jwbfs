@@ -139,8 +139,7 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 				Constants.SPLITSIZE_Values);
 	
 		
-		par[3] = Constants.decodeValue(tab.getEnableTXT(), 
-				Constants.ENABLE_TXT_CREATION_Text, 
+		par[3] = Constants.decodeValue(tab.isEnableTXT(),  
 				Constants.ENABLE_TXT_CREATION_Values);
 	
 		par[4] =  Constants.decodeValue(tab.getTxtLayout(), 

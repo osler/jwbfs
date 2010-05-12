@@ -1,7 +1,5 @@
 package jwbfs.model;
 
-import org.eclipse.swt.graphics.Image;
-
 import jwbfs.ui.utils.Utils;
 
 
@@ -20,7 +18,9 @@ http://wiitdb.com/wiitdb/artwork/cover3D/
 http://wiitdb.com/wiitdb/artwork/coverfull/
 http://wiitdb.com/wiitdb/artwork/disc/
 http://wiitdb.com/wiitdb/artwork/disccustom/
-	 
+
+TITLES:
+http://wiitdb.com/titles.txt?LANG=XX
 	 */
 	
 	public static final  String[] REGIONS = {"EN", "FR", "DE", "ES", "IT", "NL", "PT", "AU","US","JA","KO"};
@@ -30,6 +30,7 @@ http://wiitdb.com/wiitdb/artwork/disccustom/
 	public static final  String COVERFULL_URL = "http://wiitdb.com/wiitdb/artwork/coverfull/";
 	public static final  String DISC_URL = "http://wiitdb.com/wiitdb/artwork/disc/";
 	public static final  String DISCCUSTOM_URL = "http://wiitdb.com/wiitdb/artwork/disccustom/";
+	public static final  String TITLES_URL = "http://wiitdb.com/titles.txt?LANG=";
 	
 	
 	
@@ -162,4 +163,20 @@ http://wiitdb.com/wiitdb/artwork/disccustom/
 		return ret;
 		
 	}
+	
+	public static String decodeValue(boolean selection, String values[]){
+		String ret = "";
+
+
+		if(selection){
+
+			ret = values[0];
+			return ret;
+		}else{
+			ret = values[1];
+			return ret;	
+		}
+
+	}
+	
 }
