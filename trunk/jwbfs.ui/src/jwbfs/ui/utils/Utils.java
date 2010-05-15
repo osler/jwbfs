@@ -1,5 +1,7 @@
 package jwbfs.ui.utils;
 
+import java.io.File;
+
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -126,7 +128,7 @@ public class Utils {
 				path = path + "wbfs_file/linux/titles.txt";
 			}
 			if(os.contains("windows")){
-				path = path + "wbfs_file/win/titles.txt";
+				path = path + "wbfs_file"+File.separatorChar+"win"+File.separatorChar+"titles.txt";
 			}
 			if(os.contains("osx")){
 				path = path + "wbfs_file/mac_osx/titles.txt";
@@ -135,6 +137,11 @@ public class Utils {
 			System.out.println(path);
 			
 		return path; 
+	}
+	
+	public static File getWbfsINI(){
+		
+		return new File(getRoot("jwbfs.ui")+File.separatorChar+"wbfs.ini");
 	}
 	
 	public static String getRoot (String pluginID) {

@@ -2,10 +2,10 @@ package jwbfs.model;
 
 import java.util.LinkedHashMap;
 
-import jwbfs.model.beans.AbstractTab;
+import jwbfs.model.beans.ModelObject;
 
 public interface IContainsModel {
 	
-	public LinkedHashMap<Integer, AbstractTab> getModel();
+	public LinkedHashMap<Integer, ModelObject> getModel();
 
 }

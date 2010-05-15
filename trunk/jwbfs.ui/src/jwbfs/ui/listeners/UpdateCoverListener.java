@@ -29,7 +29,8 @@ public class UpdateCoverListener extends SelectionAdapter {
 
 		
 		try {
-		
+			if(!((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).isManagerMode()){
+
 		if(bean.getFilePath() == null || bean.getFilePath().equals("")){
 			 
 			throw new FileNotSelectedException();
@@ -40,6 +41,7 @@ public class UpdateCoverListener extends SelectionAdapter {
 			throw new NotValidDiscException();
 
 		}
+			}
 
 		((SettingsBean)Model.getTabs().get(SettingsBean.INDEX)).setUpdateCover(true);
 		Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);

@@ -3,7 +3,7 @@ package jwbfs.ui.views;
 
 import java.util.LinkedHashMap;
 
-import jwbfs.model.beans.AbstractTab;
+import jwbfs.model.beans.ModelObject;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
@@ -13,7 +13,7 @@ public class MainView extends ViewPart {
 	
 	public static final String ID = "jwbfs.ui.ConvertView";
 
-	private LinkedHashMap<Integer, AbstractTab> tabs = new LinkedHashMap<Integer, AbstractTab>();
+	private LinkedHashMap<Integer, ModelObject> tabs = new LinkedHashMap<Integer, ModelObject>();
 	
 	public void createPartControl(Composite parent) {
 		
@@ -35,7 +35,7 @@ public class MainView extends ViewPart {
 		
 	}
 
-	public LinkedHashMap<Integer,AbstractTab> getTabs(){
+	public LinkedHashMap<Integer,ModelObject> getTabs(){
 		
 		return tabs;		
 	}

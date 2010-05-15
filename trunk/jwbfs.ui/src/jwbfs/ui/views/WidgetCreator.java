@@ -1,6 +1,6 @@
 package jwbfs.ui.views;
 
-import jwbfs.model.beans.AbstractTab;
+import jwbfs.model.beans.ModelObject;
 import jwbfs.model.beans.SettingsBean;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 
@@ -128,12 +130,12 @@ public class WidgetCreator {
 		return sShell;
 	}
 	
-	public static Text createText(Composite parent, boolean enabled,AbstractTab bean, String valueToBind){
+	public static Text createText(Composite parent, boolean enabled,ModelObject bean, String valueToBind){
 		return createText(parent, enabled, bean, valueToBind, 1);
 	}
 	
 
-	public static Text createText(Composite parent, boolean enabled,AbstractTab bean, String valueToBind,int horizontalSpan){
+	public static Text createText(Composite parent, boolean enabled,ModelObject bean, String valueToBind,int horizontalSpan){
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -175,7 +177,7 @@ public class WidgetCreator {
 		return txtFile;	
 	}
 	
-	public static Button createCheck(Composite parent, String text, AbstractTab bean, String valueToBind){
+	public static Button createCheck(Composite parent, String text, ModelObject bean, String valueToBind){
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.CENTER;
 		gridData.grabExcessHorizontalSpace = true;
@@ -193,7 +195,7 @@ public class WidgetCreator {
 		return radio;	
 	}
 	
-	public static Button createRadio(Composite parent, String text, AbstractTab bean, String valueToBind){
+	public static Button createRadio(Composite parent, String text, ModelObject bean, String valueToBind){
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -268,6 +270,22 @@ public class WidgetCreator {
 		button.setLayoutData(gridBtn);
 		
 		return button;
+	}
+	
+
+	public static Table createTable(Composite parent, int style, String[] col,
+			int dimensioneColonne) {
+
+		Table table = new Table(parent, style);
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		for (int i = 0; i < col.length; i++) {
+			TableColumn colon = new TableColumn(table, SWT.CENTER);
+			colon.setText(col[i]);
+			colon.setWidth(dimensioneColonne);
+		}
+		table.setSize(table.computeSize(SWT.DEFAULT, 300));
+		return table;
 	}
 	
 }

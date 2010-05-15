@@ -1,6 +1,7 @@
 package jwbfs.ui.views.folder;
 
 import jwbfs.model.Constants;
+import jwbfs.model.CoverConstants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.listeners.FolderCoverDialogListener;
@@ -53,7 +54,7 @@ public class SettingsView extends ViewPart{
 		button = WidgetCreator.createCheck(group, "Enable Cover Download", getTabBean(), "automaticCoverDownload");
 		
 		label = WidgetCreator.createLabel(group,"Region");
-		combo =  WidgetCreator.createCombo(group, Constants.REGIONS, (SettingsBean) getTabBean(), "region");
+		combo =  WidgetCreator.createCombo(group, CoverConstants.REGIONS, (SettingsBean) getTabBean(), "region");
 		
 		label = WidgetCreator.createLabel(group,"titles.TXT");
 		button = WidgetCreator.createButton(group,"Update");

@@ -8,16 +8,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import jwbfs.model.Constants;
+import jwbfs.model.CoverConstants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.ProcessBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.ui.utils.FileUtils;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.views.CoverView;
-import jwbfs.ui.views.folder.ProcessView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.graphics.Image;
 
 public class UpdateCoverHandler extends AbstractHandler {
@@ -29,11 +31,29 @@ public class UpdateCoverHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
 		processBean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
-		settingsBean = (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+		    
+		if(((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).isManagerMode()){
 
+				processBean = (ProcessBean) GuiUtils.getManagerTableViewer().getSelection();
+			
+				executeForBean();
+	
+			
+		}else{
+			settingsBean = (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+
+			executeForBean();
+		}
+		
+		
+		return null;
+	}
+
+	private void executeForBean() {
+		
 	    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setMaximum(getProgress());
 	    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(0);
-		
+	    
 		boolean updateCover = settingsBean.isUpdateCover();
 		String gameId = processBean.getId();
 		String coverPath = settingsBean.getCoverPath()
@@ -45,14 +65,16 @@ public class UpdateCoverHandler extends AbstractHandler {
 		if(gameId.contains("not a wii disc")){
 			setCover(Constants.NOIMAGE);
 			settingsBean.setUpdateCover(false);
-			return null;
+			return;
 		}
 
-		if(coverFileExist(coverPath) && !updateCover){
+		if(FileUtils.coverFileExist(coverPath) && !updateCover){
 			setCover(coverPath);			
 		}else{
 			if(settingsBean.isAutomaticCoverDownload() || updateCover){
 
+				
+				
 				if(updateCover){
 					System.out.println("Updating Cover");
 				}else{
@@ -61,9 +83,9 @@ public class UpdateCoverHandler extends AbstractHandler {
 					}	
 				}
 				//search cover
-				downloadCover(Constants.COVER_URL,coverPath);
+				downloadCover(CoverConstants.COVER_URL,coverPath);
 
-				if(coverFileExist(coverPath)){
+				if(FileUtils.coverFileExist(coverPath)){
 					//Cover Found
 					setCover(coverPath);
 				}else{
@@ -82,13 +104,13 @@ public class UpdateCoverHandler extends AbstractHandler {
 			+File.separatorChar
 			+"3d";
 			
-			checkFolder(folder);
+			FileUtils.checkAndCreateFolder(folder);
 			
 			coverPath = folder
 			+File.separatorChar
 			+gameId
 			+".png";
-			downloadCover(Constants.COVER3D_URL,coverPath);
+			downloadCover(CoverConstants.COVER3D_URL,coverPath);
 			//progressbar
 		    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(getProgress()>2?2:getProgress());
 			
@@ -100,21 +122,20 @@ public class UpdateCoverHandler extends AbstractHandler {
 				+File.separatorChar
 				+"discs";
 				
-				checkFolder(folder);
+				FileUtils.checkAndCreateFolder(folder);
 				
 				coverPath = folder
 				+File.separatorChar
 				+gameId
 				+".png";
 				
-				downloadCover(Constants.DISC_URL,coverPath);
+				downloadCover(CoverConstants.DISC_URL,coverPath);
 				//progressbar
 			    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(getProgress()>2?3:getProgress());
 				
 			}
 		
 		settingsBean.setUpdateCover(false);
-		return null;
 	}
 
 	private int getProgress() {
@@ -129,19 +150,6 @@ public class UpdateCoverHandler extends AbstractHandler {
 		}
 	
 		return tot;
-	}
-
-	private void checkFolder(String folder) {
-	
-		File fol = new File(folder);
-		if(fol.exists() && fol.isDirectory()){
-			return;
-		}else{
-			fol.mkdir();
-			System.out.println("Folder created: \n"+folder);
-			return;
-		}
-		
 	}
 
 	private void downloadCover(String url,String coverPath) {
@@ -180,16 +188,6 @@ public class UpdateCoverHandler extends AbstractHandler {
 		((CoverView) GuiUtils.getView(CoverView.ID)).getImageButton().setImage(img);
 
 
-	}
-
-	private boolean coverFileExist(String coverPath) {
-		File file = new File(coverPath);
-		boolean exist = file.exists();
-		if(exist){
-			System.out.println("Cover exists:");
-			System.out.println(coverPath);
-		}
-		return exist;
 	}
 
 	private InputStream checkAndValidate(String url,String region, String gameId, int cycle) {

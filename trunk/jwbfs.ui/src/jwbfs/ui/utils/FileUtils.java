@@ -25,4 +25,27 @@ public class FileUtils {
 		return null;
 	}
 
+	public static void checkAndCreateFolder(String folder) {
+	
+		File fol = new File(folder);
+		if(fol.exists() && fol.isDirectory()){
+			return;
+		}else{
+			fol.mkdir();
+			System.out.println("Folder created: \n"+folder);
+			return;
+		}
+		
+	}
+
+	public static boolean coverFileExist(String coverPath) {
+		File file = new File(coverPath);
+		boolean exist = file.exists();
+		if(exist){
+			System.out.println("Cover exists:");
+			System.out.println(coverPath);
+		}
+		return exist;
+	}
+
 }

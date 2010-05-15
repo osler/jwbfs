@@ -8,11 +8,11 @@ import java.util.LinkedHashMap;
 import jwbfs.model.IContainsModel;
 import jwbfs.model.Model;
 
-public abstract class AbstractTab implements PropertyChangeListener,IContainsModel {
+public abstract class ModelObject implements PropertyChangeListener,IContainsModel {
 	
 	public static final int INDEX = -1;
 	
-	protected abstract AbstractTab getTabBean();
+	protected abstract ModelObject getBean();
 	
 	protected PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
 			this);
@@ -40,7 +40,7 @@ public abstract class AbstractTab implements PropertyChangeListener,IContainsMod
 	}
 
 	@Override
-	public LinkedHashMap<Integer, AbstractTab> getModel() {
+	public LinkedHashMap<Integer, ModelObject> getModel() {
 		return Model.getTabs();
 		
 	}

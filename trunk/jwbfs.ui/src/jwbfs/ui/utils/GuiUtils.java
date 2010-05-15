@@ -1,5 +1,9 @@
 package jwbfs.ui.utils;
 
+import jwbfs.model.Model;
+import jwbfs.ui.views.ManagerView;
+
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -29,6 +33,11 @@ public class GuiUtils {
 		msg.setMessage(message);
 		msg.open();
 		
+	}
+
+	public static TableViewer getManagerTableViewer() {
+		// TODO Auto-generated method stub
+		return 	((ManagerView)GuiUtils.getView(ManagerView.ID)).getTv();
 	}
 
 }

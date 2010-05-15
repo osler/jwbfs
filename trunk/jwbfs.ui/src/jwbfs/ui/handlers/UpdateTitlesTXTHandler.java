@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import jwbfs.model.Constants;
+import jwbfs.model.CoverConstants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.ProcessBean;
 import jwbfs.model.beans.SettingsBean;
@@ -39,7 +40,7 @@ public class UpdateTitlesTXTHandler extends AbstractHandler {
 	private void downloadTXT() {
 		
 
-			String address = Constants.TITLES_URL;
+			String address = CoverConstants.TITLES_URL;
 			String region = settingsBean.getRegion();
 
 			String txtFile = Utils.getTitlesTXTpath();
