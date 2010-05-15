@@ -3,33 +3,58 @@ package jwbfs.model.beans;
 import java.util.LinkedHashMap;
 
 import jwbfs.model.Constants;
+import jwbfs.model.CoverConstants;
 
-public class SettingsBean extends AbstractTab {
+public class SettingsBean extends ModelObject {
 	
 	public static final int INDEX = 2;
 	
 	//WBFS_FILE SETTINGS
-	private String splitSize = Constants.SPLITSIZE_Text[0];
-	private String copyPartitions = Constants.COPY_PARTITIONS_Text[0];
-	private boolean enableTXT = true;
-	private String txtLayout = Constants.TXT_LAYOUT_Text[0];
+	private String splitSize;
+	private String copyPartitions;
+	private boolean enableTXT;
+	private String txtLayout;
 	
 	//WIITDB SETTINGS
-	private String region = Constants.REGIONS[0];
-	private String coverPath = System.getProperty("java.io.tmpdir");
-	private boolean automaticCoverDownload = true;
-	private boolean updateCover = false;
-	private boolean cover3D = false;
-	private boolean coverDiscs = false;
+	private String region;
+	private String coverPath;
+	private boolean automaticCoverDownload;
+	private boolean updateCover;
+	private boolean cover3D;
+	private boolean coverDiscs;
 	
-	protected AbstractTab getTabBean() {
-		return (AbstractTab) ((LinkedHashMap<Integer, AbstractTab>)getModel()).get(SettingsBean.INDEX);
-	}
+	//MANAGER SETTINGS
+	private String diskPath;
+	private boolean managerMode = false;
 	
 	public SettingsBean(){
 		this.addPropertyChangeListener(this);
+		
+		splitSize = Constants.SPLITSIZE_Text[0];
+		copyPartitions = Constants.COPY_PARTITIONS_Text[0];
+		enableTXT = true;
+		txtLayout = Constants.TXT_LAYOUT_Text[0];
+		
+		//WIITDB SETTINGS
+		region = System.getProperty("cover.region");
+		coverPath = System.getProperty("java.io.tmpdir");
+		automaticCoverDownload = true;
+		updateCover = false;
+		cover3D = false;
+		coverDiscs = false;
+		
+		//MANAGER
+		setDiskPath(System.getProperty("wbfs.disk.path"));
+		
+		
 	}
 	
+	
+	
+	protected ModelObject getBean() {
+		return (ModelObject) ((LinkedHashMap<Integer, ModelObject>)getModel()).get(SettingsBean.INDEX);
+	}
+
 	public String getSplitSize() {
 		return splitSize;
 	}
@@ -111,4 +136,26 @@ public class SettingsBean extends AbstractTab {
 	public boolean isCoverDiscs() {
 		return coverDiscs;
 	}
+
+
+
+	public void setDiskPath(String diskPath) {
+		propertyChangeSupport.firePropertyChange("diskPath", this.diskPath,
+		this.diskPath = diskPath);
+	}
+
+
+
+	public String getDiskPath() {
+		return diskPath;
+	}
+	
+	public void setManagerMode(boolean managerMode) {
+		this.managerMode = managerMode;
+	}
+
+	public boolean isManagerMode() {
+		return managerMode;
+	}
+
 }

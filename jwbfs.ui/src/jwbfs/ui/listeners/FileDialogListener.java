@@ -32,6 +32,7 @@ public class FileDialogListener extends SelectionAdapter {
 		
 		try {
 			Utils.getHandlerService(viewID).executeCommand(FileDialogHandler.ID, null);
+			CheckDiscHandler.index = -1;
 			Utils.getHandlerService(viewID).executeCommand(CheckDiscHandler.ID, null);
 			Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);
 

@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 
 
-public class ProcessBean extends AbstractTab  {
+public class ProcessBean extends ModelObject  {
 
 	public static final int INDEX = 0;
 	private boolean isoToWbfs = true;
@@ -14,11 +14,20 @@ public class ProcessBean extends AbstractTab  {
 	private String id;
 	private String title;
 	private String scrubGb;
+	private String region;
 	
 	public ProcessBean(){
 		this.addPropertyChangeListener(this);
+		folderPath = System.getProperty("wbfs.convert.folder");
 	}
 	
+	public String getRegion() {
+		return region;
+	}
+	public void setRegion(String region) {
+		propertyChangeSupport.firePropertyChange("region", this.region,
+		region = region);
+	}
 	
 	public String getId() {
 		return id;
@@ -66,8 +75,8 @@ public class ProcessBean extends AbstractTab  {
 				this.folderPath = folderPath);
 	}
 
-	protected AbstractTab getTabBean() {
-		return (AbstractTab) ((LinkedHashMap<Integer, AbstractTab>)getModel()).get(ProcessBean.INDEX);
+	protected ModelObject getBean() {
+		return (ModelObject) ((LinkedHashMap<Integer, ModelObject>)getModel()).get(ProcessBean.INDEX);
 	}
 
 	public boolean isIsoToWbfs() {
@@ -97,8 +106,6 @@ public class ProcessBean extends AbstractTab  {
 		propertyChangeSupport.firePropertyChange("wbfsToIso", this.wbfsToIso,
 		this.wbfsToIso = wbfsToIso);
 	}
-
-
 	
 
 }

@@ -1,7 +1,17 @@
 package jwbfs.ui;
 
+import jwbfs.model.Model;
+import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.controls.Exec;
+import jwbfs.ui.handlers.CheckDiscHandler;
+import jwbfs.ui.utils.GuiUtils;
+import jwbfs.ui.utils.Utils;
+import jwbfs.ui.views.ManagerView;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -30,4 +40,30 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowStatusLine(false);
         configurer.setTitle("jwbfs - a wbfs_file wrapper");
     }
+
+	@Override
+	public void postWindowClose() {
+		Exec.saveConfigFile();
+	}
+
+	@Override
+	public void postWindowOpen() {
+
+			try {
+				((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).setManagerMode(true);
+				Utils.getHandlerService(ManagerView.ID).executeCommand(CheckDiscHandler.ID, null);
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} catch (NotDefinedException e) {
+				e.printStackTrace();
+			} catch (NotEnabledException e) {
+				e.printStackTrace();
+			} catch (NotHandledException e) {
+				e.printStackTrace();
+			}
+		
+	
+		GuiUtils.getManagerTableViewer().setInput(Model.getGames());
+		
+	}
 }

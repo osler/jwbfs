@@ -10,19 +10,26 @@ import java.io.InputStreamReader;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.utils.FileUtils;
 import jwbfs.ui.utils.Utils;
+import jwbfs.ui.views.ManagerView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
 
 public class CheckDiscHandler extends AbstractHandler {
 
 
 	public static final String ID = "checkDisk";
+	public static  int index = -1;
+	
 
 	public CheckDiscHandler() {
 	}
@@ -32,16 +39,28 @@ public class CheckDiscHandler extends AbstractHandler {
 	 * from the application context.
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		ProcessBean bean = null;
+		
+		if(((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).isManagerMode()){
 
-		ProcessBean bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
+			for(int x =0; x<Model.getGames().length;x++){
+				bean = (ProcessBean) Model.getGames()[x];
+				checkWbfs(bean);
+			}
+			
+		}else{
+			bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
+			
 
-		if(bean.isWbfsToIso()){
-			checkWbfs(bean);
-		}else {
-			checkIso(bean);
+			if(bean.isWbfsToIso()){
+				checkWbfs(bean);
+			}else {
+				checkIso(bean);
+			}
+
 		}
 
-
+		((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).setManagerMode(false);
 		return null;
 
 	}
