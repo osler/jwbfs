@@ -10,7 +10,7 @@ import java.net.URL;
 import jwbfs.model.Constants;
 import jwbfs.model.CoverConstants;
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.utils.FileUtils;
 import jwbfs.ui.utils.GuiUtils;
@@ -23,37 +23,39 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.graphics.Image;
 
 public class UpdateCoverHandler extends AbstractHandler {
-	private ProcessBean processBean;
+	private GameBean processBean;
 	private SettingsBean settingsBean;
 	public static final String ID = "updateCover";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		
-		processBean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
-		    
-		if(((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).isManagerMode()){
 
-				processBean = (ProcessBean) GuiUtils.getManagerTableViewer().getSelection();
-			
-				executeForBean();
-	
-			
+		processBean = (GameBean) Model.getBeans().get(GameBean.INDEX);
+		settingsBean = (SettingsBean) Model.getBeans().get(settingsBean.INDEX);
+
+
+		if(settingsBean.isManagerMode()){
+
+			//TODO
+			processBean = (GameBean) Model.getSelectedGame();			
+			executeForBean();
+
+
 		}else{
-			settingsBean = (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+			settingsBean = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 
 			executeForBean();
 		}
-		
-		
+
+
 		return null;
 	}
 
 	private void executeForBean() {
-		
-	    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setMaximum(getProgress());
-	    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(0);
-	    
+
+		((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setMaximum(getProgress());
+		((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(0);
+
 		boolean updateCover = settingsBean.isUpdateCover();
 		String gameId = processBean.getId();
 		String coverPath = settingsBean.getCoverPath()
@@ -73,8 +75,8 @@ public class UpdateCoverHandler extends AbstractHandler {
 		}else{
 			if(settingsBean.isAutomaticCoverDownload() || updateCover){
 
-				
-				
+
+
 				if(updateCover){
 					System.out.println("Updating Cover");
 				}else{
@@ -93,62 +95,65 @@ public class UpdateCoverHandler extends AbstractHandler {
 					setCover(Constants.NOIMAGE);
 				}
 				//progressbar
-			    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(1);
-				
+				((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(1);
+
 			}
 		}
-		
+
 		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
-		if(settingsBean.isCover3D()){
-			String folder = settingsBean.getCoverPath()
-			+File.separatorChar
-			+"3d";
-			
-			FileUtils.checkAndCreateFolder(folder);
-			
-			coverPath = folder
-			+File.separatorChar
-			+gameId
-			+".png";
-			downloadCover(CoverConstants.COVER3D_URL,coverPath);
-			//progressbar
-		    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(getProgress()>2?2:getProgress());
-			
-		}
-		
+			if(settingsBean.isCover3D()){
+				String folder = settingsBean.getCoverPath()
+				+File.separatorChar
+				+"3d";
+
+				FileUtils.checkAndCreateFolder(folder);
+
+				coverPath = folder
+				+File.separatorChar
+				+gameId
+				+".png";
+				if(!FileUtils.coverFileExist(coverPath) && !updateCover){
+					downloadCover(CoverConstants.COVER3D_URL,coverPath);	
+				}
+				//progressbar
+				((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(getProgress()>2?2:getProgress());
+
+			}
+
 		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
 			if(settingsBean.isCoverDiscs()){
 				String folder = settingsBean.getCoverPath()
 				+File.separatorChar
 				+"discs";
-				
+
 				FileUtils.checkAndCreateFolder(folder);
-				
+
 				coverPath = folder
 				+File.separatorChar
 				+gameId
 				+".png";
-				
-				downloadCover(CoverConstants.DISC_URL,coverPath);
+				if(!FileUtils.coverFileExist(coverPath) && !updateCover){
+					downloadCover(CoverConstants.DISC_URL,coverPath);
+				}
 				//progressbar
-			    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(getProgress()>2?3:getProgress());
-				
+				((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(getProgress()>2?3:getProgress());
+
 			}
-		
+
 		settingsBean.setUpdateCover(false);
 	}
 
 	private int getProgress() {
 
 		int tot = 1;
-		
+
 		if(settingsBean.isCover3D()){
 			tot++;
 		}
 		if(settingsBean.isCoverDiscs()){
 			tot++;
 		}
-	
+
 		return tot;
 	}
 

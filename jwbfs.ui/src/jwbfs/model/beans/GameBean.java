@@ -4,9 +4,9 @@ import java.util.LinkedHashMap;
 
 
 
-public class ProcessBean extends ModelObject  {
+public class GameBean extends ModelObject  {
 
-	public static final int INDEX = 0;
+	public static final String INDEX = "gameBean";
 	private boolean isoToWbfs = true;
 	private boolean wbfsToIso = false;
 	private String filePath;
@@ -16,7 +16,7 @@ public class ProcessBean extends ModelObject  {
 	private String scrubGb;
 	private String region;
 	
-	public ProcessBean(){
+	public GameBean(){
 		this.addPropertyChangeListener(this);
 		folderPath = System.getProperty("wbfs.convert.folder");
 	}
@@ -66,25 +66,18 @@ public class ProcessBean extends ModelObject  {
 				this.filePath = filePath);
 	}
 
-	public String getFolderPath() {
-		return folderPath;
-	}
-
-	public void setFolderPath(String folderPath) {
-		propertyChangeSupport.firePropertyChange("folderPath", this.folderPath,
-				this.folderPath = folderPath);
-	}
+	
 
 	protected ModelObject getBean() {
-		return (ModelObject) ((LinkedHashMap<Integer, ModelObject>)getModel()).get(ProcessBean.INDEX);
+		return (ModelObject) ((LinkedHashMap<String, Object>)getModel()).get(GameBean.INDEX);
 	}
 
 	public boolean isIsoToWbfs() {
-		return isoToWbfs;
+		return isoToWbfs || filePath.endsWith(".iso") || filePath.endsWith(".ISO");
 	}
 
 	public boolean isWbfsToIso() {
-		return wbfsToIso;
+		return wbfsToIso || filePath.endsWith(".wbfs") || filePath.endsWith(".WBFS");
 	}
 	
 	public void setIsoToWbfs(boolean isoToWbfs) {

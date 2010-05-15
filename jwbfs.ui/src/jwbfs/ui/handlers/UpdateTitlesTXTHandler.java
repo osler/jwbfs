@@ -10,7 +10,7 @@ import java.net.URL;
 import jwbfs.model.Constants;
 import jwbfs.model.CoverConstants;
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
@@ -22,15 +22,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
 public class UpdateTitlesTXTHandler extends AbstractHandler {
-	private ProcessBean processBean;
+	private GameBean processBean;
 	private SettingsBean settingsBean;
 	public static final String ID = "updateTitles";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		processBean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
-		settingsBean = (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+		processBean = (GameBean) Model.getBeans().get(GameBean.INDEX);
+		settingsBean = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 		
 		downloadTXT();
 

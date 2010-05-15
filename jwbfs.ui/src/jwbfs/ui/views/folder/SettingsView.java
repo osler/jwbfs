@@ -78,7 +78,7 @@ public class SettingsView extends ViewPart{
 	}
 
 	private SettingsBean getTabBean() {
-		return (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+		return (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 	}
 
 	@Override

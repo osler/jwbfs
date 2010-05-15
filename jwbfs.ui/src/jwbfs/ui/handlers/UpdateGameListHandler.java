@@ -1,7 +1,7 @@
 package jwbfs.ui.handlers;
 
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
@@ -15,15 +15,15 @@ import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.common.NotDefinedException;
 
 public class UpdateGameListHandler extends AbstractHandler {
-	private ProcessBean processBean;
+	private GameBean processBean;
 	private SettingsBean settingsBean;
 	public static final String ID = "updateGameList";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
-		processBean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
-		settingsBean = (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+		processBean = (GameBean) Model.getBeans().get(GameBean.INDEX);
+		settingsBean = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 
 //	    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setMaximum(getProgress());
 		//((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(0);
@@ -32,7 +32,7 @@ public class UpdateGameListHandler extends AbstractHandler {
 
 			Model.setGames(Model.listGames(settingsBean.getDiskPath()));
 
-			((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).setManagerMode(true);
+			((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).setManagerMode(true);
 
 			Utils.getHandlerService(ManagerView.ID).executeCommand(CheckDiscHandler.ID, null);
 
