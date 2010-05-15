@@ -1,7 +1,7 @@
 package jwbfs.ui.handlers;
 
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.ui.utils.Utils;
 import jwbfs.ui.views.folder.ProcessView;
 
@@ -38,16 +38,16 @@ public class FileDialogHandler extends AbstractHandler {
 		
 		
 
-		ProcessBean bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
+		GameBean bean = (GameBean) Model.getBeans().get(GameBean.INDEX);
 		if(bean != null){
 
 		FileDialog d = new FileDialog(new Shell()) ;
 
-		if(bean.isIsoToWbfs()){
-			d.setFilterExtensions(new String[]{"*.iso","*.ISO"});	
-		}else {
-			d.setFilterExtensions(new String[]{"*.wbfs","*.WBFS"});	
-		}
+//		if(bean.isIsoToWbfs() && !bean.isWbfsToIso()){
+			d.setFilterExtensions(new String[]{"*.iso;*.ISO;*.wbfs;*.WBFS"});	
+//		}else {
+//			d.setFilterExtensions(new String[]{"*.wbfs","*.WBFS"});	
+//		}
 		
 			String oldValue = bean.getFilePath();
 			String line = d.open();

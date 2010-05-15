@@ -1,7 +1,9 @@
 package jwbfs.ui.views.table;
 
+import java.util.List;
+
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -14,10 +16,10 @@ public class ManagerViewContentProvider implements IStructuredContentProvider {
 		if (inputElement == null)
 			return new Object[0];
 
-		if (Model.getGames().length == 0)
+		if (Model.getGames().size() == 0)
 			return new Object[0];
 
-		return Model.getGames();
+		return Model.getGames().toArray();
 	}
 
 	public void dispose() {
@@ -28,6 +30,6 @@ public class ManagerViewContentProvider implements IStructuredContentProvider {
 		if (newInput == null) return;
 		if (!(newInput instanceof Model)) return;
 		
-		Model.setGames((ProcessBean[]) newInput);
+		Model.setGames( (List<GameBean>) newInput);
 	}
 }

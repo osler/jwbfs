@@ -8,6 +8,7 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -274,17 +275,31 @@ public class WidgetCreator {
 	
 
 	public static Table createTable(Composite parent, int style, String[] col,
-			int dimensioneColonne) {
+			int[] dimensioneColonne) {
 
+		Rectangle area = parent.getClientArea();
+		
 		Table table = new Table(parent, style);
-		table.setLinesVisible(true);
+		int tableSize = 500;
+		
+		GridData data2 = new GridData(tableSize,tableSize);
+		
+//		data2.grabExcessHorizontalSpace = true;
+//		data2.grabExcessVerticalSpace = true;
+		table.setLayoutData(data2);
+		
+//		table.setSize(table.computeSize(parent.getSize().x, parent.getSize().y));
+//		table.setSize(table.computeSize(SWT.DEFAULT, 300));
+		
+		
+		table.setLinesVisible(false);
 		table.setHeaderVisible(true);
 		for (int i = 0; i < col.length; i++) {
 			TableColumn colon = new TableColumn(table, SWT.CENTER);
 			colon.setText(col[i]);
-			colon.setWidth(dimensioneColonne);
+			colon.setWidth(tableSize/100*dimensioneColonne[i]);
 		}
-		table.setSize(table.computeSize(SWT.DEFAULT, 300));
+
 		return table;
 	}
 	

@@ -58,7 +58,7 @@
       <view
             class="jwbfs.ui.views.folder.ProcessView"
             id="ProcessView"
-            name="ProcessView"
+            name="Convert"
             restorable="true">
       </view>
       <view
@@ -108,7 +108,11 @@
             id="updateCover"
             name="updateCover">
       </command>
-            <command
+      <command
+            id="updateGameList"
+            name="updateGameList">
+      </command>
+      <command
             id="updateTitles"
             name="updateTitles">
       </command>
@@ -143,7 +147,11 @@
             class="jwbfs.ui.handlers.UpdateCoverHandler"
             commandId="updateCover">
       </handler>
-            <handler
+      <handler
+            class="jwbfs.ui.handlers.UpdateGameListHandler"
+            commandId="updateGameList">
+      </handler>
+      <handler
             class="jwbfs.ui.handlers.UpdateTitlesTXTHandler"
             commandId="updateTitles">
       </handler>

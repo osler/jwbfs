@@ -94,7 +94,7 @@ public class Exec {
 
 	public static void saveConfigFile() {
 
-		SettingsBean settings = (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+		SettingsBean settings = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 		
 //		Method[] methods = settings.getClass().getMethods();
 		

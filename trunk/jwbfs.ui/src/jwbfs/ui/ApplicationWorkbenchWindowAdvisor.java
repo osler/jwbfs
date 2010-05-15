@@ -50,7 +50,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	public void postWindowOpen() {
 
 			try {
-				((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).setManagerMode(true);
+				((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).setManagerMode(true);
 				Utils.getHandlerService(ManagerView.ID).executeCommand(CheckDiscHandler.ID, null);
 			} catch (ExecutionException e) {
 				e.printStackTrace();

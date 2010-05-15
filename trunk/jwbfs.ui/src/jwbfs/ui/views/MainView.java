@@ -23,8 +23,8 @@ public class MainView extends ViewPart {
 		
 		TabFolder tabFolder = WidgetCreator.createTabFolder(parent);
 		
-//		tabs.put(ConvertTabView.INDEX, new ConvertTabView(tabFolder));
-//		tabs.put(SettingsView.INDEX, new SettingsView(tabFolder));
+//		beans.put(ConvertTabView.INDEX, new ConvertTabView(tabFolder));
+//		beans.put(SettingsView.INDEX, new SettingsView(tabFolder));
 			
 	}
 

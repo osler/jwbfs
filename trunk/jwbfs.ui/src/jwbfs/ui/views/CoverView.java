@@ -3,7 +3,7 @@ package jwbfs.ui.views;
 
 import jwbfs.model.Constants;
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.listeners.FolderCoverDialogListener;
 import jwbfs.ui.listeners.UpdateCoverListener;
@@ -21,24 +21,24 @@ import org.eclipse.ui.part.ViewPart;
 public class CoverView extends ViewPart {
 
 	public static final String ID = "CoverView";
-	protected ProcessBean processBean = null;
+	protected GameBean processBean = null;
 	protected SettingsBean settingsBean = null;
 	protected Button imageButton ;
 	protected ProgressBar progressBar;
 	
 	
 	public CoverView() {
-		processBean = (ProcessBean) getProcessBean() ;
+		processBean = (GameBean) getProcessBean() ;
 		settingsBean = (SettingsBean) getSettingsBean() ;
 
 	}
 
 	private SettingsBean getSettingsBean() {
-		return (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+		return (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 	}
 
-	private ProcessBean getProcessBean() {
-		return (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
+	private GameBean getProcessBean() {
+		return (GameBean) Model.getBeans().get(GameBean.INDEX);
 	}
 
 	@Override

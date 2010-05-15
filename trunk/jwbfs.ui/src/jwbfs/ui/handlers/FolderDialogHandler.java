@@ -1,7 +1,8 @@
 package jwbfs.ui.handlers;
 
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
+import jwbfs.model.beans.SettingsBean;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -23,7 +24,7 @@ public class FolderDialogHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		ProcessBean bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
+		SettingsBean bean = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 		if(bean != null){
 
 		DirectoryDialog d = new DirectoryDialog(new Shell());

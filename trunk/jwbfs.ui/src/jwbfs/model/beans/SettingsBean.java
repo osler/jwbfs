@@ -7,7 +7,7 @@ import jwbfs.model.CoverConstants;
 
 public class SettingsBean extends ModelObject {
 	
-	public static final int INDEX = 2;
+	public static final String INDEX = "settingsBean";
 	
 	//WBFS_FILE SETTINGS
 	private String splitSize;
@@ -26,6 +26,7 @@ public class SettingsBean extends ModelObject {
 	//MANAGER SETTINGS
 	private String diskPath;
 	private boolean managerMode = false;
+	private String folderPath;
 	
 	public SettingsBean(){
 		this.addPropertyChangeListener(this);
@@ -45,14 +46,29 @@ public class SettingsBean extends ModelObject {
 		
 		//MANAGER
 		setDiskPath(System.getProperty("wbfs.disk.path"));
-		
-		
+
+	}
+	
+	public String getFolderPath() {
+		if(isManagerMode()){
+			return diskPath;
+		}
+		return folderPath;
+	}
+
+	public void setFolderPath(String folderPath) {
+		if(isManagerMode()){
+			propertyChangeSupport.firePropertyChange("diskPath", this.diskPath,
+					this.diskPath = folderPath);
+		}else{
+			propertyChangeSupport.firePropertyChange("folderPath", this.folderPath,
+					this.folderPath = folderPath);
+		}
 	}
 	
 	
-	
 	protected ModelObject getBean() {
-		return (ModelObject) ((LinkedHashMap<Integer, ModelObject>)getModel()).get(SettingsBean.INDEX);
+		return (ModelObject) ((LinkedHashMap<String, Object>)getModel()).get(SettingsBean.INDEX);
 	}
 
 	public String getSplitSize() {

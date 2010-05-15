@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.WBFSException;
@@ -39,17 +39,17 @@ public class CheckDiscHandler extends AbstractHandler {
 	 * from the application context.
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ProcessBean bean = null;
+		GameBean bean = null;
 		
-		if(((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).isManagerMode()){
+		if(((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).isManagerMode()){
 
-			for(int x =0; x<Model.getGames().length;x++){
-				bean = (ProcessBean) Model.getGames()[x];
+			for(int x =0; x<Model.getGames().size();x++){
+				bean = (GameBean) Model.getGames().toArray()[x];
 				checkWbfs(bean);
 			}
 			
 		}else{
-			bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
+			bean = (GameBean) Model.getBeans().get(GameBean.INDEX);
 			
 
 			if(bean.isWbfsToIso()){
@@ -60,12 +60,12 @@ public class CheckDiscHandler extends AbstractHandler {
 
 		}
 
-		((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).setManagerMode(false);
+		((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).setManagerMode(false);
 		return null;
 
 	}
 
-	private void checkWbfs(ProcessBean bean) {
+	private void checkWbfs(GameBean bean) {
 
 //		String infoCmd = "id_title";
 		
@@ -110,7 +110,7 @@ public class CheckDiscHandler extends AbstractHandler {
 		
 	}
 
-	private void checkIso(ProcessBean bean) {
+	private void checkIso(GameBean bean) {
 
 		try {
 

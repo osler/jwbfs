@@ -10,7 +10,7 @@ import jwbfs.model.Model;
 
 public abstract class ModelObject implements PropertyChangeListener,IContainsModel {
 	
-	public static final int INDEX = -1;
+	public static final String  INDEX = "modelObject";
 	
 	protected abstract ModelObject getBean();
 	
@@ -40,8 +40,8 @@ public abstract class ModelObject implements PropertyChangeListener,IContainsMod
 	}
 
 	@Override
-	public LinkedHashMap<Integer, ModelObject> getModel() {
-		return Model.getTabs();
+	public LinkedHashMap<String, Object> getModel() {
+		return Model.getBeans();
 		
 	}
 

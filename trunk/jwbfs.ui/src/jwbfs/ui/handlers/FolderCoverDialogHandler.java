@@ -1,7 +1,7 @@
 package jwbfs.ui.handlers;
 
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -24,7 +24,7 @@ public class FolderCoverDialogHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		SettingsBean bean = (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+		SettingsBean bean = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 		if(bean != null){
 
 		DirectoryDialog d = new DirectoryDialog(new Shell());

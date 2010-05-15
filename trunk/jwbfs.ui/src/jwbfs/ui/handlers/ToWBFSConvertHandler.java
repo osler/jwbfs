@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 import jwbfs.model.Model;
 import jwbfs.model.Constants;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
@@ -37,10 +37,10 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
 
-		ProcessBean bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
+		GameBean bean = (GameBean) Model.getBeans().get(GameBean.INDEX);
 
 		String filePath = bean.getFilePath();
-		String folderPath = bean.getFolderPath();
+		String folderPath =  Model.getSettingsBean().getFolderPath();
 		
 		if(filePath.toLowerCase().endsWith(".wbfs")){
 			try {
@@ -126,7 +126,7 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 	
 		String[] par = new String[8];
 	
-		SettingsBean tab = (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+		SettingsBean tab = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 		
 		par[0] = bin; 
 		

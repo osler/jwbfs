@@ -1,6 +1,6 @@
 package jwbfs.ui.listeners;
 
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
 import jwbfs.ui.handlers.ToISOConvertHandler;
@@ -13,10 +13,10 @@ import org.eclipse.swt.events.SelectionEvent;
 public class ConvertButtonListener extends SelectionAdapter {
 
 	private String viewID;
-	protected ProcessBean bean = null;
+	protected GameBean bean = null;
 	
 
-	public ConvertButtonListener(String viewID, ProcessBean bean){
+	public ConvertButtonListener(String viewID, GameBean bean){
 		this.viewID = viewID;
 		this.bean = bean;
 	}

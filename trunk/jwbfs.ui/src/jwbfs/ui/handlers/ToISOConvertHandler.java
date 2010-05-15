@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
 import jwbfs.ui.exceptions.WBFSException;
@@ -35,10 +35,10 @@ public class ToISOConvertHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
 
-		ProcessBean bean = (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
+		GameBean bean =  Model.getGameBean();
 
 		String filePath = bean.getFilePath();
-		String folderPath = bean.getFolderPath();
+		String folderPath = Model.getSettingsBean().getFolderPath();
 		
 		if(filePath.toLowerCase().endsWith(".iso")){
 			try {

@@ -1,15 +1,27 @@
 package jwbfs.ui.views;
 
+import java.util.Iterator;
+import java.util.List;
+
 import jwbfs.model.Model;
 import jwbfs.model.beans.ModelObject;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.ui.handlers.UpdateCoverHandler;
 import jwbfs.ui.listeners.FolderDialogListener;
 import jwbfs.ui.listeners.UpdateGameListListener;
+import jwbfs.ui.utils.GuiUtils;
+import jwbfs.ui.utils.Utils;
 import jwbfs.ui.views.table.ManagerViewContentProvider;
 import jwbfs.ui.views.table.ManagerViewLabelProvider;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -59,10 +71,9 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		
 		String[] columnsNames = {
 				"ID", "Name", "Region","Size" };
+		int[] columnsSize = {15, 60, 10, 15};
 
-		table = WidgetCreator.createTable(tableComp, SWT.Selection | SWT.FULL_SELECTION, columnsNames, 200);
-		GridData data2 = new GridData(SWT.DEFAULT, table.getSize().y);
-		table.setLayoutData(data2);
+		table = WidgetCreator.createTable(tableComp, SWT.Selection | SWT.FULL_SELECTION, columnsNames, columnsSize);
 
 		tv = new TableViewer(table);
 		tv.setContentProvider(new ManagerViewContentProvider());
@@ -89,21 +100,41 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		// TODO Auto-generated method stub
-		if(!((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).isManagerMode()){
-			((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).setManagerMode(true);
+		if(!((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).isManagerMode()){
+			((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).setManagerMode(true);
 		}
-//		ProcessBean sel = ((ProcessBean[])tv.getInput())[tv.getTable().getSelectionIndex()];
-//		
-//		Model.getTabs().put(ProcessBean.INDEX,sel);
+		
+		
+		List<GameBean> games = Model.getGames();
+		ISelection selection = tv.getSelection();
+		IStructuredSelection sel = (IStructuredSelection) selection;
+
+		for (Iterator<GameBean> iterator = sel.iterator(); iterator.hasNext();) {
+			GameBean selectedGame = iterator.next();
+			Model.setSelectedGame(selectedGame);
+		}
+		try {
+			Utils.getHandlerService(ID).executeCommand(UpdateCoverHandler.ID, null);
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (NotDefinedException e) {
+			e.printStackTrace();
+		} catch (NotEnabledException e) {
+			e.printStackTrace();
+		} catch (NotHandledException e) {
+			e.printStackTrace();
+		}
+		
+//		GuiUtils.getManagerTableViewer().refresh();
 		
 	}
 
 	private SettingsBean getSettingsBean() {
-		return (SettingsBean) Model.getTabs().get(SettingsBean.INDEX);
+		return (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 	}
 
-	private ProcessBean getProcessBean() {
-		return (ProcessBean) Model.getTabs().get(ProcessBean.INDEX);
+	private GameBean getProcessBean() {
+		return (GameBean) Model.getBeans().get(GameBean.INDEX);
 	}
 
 	public TableViewer getTv() {

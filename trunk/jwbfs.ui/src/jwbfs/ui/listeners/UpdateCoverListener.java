@@ -1,7 +1,7 @@
 package jwbfs.ui.listeners;
 
 import jwbfs.model.Model;
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
@@ -16,10 +16,10 @@ import org.eclipse.swt.events.SelectionEvent;
 public class UpdateCoverListener extends SelectionAdapter {
 
 	private String viewID;
-	protected ProcessBean bean = null;
+	protected GameBean bean = null;
 	
 
-	public UpdateCoverListener(String viewID, ProcessBean bean){
+	public UpdateCoverListener(String viewID, GameBean bean){
 		this.viewID = viewID;
 		this.bean = bean;
 	}
@@ -29,7 +29,7 @@ public class UpdateCoverListener extends SelectionAdapter {
 
 		
 		try {
-			if(!((SettingsBean) Model.getTabs().get(SettingsBean.INDEX)).isManagerMode()){
+			if(!((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).isManagerMode()){
 
 		if(bean.getFilePath() == null || bean.getFilePath().equals("")){
 			 
@@ -43,7 +43,7 @@ public class UpdateCoverListener extends SelectionAdapter {
 		}
 			}
 
-		((SettingsBean)Model.getTabs().get(SettingsBean.INDEX)).setUpdateCover(true);
+		((SettingsBean)Model.getBeans().get(SettingsBean.INDEX)).setUpdateCover(true);
 		Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);
 		
 

@@ -1,6 +1,6 @@
 package jwbfs.ui.views.table;
 
-import jwbfs.model.beans.ProcessBean;
+import jwbfs.model.beans.GameBean;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -17,7 +17,7 @@ public class ManagerViewLabelProvider implements ITableLabelProvider {
 	}
 	
 	public String getColumnText(Object element, int columnIndex) {
-		ProcessBean r = (ProcessBean) element;
+		GameBean r = (GameBean) element;
 
 		switch (columnIndex) {
 		case 0:
