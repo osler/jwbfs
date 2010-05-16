@@ -70,8 +70,10 @@ public class Model {
 			File f2 = folderList[x];
 			if(f2.isDirectory()){
 				File[] files = f2.listFiles();
-				for(int j = 0; j < files.length; j++){
-					game = checkFile(files,j,game);
+				if(files != null){
+					for(int j = 0; j < files.length; j++){
+						game = checkFile(files,j,game);
+					}
 				}
 			}else{
 				game = checkFile(folderList,x,game);
