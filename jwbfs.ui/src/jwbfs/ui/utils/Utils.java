@@ -88,7 +88,7 @@ public class Utils {
 		
 			System.out.println(Platform.getInstanceLocation (). getURL (). getPath ()); 
 			
-			path = getRoot("jwbfs.ui");
+			path = getRoot();
 			
 			String os = System.getProperty("os.name").toLowerCase();
 			
@@ -120,18 +120,18 @@ public class Utils {
 		
 			System.out.println(Platform.getInstanceLocation (). getURL (). getPath ()); 
 			
-			path = getRoot("jwbfs.ui");
+			path = getRoot();
 			
 			String os = System.getProperty("os.name").toLowerCase();
 			
 			if(os.contains("linux")){
-				path = path + "wbfs_file/linux/titles.txt";
+				path = path + "wbfs_file"+File.separatorChar+"linux"+File.separatorChar+"titles.txt";
 			}
 			if(os.contains("windows")){
 				path = path + "wbfs_file"+File.separatorChar+"win"+File.separatorChar+"titles.txt";
 			}
 			if(os.contains("osx")){
-				path = path + "wbfs_file/mac_osx/titles.txt";
+				path = path + "wbfs_file"+File.separatorChar+"mac_osx"+File.separatorChar+"titles.txt";
 			}
 			
 			System.out.println(path);
@@ -140,18 +140,19 @@ public class Utils {
 	}
 	
 	public static File getWbfsINI(){
-		
-		return new File(getRoot("jwbfs.ui")+File.separatorChar+"wbfs.ini");
+		String ini = getFile("wbfs.ini");
+		System.out.println(ini);
+		return new File(ini);
 	}
 	
-	public static String getRoot (String pluginID) {
+	public static String getRoot () {
 			String path = null;
 			try {
 			path = FileLocator.toFileURL (
-			Platform.getBundle (pluginID). getEntry ("wbfs_file")). getPath ();
+			Platform.getBundle ("jwbfs.ui"). getEntry ("wbfs.ini")). getPath ();
 //			path = path.substring (path.indexOf ("/") + 1, path.length ());
 			
-			path = path.replaceAll("wbfs_file", "");
+			path = path.replaceAll("wbfs.ini", "");
 			
 			} catch (Exception e) {
 				e.printStackTrace ();
@@ -159,6 +160,23 @@ public class Utils {
 			}
 			
 			return path;
+}
+	
+	public static String getFile (String file) {
+		String path = null;
+		try {
+		path = FileLocator.toFileURL (
+		Platform.getBundle ("jwbfs.ui"). getEntry (file)). getPath ();
+//		path = path.substring (path.indexOf ("/") + 1, path.length ());
+		
+//		path = path.replaceAll("wbfs.ini", "");
+		
+		} catch (Exception e) {
+			e.printStackTrace ();
+				
+		}
+		
+		return path;
 }
 
 	public static IHandlerService getHandlerService(String viewID) {

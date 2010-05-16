@@ -67,6 +67,8 @@ public class CoverView extends ViewPart {
 		Composite filler = WidgetCreator.createComposite(parent);
 		
 		addHandlerUpdate(cover);
+		addHandlerUpdate(cover3d);
+		addHandlerUpdate(disk);
 		progressBar = WidgetCreator.createProgressBar(parent);
 		
 		
