@@ -6,14 +6,20 @@ import jwbfs.model.beans.SettingsBean;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -22,6 +28,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 
@@ -56,9 +63,9 @@ public class WidgetCreator {
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		gridData.verticalAlignment = GridData.FILL;
 		
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout());
@@ -267,37 +274,30 @@ public class WidgetCreator {
 		gridBtn.verticalAlignment = GridData.CENTER;
 		gridBtn.horizontalSpan = 1;
 	
-		Button button = new Button(group, SWT.ICON);
+		Button button = new Button(group, SWT.PUSH);
 		button.setLayoutData(gridBtn);
 		
 		return button;
 	}
 	
 
-	public static Table createTable(Composite parent, int style, String[] col,
+	public static Table createTable(final Composite parent, int style, String[] col,
 			int[] dimensioneColonne) {
+		
+		TableColumnLayout layout = new TableColumnLayout();
 
-		Rectangle area = parent.getClientArea();
+		final Table table = new Table(parent, style | SWT.CENTER | SWT.BORDER | SWT.FULL_SELECTION);
+		parent.setLayout(layout);
 		
-		Table table = new Table(parent, style);
-		int tableSize = 500;
-		
-		GridData data2 = new GridData(tableSize,tableSize);
-		
-//		data2.grabExcessHorizontalSpace = true;
-//		data2.grabExcessVerticalSpace = true;
-		table.setLayoutData(data2);
-		
-//		table.setSize(table.computeSize(parent.getSize().x, parent.getSize().y));
-//		table.setSize(table.computeSize(SWT.DEFAULT, 300));
-		
-		
-		table.setLinesVisible(false);
+		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		for (int i = 0; i < col.length; i++) {
 			TableColumn colon = new TableColumn(table, SWT.CENTER);
+			layout.setColumnData( colon, new ColumnWeightData( dimensioneColonne[i] ) );
 			colon.setText(col[i]);
-			colon.setWidth(tableSize/100*dimensioneColonne[i]);
+			colon.setResizable(true);
+			colon.setMoveable(true);
+				
 		}
 
 		return table;

@@ -12,6 +12,7 @@ import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
 import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
+import jwbfs.ui.views.ManagerView;
 import jwbfs.ui.views.folder.ProcessView;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -35,7 +36,7 @@ public class ToISOConvertHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
 
-		GameBean bean =  Model.getGameBean();
+		GameBean bean =  Model.getConvertGameBean();
 
 		String filePath = bean.getFilePath();
 		String folderPath = Model.getSettingsBean().getFolderPath();
@@ -51,7 +52,8 @@ public class ToISOConvertHandler extends AbstractHandler {
 		File file = new File(filePath);
 
 		 if(folderPath == null || folderPath.equals("none") || folderPath.equals("") ){
-			 folderPath = file.getAbsolutePath().replace(file.getName(), "");
+//			 folderPath = file.getAbsolutePath().replace(file.getName(), "");
+			 folderPath = Model.getSettingsBean().getDiskPath();
 		 }
 		
 		  try {
@@ -84,11 +86,6 @@ public class ToISOConvertHandler extends AbstractHandler {
 
 	
 		
-//		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-//		MessageDialog.openInformation(
-//				window.getShell(),
-//				"ui",
-//				"Hello, Eclipse world");
 		return null;
 	}
 
@@ -109,7 +106,7 @@ public class ToISOConvertHandler extends AbstractHandler {
 			      bar = Utils.getPercentual(line); 
 			      
 			      
-			      ((ProcessView) GuiUtils.getView(ProcessView.ID)).getProgressBar().setSelection(bar); 
+			      ((ManagerView) GuiUtils.getView(ManagerView.ID)).getProgressBar().setSelection(bar);
 		      }
 		      input.close();
 			return true;

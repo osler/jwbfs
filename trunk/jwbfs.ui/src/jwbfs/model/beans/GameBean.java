@@ -99,6 +99,16 @@ public class GameBean extends ModelObject  {
 		propertyChangeSupport.firePropertyChange("wbfsToIso", this.wbfsToIso,
 		this.wbfsToIso = wbfsToIso);
 	}
+
+	public void clean() {
+		filePath = null;
+		folderPath = null;
+		id = null;
+		scrubGb = null;
+		title = null;
+		region = null;
+		
+	}
 	
 
 }

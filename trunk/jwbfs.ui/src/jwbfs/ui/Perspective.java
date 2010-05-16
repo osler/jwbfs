@@ -3,7 +3,6 @@ package jwbfs.ui;
 import jwbfs.model.Model;
 import jwbfs.ui.views.CoverView;
 import jwbfs.ui.views.ManagerView;
-import jwbfs.ui.views.folder.ProcessView;
 import jwbfs.ui.views.folder.SettingsView;
 
 import org.eclipse.ui.IFolderLayout;
@@ -25,7 +24,7 @@ public class Perspective implements IPerspectiveFactory {
 		Model model = new Model();
 		
 		folder.addView(ManagerView.ID);
-		folder.addView(ProcessView.ID);
+//		folder.addView(ProcessView.ID);
 		folder.addView(SettingsView.ID);
 		
 		layout.addStandaloneView(CoverView.ID,  false, IPageLayout.RIGHT, 0.5f, editorArea);
