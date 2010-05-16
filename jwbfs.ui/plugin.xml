@@ -96,6 +96,11 @@
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
+            id="fileDialogExport"
+            name="File Dialog Export">
+      </command>
+      <command
+            categoryId="jwbfs.ui.commands.category.convert"
             id="folderDialog"
             name="Folder Dialog">
       </command>
@@ -120,6 +125,7 @@
             id="deleteFile"
             name="deleteFile">
       </command>
+      
   
    </extension>
    <extension
@@ -137,8 +143,12 @@
             commandId="checkDisk">
       </handler>
       <handler
-            class="jwbfs.ui.handlers.FileDialogHandler"
+            class="jwbfs.ui.handlers.FileDialogAddHandler"
             commandId="fileDialog">
+      </handler>
+      <handler
+            class="jwbfs.ui.handlers.FileDialogExportHandler"
+            commandId="fileDialogExport">
       </handler>
       <handler
             class="jwbfs.ui.handlers.FolderDiskDialogHandler"

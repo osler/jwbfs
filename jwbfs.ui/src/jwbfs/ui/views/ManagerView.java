@@ -10,7 +10,7 @@ import jwbfs.ui.handlers.UpdateCoverHandler;
 import jwbfs.ui.listeners.mainView.AddButtonListener;
 import jwbfs.ui.listeners.mainView.DeleteButtonListener;
 import jwbfs.ui.listeners.mainView.ExportButtonListener;
-import jwbfs.ui.listeners.mainView.FolderDialogListener;
+import jwbfs.ui.listeners.mainView.DiskFolderSelectionListener;
 import jwbfs.ui.listeners.mainView.UpdateGameListListener;
 import jwbfs.ui.utils.Utils;
 import jwbfs.ui.views.table.ManagerViewContentProvider;
@@ -56,7 +56,7 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 
 	private void addHandlerFolder(Button button) {
 		//TODO FolderDialog for disk path
-		button.addSelectionListener(new FolderDialogListener(ID));
+		button.addSelectionListener(new DiskFolderSelectionListener(ID));
 	}
 
 
@@ -83,8 +83,8 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 
 		Composite tableComp = WidgetCreator.createComposite(parent);				
 		String[] columnsNames = {
-				"ID", "Name", "Region","Size" };
-		int[] columnsSize = {15, 60, 15, 10};
+				"ID", "Name", /*"Region",*/"Size" };
+		int[] columnsSize = {15, 60, /*15,*/ 10};
 
 		table = WidgetCreator.createTable(tableComp, SWT.Selection | SWT.FULL_SELECTION, columnsNames, columnsSize);
 		tv = new TableViewer(table);

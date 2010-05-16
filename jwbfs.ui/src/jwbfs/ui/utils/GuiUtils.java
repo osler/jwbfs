@@ -1,5 +1,6 @@
 package jwbfs.ui.utils;
 
+import jwbfs.model.Constants;
 import jwbfs.ui.views.CoverView;
 import jwbfs.ui.views.ManagerView;
 
@@ -77,6 +78,12 @@ public class GuiUtils {
 		((CoverView) GuiUtils.getView(CoverView.ID)).getDisk().setImage(img);
 
 
+	}
+	
+	public static void setDefaultCovers() {
+		GuiUtils.setCover(Constants.NOIMAGE);
+		GuiUtils.setCover3d(Constants.NOIMAGE3D);
+		GuiUtils.setCoverDisc(Constants.NODISC);
 	}
 	
 }

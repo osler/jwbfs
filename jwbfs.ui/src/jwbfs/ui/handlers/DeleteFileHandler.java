@@ -42,7 +42,7 @@ public class DeleteFileHandler extends AbstractHandler {
 					fileTxt.delete();
 					System.out.println("Deleted!");
 				}
-				if(folder.exists() && folder.isDirectory()){
+				if(folder.exists() && folder.isDirectory() && folder.getAbsolutePath().contains(bean.getId())){
 					System.out.println("Deleting Folder"+folder.getAbsolutePath());
 					folder.delete();
 					System.out.println("Deleted!");

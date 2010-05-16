@@ -57,9 +57,7 @@ public class Model {
 	public static GameBean getConvertGameBean() {
 		return (GameBean) Model.getBeans().get(GameBean.INDEX);
 	}
-
-	
-	
+		
 	public static List<GameBean> listGames(String folder) {
 		List<GameBean> game = new ArrayList<GameBean>();
 		
@@ -72,17 +70,24 @@ public class Model {
 			File f2 = folderList[x];
 			if(f2.isDirectory()){
 				File[] files = f2.listFiles();
-				for(int fl = 0; fl < files.length;fl++){
-					if(files[fl].getName().endsWith(".wbfs")){
-						GameBean g = new GameBean();
-						g.setFilePath(files[fl].getAbsolutePath());
-						System.out.println(g.getFilePath());
-						game.add(g);
-					}
+				for(int j = 0; j < files.length; j++){
+					game = checkFile(files,j,game);
 				}
+			}else{
+				game = checkFile(folderList,x,game);
 			}
 		}
 		
+		return game;
+	}
+
+	private static List<GameBean> checkFile(File[] files, int j, List<GameBean> game) {
+		if(files[j].getName().endsWith(".wbfs")){
+			GameBean g = new GameBean();
+			g.setFilePath(files[j].getAbsolutePath());
+			System.out.println(g.getFilePath());
+			game.add(g);
+		}
 		return game;
 	}
 

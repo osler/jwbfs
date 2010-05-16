@@ -1,12 +1,13 @@
 package jwbfs.ui.controls;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.util.Properties;
 
 import jwbfs.model.Model;
@@ -33,12 +34,14 @@ public class Exec {
 			props.load(is);
 
 
-			String keys[] = getFileProperty(Utils.getWbfsINI());	
+			String[] keys = getFileProperty(Utils.getWbfsINI());	
 
 			
 //			String key[]  =  {"wbfs.bin","window.x","window.y"};
 			for(int x = 0; x < keys.length; x++){
-				System.setProperty(keys[x], props.getProperty(keys[x]));	
+				if(keys[x] != null){
+					System.setProperty(keys[x], props.getProperty(keys[x]));
+				}
 			}	
 
 			
@@ -50,7 +53,7 @@ public class Exec {
 	private static String[] getFileProperty(File file) {
 		String[] keys = null;
 		try {
-		int numLines = getNumLine(file)-1;
+		int numLines = getNumLine(file);
 		FileReader in = new FileReader(file);
 
 		BufferedReader br = new BufferedReader(in);
@@ -93,13 +96,65 @@ public class Exec {
 	}
 
 	public static void saveConfigFile() {
+		try {
 
-		SettingsBean settings = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
-		
-//		Method[] methods = settings.getClass().getMethods();
+			File configFile = Utils.getWbfsINI();
+
+			int numLines = getNumLine(configFile);
+
+			FileReader in = new FileReader(configFile);
+
+			BufferedReader br = new BufferedReader(in);
+
+			String outFile = "";
+
+			for(int x = 0; x<numLines; x++){
+				String line = br.readLine();
+				if(line != null){
+					outFile = outFile + mapConfig(line)+"\n";
+				}
+//				outFile = outFile + (line.substring(0,line.indexOf("="))).trim();  
+			}
+
+			FileWriter out;
+			out = new FileWriter(configFile);
+			BufferedWriter bw = new BufferedWriter(out);
+
+			bw.write(outFile);
+			bw.flush();
+			bw.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
-	
-	
+
+	private static String mapConfig(String line) {
+		SettingsBean bean = Model.getSettingsBean();
+		
+		String subLine = (line.substring(0,line.indexOf("="))).trim() + " = ";
+		
+		if(line.contains("wbfs.disk.path")){
+			return subLine +  bean.getDiskPath();
+		}
+		if(line.contains("wbfs.txt.layout")){
+			return subLine + bean.getTxtLayout();
+		}
+		if(line.contains("cover.region")){
+			return subLine + bean.getRegion();
+		}
+		if(line.contains("cover.path.2d")){
+			return subLine + bean.getCoverPath2d();
+		}
+		if(line.contains("cover.path.3d")){
+			return subLine + bean.getCoverPath3d();
+		}
+		if(line.contains("cover.path.disc")){
+			return subLine + bean.getCoverPathDisc();
+		}
+		
+		return line;
+	}
 
 }

@@ -9,8 +9,10 @@ public class GameBean extends ModelObject  {
 	public static final String INDEX = "gameBean";
 	private boolean isoToWbfs = true;
 	private boolean wbfsToIso = false;
+	//PATH
 	private String filePath;
 	private String folderPath;
+	//INFOS
 	private String id;
 	private String title;
 	private String scrubGb;
@@ -18,7 +20,7 @@ public class GameBean extends ModelObject  {
 	
 	public GameBean(){
 		this.addPropertyChangeListener(this);
-		folderPath = System.getProperty("wbfs.convert.folder");
+		setFolderPath(System.getProperty("wbfs.convert.folder"));
 	}
 	
 	public String getRegion() {
@@ -26,7 +28,7 @@ public class GameBean extends ModelObject  {
 	}
 	public void setRegion(String region) {
 		propertyChangeSupport.firePropertyChange("region", this.region,
-		region = region);
+		this.region = region);
 	}
 	
 	public String getId() {
@@ -102,13 +104,20 @@ public class GameBean extends ModelObject  {
 
 	public void clean() {
 		filePath = null;
-		folderPath = null;
 		id = null;
 		scrubGb = null;
 		title = null;
 		region = null;
-		
+		folderPath = null;
 	}
 	
+	public void setFolderPath(String folderPath) {
+		propertyChangeSupport.firePropertyChange("folderPath", this.folderPath,
+		this.folderPath = folderPath);
+	}
+
+	public String getFolderPath() {
+		return folderPath;
+	}
 
 }

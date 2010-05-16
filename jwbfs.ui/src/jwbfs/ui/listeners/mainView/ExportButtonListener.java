@@ -1,14 +1,9 @@
 package jwbfs.ui.listeners.mainView;
 
-import jwbfs.model.Constants;
 import jwbfs.model.Model;
 import jwbfs.ui.exceptions.FileNotSelectedException;
-import jwbfs.ui.exceptions.NotValidDiscException;
-import jwbfs.ui.handlers.CheckDiscHandler;
-import jwbfs.ui.handlers.FileDialogHandler;
+import jwbfs.ui.handlers.FileDialogExportHandler;
 import jwbfs.ui.handlers.ToISOConvertHandler;
-import jwbfs.ui.handlers.UpdateCoverHandler;
-import jwbfs.ui.handlers.UpdateGameListHandler;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
 
@@ -35,30 +30,29 @@ public class ExportButtonListener extends SelectionAdapter {
 		//TODO 
 		
 		try {
-			Utils.getHandlerService(viewID).executeCommand(FileDialogHandler.ID, null);
-			CheckDiscHandler.index = -1;
-			Utils.getHandlerService(viewID).executeCommand(CheckDiscHandler.ID, null);
+			Utils.getHandlerService(viewID).executeCommand(FileDialogExportHandler.ID, null);
+//			CheckDiscHandler.index = -1;
+//			
+//			Utils.getHandlerService(viewID).executeCommand(CheckDiscHandler.ID, null);
 			
 			if(Model.getConvertGameBean().getFilePath() == null || Model.getConvertGameBean().getFilePath().equals("")){
-				GuiUtils.setCover(Constants.NOIMAGE);
-				GuiUtils.setCover3d(Constants.NOIMAGE3D);
-				GuiUtils.setCoverDisc(Constants.NODISC);
+				GuiUtils.setDefaultCovers();
 				throw new FileNotSelectedException();
 			}
 			
-			if(Model.getConvertGameBean().getId().contains("not a wii disc")){
-				GuiUtils.setCover(Constants.NOIMAGE);
-				GuiUtils.setCover3d(Constants.NOIMAGE3D);
-				GuiUtils.setCoverDisc(Constants.NODISC);
-				throw new NotValidDiscException();
+//			if(Model.getConvertGameBean().getId().contains("not a wii disc")){
+//				GuiUtils.setCover(Constants.NOIMAGE);
+//				GuiUtils.setCover3d(Constants.NOIMAGE3D);
+//				GuiUtils.setCoverDisc(Constants.NODISC);
+//				throw new NotValidDiscException();
+//
+//			}
 
-			}
-
-			Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);
-			if(Model.getConvertGameBean().isWbfsToIso()){
+//			Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);
+//			if(Model.getConvertGameBean().isWbfsToIso()){
 				Utils.getHandlerService(viewID).executeCommand(ToISOConvertHandler.ID, null);
-				Utils.getHandlerService(viewID).executeCommand(UpdateGameListHandler.ID, null);
-			}
+//				Utils.getHandlerService(viewID).executeCommand(UpdateGameListHandler.ID, null);
+//			}
 
 		} catch (ExecutionException e1) {
 			e1.printStackTrace();
@@ -70,14 +64,8 @@ public class ExportButtonListener extends SelectionAdapter {
 			e1.printStackTrace();
 		} catch (FileNotSelectedException e1) {
 			e1.printStackTrace();
-		} catch (NotValidDiscException e1) {
-			e1.printStackTrace();
-		}
+		} 
 
-
-
-
-	
 
 	}
 

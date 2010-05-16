@@ -28,11 +28,11 @@ public class ManagerViewLabelProvider implements ITableLabelProvider {
 			
 			return r.getTitle();
 			
+//		case 2:
+//			
+//			return r.getRegion();
+//			
 		case 2:
-			
-			return r.getRegion();
-			
-		case 3:
 			
 			return r.getScrubGb();
 		}

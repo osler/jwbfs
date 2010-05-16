@@ -1,7 +1,9 @@
-package jwbfs.ui.listeners.mainView;
+package jwbfs.ui.listeners;
 
-import jwbfs.ui.handlers.FolderDiskDialogHandler;
-import jwbfs.ui.handlers.UpdateGameListHandler;
+import jwbfs.model.Model;
+import jwbfs.ui.handlers.CheckDiscHandler;
+import jwbfs.ui.handlers.FileDialogAddHandler;
+import jwbfs.ui.handlers.UpdateCoverHandler;
 import jwbfs.ui.utils.Utils;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -11,38 +13,47 @@ import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class FolderDialogListener extends SelectionAdapter {
+public class AddActionListener extends SelectionAdapter {
+
 
 	private String viewID;
 
-	public FolderDialogListener(String viewID){
+	public AddActionListener(String viewID){
 		this.viewID = viewID;
 	}
-	
+
+
 	@Override
 	public void widgetSelected(SelectionEvent e) {
+	
 
-		System.out.println("Launching Folder Selection Dialog");
+		
 		try {
-			Utils.getHandlerService(viewID).executeCommand(FolderDiskDialogHandler.ID, null);
-			Utils.getHandlerService(viewID).executeCommand(UpdateGameListHandler.ID, null);
-			
-		} catch (ExecutionException e1) {
+			Utils.getHandlerService(viewID).executeCommand(FileDialogAddHandler.ID, null);
+			CheckDiscHandler.index = -1;
+			Model.getSettingsBean().setManagerMode(false);
+			Utils.getHandlerService(viewID).executeCommand(CheckDiscHandler.ID, null);
+			Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);
 
+		} catch (ExecutionException e1) {
+		
 			e1.printStackTrace();
 		} catch (NotDefinedException e1) {
-
+		
 			e1.printStackTrace();
 		} catch (NotEnabledException e1) {
-
+		
 			e1.printStackTrace();
 		} catch (NotHandledException e1) {
-
+		
 			e1.printStackTrace();
 		}
 
 
-	}
 
+
+	
+
+	}
 
 }

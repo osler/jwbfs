@@ -5,12 +5,13 @@ import jwbfs.model.Model;
 import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
 import jwbfs.ui.handlers.CheckDiscHandler;
-import jwbfs.ui.handlers.FileDialogHandler;
+import jwbfs.ui.handlers.FileDialogAddHandler;
 import jwbfs.ui.handlers.ToWBFSConvertHandler;
 import jwbfs.ui.handlers.UpdateCoverHandler;
 import jwbfs.ui.handlers.UpdateGameListHandler;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
+import jwbfs.ui.views.ManagerView;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -35,21 +36,18 @@ public class AddButtonListener extends SelectionAdapter {
 		Model.getConvertGameBean().clean();
 		
 		try {
-			Utils.getHandlerService(viewID).executeCommand(FileDialogHandler.ID, null);
-			CheckDiscHandler.index = -1;
+			Utils.getHandlerService(viewID).executeCommand(FileDialogAddHandler.ID, null);
+//			CheckDiscHandler.index = -1;
+			Model.getSettingsBean().setManagerMode(false);
 			Utils.getHandlerService(viewID).executeCommand(CheckDiscHandler.ID, null);
 			
 			if(Model.getConvertGameBean().getFilePath() == null || Model.getConvertGameBean().getFilePath().equals("")){
-				GuiUtils.setCover(Constants.NOIMAGE);
-				GuiUtils.setCover3d(Constants.NOIMAGE3D);
-				GuiUtils.setCoverDisc(Constants.NODISC);
+				GuiUtils.setDefaultCovers();
 				throw new FileNotSelectedException();
 			}
 			
 			if(Model.getConvertGameBean().getId().contains("not a wii disc")){
-				GuiUtils.setCover(Constants.NOIMAGE);
-				GuiUtils.setCover3d(Constants.NOIMAGE3D);
-				GuiUtils.setCoverDisc(Constants.NODISC);
+				GuiUtils.setDefaultCovers();
 				throw new NotValidDiscException();
 
 			}
@@ -58,6 +56,7 @@ public class AddButtonListener extends SelectionAdapter {
 			if(Model.getConvertGameBean().isIsoToWbfs()){
 				Utils.getHandlerService(viewID).executeCommand(ToWBFSConvertHandler.ID, null);
 				Utils.getHandlerService(viewID).executeCommand(UpdateGameListHandler.ID, null);
+				GuiUtils.setDefaultCovers();
 			}
 
 		} catch (ExecutionException e1) {

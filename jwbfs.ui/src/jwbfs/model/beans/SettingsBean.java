@@ -3,6 +3,7 @@ package jwbfs.model.beans;
 import java.util.LinkedHashMap;
 
 import jwbfs.model.Constants;
+import jwbfs.ui.utils.FileUtils;
 
 public class SettingsBean extends ModelObject {
 	
@@ -16,11 +17,14 @@ public class SettingsBean extends ModelObject {
 	
 	//WIITDB SETTINGS
 	private String region;
-	private String coverPath;
+	private String coverPath2d;
+	private String coverPath3d;
+	private String coverPathDisc;
+	
 	private boolean automaticCoverDownload;
 	private boolean updateCover;
-	private boolean cover3D;
-	private boolean coverDiscs;
+	private boolean cover3Denabled;
+	private boolean coverDiscsEnabled;
 	
 	//MANAGER SETTINGS
 	private String diskPath;
@@ -37,14 +41,19 @@ public class SettingsBean extends ModelObject {
 		
 		//WIITDB SETTINGS
 		region = System.getProperty("cover.region");
-		coverPath = System.getProperty("java.io.tmpdir");
-		automaticCoverDownload = true;
-		updateCover = false;
-		cover3D = false;
-		coverDiscs = false;
+		coverPath2d = FileUtils.exist(System.getProperty("cover.path.2d"),true,false,false);
+		coverPath3d = FileUtils.exist(System.getProperty("cover.path.3d"),false,true,false);
+		coverPathDisc = FileUtils.exist(System.getProperty("cover.path.disc"),false,false,true);
 		
+	
+		automaticCoverDownload = true;
+		cover3Denabled = true;
+		coverDiscsEnabled = true;
+		
+		updateCover = false;
+
 		//MANAGER
-		setDiskPath(System.getProperty("wbfs.disk.path"));
+		diskPath =  FileUtils.exist(System.getProperty("wbfs.disk.path"));
 
 	}
 	
@@ -62,6 +71,15 @@ public class SettingsBean extends ModelObject {
 		
 	}
 	
+
+	public void setRegion(String region) {
+		propertyChangeSupport.firePropertyChange("region", this.region,
+		this.region = region);
+	}
+
+	public String getRegion() {
+		return region;
+	}
 	
 	protected ModelObject getBean() {
 		return (ModelObject) ((LinkedHashMap<String, Object>)getModel()).get(SettingsBean.INDEX);
@@ -96,24 +114,33 @@ public class SettingsBean extends ModelObject {
 				this.txtLayout = txtLayout);	
 	}
 
-	public void setCoverPath(String coverPath) {
-		propertyChangeSupport.firePropertyChange("coverPath", this.coverPath,
-				this.coverPath = coverPath);
+	public String getCoverPath2d() {
+		return coverPath2d;
+	}
+	
+	public void setCoverPath2d(String coverPath2d) {
+		propertyChangeSupport.firePropertyChange("coverPath2d", this.coverPath2d,
+				this.coverPath2d = coverPath2d);
+	}
+	
+	public void setCoverPath3d(String coverPath3d) {
+		propertyChangeSupport.firePropertyChange("coverPath3d", this.coverPath3d,
+				this.coverPath3d = coverPath3d);
 	}
 
-	public String getCoverPath() {
-		return coverPath;
+	public String getCoverPath3d() {
+		return coverPath3d;
 	}
 
-	public void setRegion(String region) {
-		propertyChangeSupport.firePropertyChange("region", this.region,
-		this.region = region);
+	public void setCoverPathDisc(String coverPathDisc) {
+		propertyChangeSupport.firePropertyChange("coverPathDisc", this.coverPathDisc,
+				this.coverPathDisc = coverPathDisc);
 	}
 
-	public String getRegion() {
-		return region;
+	public String getCoverPathDisc() {
+		return coverPathDisc;
 	}
-
+	
 	public void setAutomaticCoverDownload(boolean automaticCoverDownload) {
 		propertyChangeSupport.firePropertyChange("automaticCoverDownload", this.automaticCoverDownload,
 		this.automaticCoverDownload = automaticCoverDownload);
@@ -132,21 +159,21 @@ public class SettingsBean extends ModelObject {
 	}
 
 	public void setCover3D(boolean cover3D) {
-		propertyChangeSupport.firePropertyChange("cover3D", this.cover3D,
-		this.cover3D = cover3D);
+		propertyChangeSupport.firePropertyChange("cover3Denabled", this.cover3Denabled,
+		this.cover3Denabled = cover3D);
 	}
 
 	public boolean isCover3D() {
-		return cover3D;
+		return cover3Denabled;
 	}
 
 	public void setCoverDiscs(boolean coverDiscs) {
-		propertyChangeSupport.firePropertyChange("coverDiscs", this.coverDiscs,
-		this.coverDiscs = coverDiscs);
+		propertyChangeSupport.firePropertyChange("coverDiscsEnabled", this.coverDiscsEnabled,
+		this.coverDiscsEnabled = coverDiscs);
 	}
 
 	public boolean isCoverDiscs() {
-		return coverDiscs;
+		return coverDiscsEnabled;
 	}
 
 
