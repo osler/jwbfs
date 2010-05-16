@@ -48,4 +48,35 @@ public class FileUtils {
 		return exist;
 	}
 
+	public static String exist(String path, boolean cover2d, boolean cover3d, boolean coverDisc) {
+		path = exist(path);
+
+		String tempDir = System.getProperty("java.io.tmpdir");
+		
+			if(cover2d && path.equals(tempDir)){
+				path = path+File.separatorChar+"2d";
+				FileUtils.checkAndCreateFolder(path);
+			}
+			
+			if(cover3d && path.equals(tempDir)){
+				path = path+File.separatorChar+"3d";
+				FileUtils.checkAndCreateFolder(path);
+			}
+			
+			if(coverDisc && path.equals(tempDir)){
+				path = path+File.separatorChar+"disc";
+				FileUtils.checkAndCreateFolder(path);	
+			}
+		
+		return path;
+	}
+
+	public static String exist(String path) {
+
+		File tmp = new File(path);
+		if(!tmp.exists() || tmp.equals("")){
+			path = System.getProperty("java.io.tmpdir");
+		}
+		return path;
+	}
 }

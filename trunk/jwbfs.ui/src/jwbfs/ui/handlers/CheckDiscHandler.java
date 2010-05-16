@@ -1,28 +1,23 @@
 package jwbfs.ui.handlers;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
-import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.utils.FileUtils;
+import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
-import jwbfs.ui.views.ManagerView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.NotEnabledException;
-import org.eclipse.core.commands.NotHandledException;
-import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.swt.SWT;
 
 public class CheckDiscHandler extends AbstractHandler {
 
@@ -34,14 +29,10 @@ public class CheckDiscHandler extends AbstractHandler {
 	public CheckDiscHandler() {
 	}
 
-	/**
-	 * the command has been executed, so extract extract the needed information
-	 * from the application context.
-	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		GameBean bean = null;
 		
-		if(((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).isManagerMode()){
+		if(Model.getSettingsBean().isManagerMode()){
 
 			for(int x =0; x<Model.getGames().size();x++){
 				bean = (GameBean) Model.getGames().toArray()[x];
@@ -49,7 +40,7 @@ public class CheckDiscHandler extends AbstractHandler {
 			}
 			
 		}else{
-			bean = (GameBean) Model.getBeans().get(GameBean.INDEX);
+			bean = Model.getConvertGameBean();
 			
 
 			if(bean.isWbfsToIso()){
@@ -60,25 +51,18 @@ public class CheckDiscHandler extends AbstractHandler {
 
 		}
 
-		((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).setManagerMode(false);
+		 Model.getSettingsBean().setManagerMode(false);
 		return null;
 
 	}
 
 	private void checkWbfs(GameBean bean) {
-
-//		String infoCmd = "id_title";
-		
 		try {
-
 			String[] info = new String [3];
-
 			File fileWbfs = new File(bean.getFilePath());
-		
 			String fileTxt = FileUtils.getTxtFile(fileWbfs);
-
 			File fileTxtPath = new File(fileTxt);
-			
+	
 			FileReader fis = new FileReader(fileTxtPath); 			
 			BufferedReader input = new BufferedReader(fis);
 			
@@ -118,6 +102,7 @@ public class CheckDiscHandler extends AbstractHandler {
 			
 			String filePath = bean.getFilePath();
 			if(filePath == null || filePath.equals("")){
+				GuiUtils.showInfo("Select a File", SWT.ERROR);
 				return;
 			}
 

@@ -4,8 +4,8 @@ import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.listeners.ConvertButtonListener;
-import jwbfs.ui.listeners.FileDialogListener;
-import jwbfs.ui.listeners.mainView.FolderDialogListener;
+import jwbfs.ui.listeners.AddActionListener;
+import jwbfs.ui.listeners.mainView.DiskFolderSelectionListener;
 import jwbfs.ui.views.WidgetCreator;
 
 import org.eclipse.swt.widgets.Button;
@@ -83,12 +83,12 @@ public class ProcessView extends ViewPart {
 
 	private void addHandlerFolder(Button button) {
 	
-			button.addSelectionListener(new FolderDialogListener(ID));
+			button.addSelectionListener(new DiskFolderSelectionListener(ID));
 	}
 
 	public void addHandlerFileDialog(Button button){
 	
-		button.addSelectionListener(new FileDialogListener(ID));
+		button.addSelectionListener(new AddActionListener(ID));
 	
 	}
 	/* (non-Javadoc)

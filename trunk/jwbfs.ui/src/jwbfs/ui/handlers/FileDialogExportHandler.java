@@ -10,18 +10,11 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 
-public class FileDialogHandler extends AbstractHandler {
+public class FileDialogExportHandler extends AbstractHandler {
 	
+	public static final String ID = "fileDialogExport";
 
-	public static final String ID = "fileDialog";
-
-	private String viewID;
-
-	public FileDialogHandler(String viewID){
-		this.viewID = viewID;
-	}
-
-	public FileDialogHandler() {
+	public FileDialogExportHandler() {
 	}
 
 	/**
@@ -30,10 +23,8 @@ public class FileDialogHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
-		
-		
 
-		GameBean bean = (GameBean) Model.getBeans().get(GameBean.INDEX);
+		GameBean bean = Model.getConvertGameBean();
 		if(bean != null){
 
 		FileDialog d = new FileDialog(new Shell()) ;
@@ -52,6 +43,9 @@ public class FileDialogHandler extends AbstractHandler {
 				line = oldValue;
 			}
 			
+			if(!line.endsWith(".iso")){
+				line = line+".iso";
+			}
 			bean.setFilePath(line);			
 		}
 		

@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import jwbfs.model.Model;
 import jwbfs.model.Constants;
+import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.controls.ErrorHandler;
@@ -15,7 +15,6 @@ import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
 import jwbfs.ui.views.ManagerView;
-import jwbfs.ui.views.folder.ProcessView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -74,7 +73,7 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 
 			  MessageBox msg = new MessageBox(new Shell());
 			  msg.setText("Info");
-			  msg.setMessage("Operazione avvenuta con successo");
+			  msg.setMessage(bean.getTitle()+" Added");
 			  msg.open();
 
 		  }

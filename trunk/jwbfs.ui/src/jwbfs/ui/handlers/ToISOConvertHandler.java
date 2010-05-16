@@ -13,7 +13,6 @@ import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
 import jwbfs.ui.views.ManagerView;
-import jwbfs.ui.views.folder.ProcessView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -34,12 +33,17 @@ public class ToISOConvertHandler extends AbstractHandler {
 	 * from the application context.
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+
+		GameBean exportBean =  Model.getConvertGameBean();
+		GameBean gameToExport =  Model.getSelectedGame();
 		
-
-		GameBean bean =  Model.getConvertGameBean();
-
-		String filePath = bean.getFilePath();
-		String folderPath = Model.getSettingsBean().getFolderPath();
+		//File selected
+		String filePath = gameToExport.getFilePath();
+		File fileToExport = new File(filePath);
+		
+		//Dest File
+		String folderPath = exportBean.getFilePath();
+		folderPath = folderPath.replace(fileToExport.getName(), "");
 		
 		if(filePath.toLowerCase().endsWith(".iso")){
 			try {
@@ -49,18 +53,9 @@ public class ToISOConvertHandler extends AbstractHandler {
 			}
 		}
 		
-		File file = new File(filePath);
-
-		 if(folderPath == null || folderPath.equals("none") || folderPath.equals("") ){
-//			 folderPath = file.getAbsolutePath().replace(file.getName(), "");
-			 folderPath = Model.getSettingsBean().getDiskPath();
-		 }
-		
 		  try {
-			  String path = file.getAbsolutePath();			  	  			  
+			  String path = fileToExport.getAbsolutePath();			  	  			  
 			  String bin = Utils.getWBFSpath();
-
-
 
 			  //processa iso
 			  String[]  processo = getProcessParameter(bin,path,folderPath);
@@ -72,7 +67,7 @@ public class ToISOConvertHandler extends AbstractHandler {
 
 			  MessageBox msg = new MessageBox(new Shell());
 			  msg.setText("Info");
-			  msg.setMessage("Operazione avvenuta con successo");
+			  msg.setMessage(gameToExport.getTitle() + " exported");
 			  msg.open();
 
 		  }
