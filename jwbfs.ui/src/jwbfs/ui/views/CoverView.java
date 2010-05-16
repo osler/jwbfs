@@ -5,17 +5,15 @@ import jwbfs.model.Constants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.ui.listeners.FolderCoverDialogListener;
-import jwbfs.ui.listeners.UpdateCoverListener;
+import jwbfs.ui.listeners.coverView.FolderCoverDialogListener;
+import jwbfs.ui.listeners.coverView.UpdateCoverListener;
 import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
 public class CoverView extends ViewPart {
@@ -23,7 +21,9 @@ public class CoverView extends ViewPart {
 	public static final String ID = "CoverView";
 	protected GameBean processBean = null;
 	protected SettingsBean settingsBean = null;
-	protected Button imageButton ;
+	protected Button cover ;
+	protected Button cover3d ;
+	protected Button disk ;
 	protected ProgressBar progressBar;
 	
 	
@@ -46,22 +46,27 @@ public class CoverView extends ViewPart {
 		
 		parent = WidgetCreator.formatComposite(parent);
 
-		Group group = WidgetCreator.createGroup(parent, "Cover Settings - (wiitdb)");
-		
-		Button button = WidgetCreator.createCheck(group, "3D Cover Download", getSettingsBean(), "cover3D");
-		button = WidgetCreator.createCheck(group, "Disc Cover Download", getSettingsBean(), "coverDiscs");
-		
-		Label label = WidgetCreator.createLabel(group,"Cover save Path");
-		button = WidgetCreator.createButton(group,"open");
-		addHandlerFolder(button);
-		Text text =  WidgetCreator.createText(group, false, (SettingsBean) getSettingsBean(), "coverPath",2);
-		
-		group =  WidgetCreator.createGroup(parent, "Cover",1);
+		Group group =  WidgetCreator.createGroup(parent, "Cover",2);
 		
 		Image image = new Image( GuiUtils.getDisplay(),Constants.NOIMAGE);
-		imageButton = WidgetCreator.createImage(group);
-		imageButton.setImage(image);
-		addHandlerUpdate(imageButton);
+		cover = WidgetCreator.createImage(group);
+		cover.setImage(image);
+		
+		image = new Image( GuiUtils.getDisplay(),Constants.NOIMAGE3D);
+		cover3d = WidgetCreator.createImage(group);
+		cover3d.setSize(50,50);
+		cover3d.setImage(image);
+		
+		group = WidgetCreator.createGroup(parent, "Disc");
+		
+		image = new Image( GuiUtils.getDisplay(),Constants.NODISC);
+		disk = WidgetCreator.createImage(group);
+		disk.setSize(50,50);
+		disk.setImage(image);
+		
+		Composite filler = WidgetCreator.createComposite(parent);
+		
+		addHandlerUpdate(cover);
 		progressBar = WidgetCreator.createProgressBar(parent);
 		
 		
@@ -85,20 +90,54 @@ public class CoverView extends ViewPart {
 		
 	}
 
-	public Button getImageButton() {
-		return imageButton;
-	}
-
-	public void setImageButton(Button imageButton) {
-		this.imageButton = imageButton;
-	}
-
 	public ProgressBar getProgressBar() {
 		return progressBar;
 	}
 
 	public void setProgressBar(ProgressBar progressBar) {
 		this.progressBar = progressBar;
+	}
+
+	/**
+	 * @return the cover
+	 */
+	public Button getCover() {
+		return cover;
+	}
+
+	/**
+	 * @param cover the cover to set
+	 */
+	public void setCover(Button cover) {
+		this.cover = cover;
+	}
+
+	/**
+	 * @return the cover3d
+	 */
+	public Button getCover3d() {
+		return cover3d;
+	}
+
+	/**
+	 * @param cover3d the cover3d to set
+	 */
+	public void setCover3d(Button cover3d) {
+		this.cover3d = cover3d;
+	}
+
+	/**
+	 * @return the disk
+	 */
+	public Button getDisk() {
+		return disk;
+	}
+
+	/**
+	 * @param disk the disk to set
+	 */
+	public void setDisk(Button disk) {
+		this.disk = disk;
 	}
 
 }

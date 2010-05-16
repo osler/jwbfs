@@ -116,6 +116,11 @@
             id="updateTitles"
             name="updateTitles">
       </command>
+            <command
+            id="deleteFile"
+            name="deleteFile">
+      </command>
+  
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -136,7 +141,7 @@
             commandId="fileDialog">
       </handler>
       <handler
-            class="jwbfs.ui.handlers.FolderDialogHandler"
+            class="jwbfs.ui.handlers.FolderDiskDialogHandler"
             commandId="folderDialog">
       </handler>
        <handler
@@ -155,6 +160,11 @@
             class="jwbfs.ui.handlers.UpdateTitlesTXTHandler"
             commandId="updateTitles">
       </handler>
+            <handler
+            class="jwbfs.ui.handlers.DeleteFileHandler"
+            commandId="deleteFile">
+      </handler>
+      
    </extension>
   
 </plugin>

@@ -4,8 +4,8 @@ import jwbfs.model.Constants;
 import jwbfs.model.CoverConstants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.ui.listeners.FolderCoverDialogListener;
-import jwbfs.ui.listeners.UpdateTitlesTXTListener;
+import jwbfs.ui.listeners.coverView.FolderCoverDialogListener;
+import jwbfs.ui.listeners.settings.UpdateTitlesTXTListener;
 import jwbfs.ui.views.WidgetCreator;
 
 import org.eclipse.swt.widgets.Button;

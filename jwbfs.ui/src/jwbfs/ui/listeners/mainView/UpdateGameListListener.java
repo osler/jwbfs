@@ -1,4 +1,4 @@
-package jwbfs.ui.listeners;
+package jwbfs.ui.listeners.mainView;
 
 import jwbfs.ui.handlers.UpdateGameListHandler;
 import jwbfs.ui.utils.GuiUtils;

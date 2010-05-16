@@ -1,6 +1,7 @@
-package jwbfs.ui.listeners;
+package jwbfs.ui.listeners.coverView;
 
-import jwbfs.ui.handlers.FolderDialogHandler;
+import jwbfs.ui.handlers.FolderCoverDialogHandler;
+import jwbfs.ui.handlers.FolderDiskDialogHandler;
 import jwbfs.ui.utils.Utils;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -10,20 +11,20 @@ import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class FolderDialogListener extends SelectionAdapter {
+public class FolderCoverDialogListener extends SelectionAdapter {
 
 	private String viewID;
 
-	public FolderDialogListener(String viewID){
+	public FolderCoverDialogListener(String viewID){
 		this.viewID = viewID;
 	}
 	
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 
-		System.out.println("Launching Folder Selection Dialog");
+		System.out.println("Launching Cover Folder Selection Dialog");
 		try {
-			Utils.getHandlerService(viewID).executeCommand(FolderDialogHandler.ID, null);
+			Utils.getHandlerService(viewID).executeCommand(FolderCoverDialogHandler.ID, null);
 		} catch (ExecutionException e1) {
 
 			e1.printStackTrace();

@@ -19,7 +19,6 @@ import jwbfs.ui.views.CoverView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.graphics.Image;
 
 public class UpdateCoverHandler extends AbstractHandler {
@@ -30,8 +29,8 @@ public class UpdateCoverHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		processBean = (GameBean) Model.getBeans().get(GameBean.INDEX);
-		settingsBean = (SettingsBean) Model.getBeans().get(settingsBean.INDEX);
+		processBean = Model.getConvertGameBean();
+		settingsBean =  Model.getSettingsBean();
 
 
 		if(settingsBean.isManagerMode()){
@@ -65,14 +64,17 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 		//IF not wii disc return and set default image
 		if(gameId.contains("not a wii disc")){
-			setCover(Constants.NOIMAGE);
+			GuiUtils.setCover(Constants.NOIMAGE);
+			GuiUtils.setCover3d(Constants.NOIMAGE3D);
+			GuiUtils.setCoverDisc(Constants.NODISC);
 			settingsBean.setUpdateCover(false);
 			return;
 		}
 
 		if(FileUtils.coverFileExist(coverPath) && !updateCover){
-			setCover(coverPath);			
+			GuiUtils.setCover(coverPath);			
 		}else{
+			GuiUtils.setCover(Constants.NOIMAGE);
 			if(settingsBean.isAutomaticCoverDownload() || updateCover){
 
 
@@ -89,10 +91,10 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 				if(FileUtils.coverFileExist(coverPath)){
 					//Cover Found
-					setCover(coverPath);
+					GuiUtils.setCover(coverPath);
 				}else{
 					//Not found
-					setCover(Constants.NOIMAGE);
+					GuiUtils.setCover(Constants.NOIMAGE);
 				}
 				//progressbar
 				((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(1);
@@ -100,49 +102,82 @@ public class UpdateCoverHandler extends AbstractHandler {
 			}
 		}
 
+		//3d
+		String folder = settingsBean.getCoverPath()
+		+File.separatorChar
+		+"3d";
+
+		FileUtils.checkAndCreateFolder(folder);
+
+		coverPath = folder
+		+File.separatorChar
+		+gameId
+		+".png";
+		
+		if(FileUtils.coverFileExist(coverPath) && !updateCover){
+			GuiUtils.setCover3d(coverPath);			
+		}else{
+			GuiUtils.setCover3d(Constants.NOIMAGE3D);
 		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
 			if(settingsBean.isCover3D()){
-				String folder = settingsBean.getCoverPath()
-				+File.separatorChar
-				+"3d";
+	
 
-				FileUtils.checkAndCreateFolder(folder);
-
-				coverPath = folder
-				+File.separatorChar
-				+gameId
-				+".png";
-				if(!FileUtils.coverFileExist(coverPath) && !updateCover){
 					downloadCover(CoverConstants.COVER3D_URL,coverPath);	
-				}
+					if(FileUtils.coverFileExist(coverPath)){
+						//Cover Found
+						GuiUtils.setCover3d(coverPath);
+					}else{
+						//Not found
+						GuiUtils.setCover3d(Constants.NOIMAGE3D);
+					}
 				//progressbar
 				((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(getProgress()>2?2:getProgress());
 
 			}
 
+		}
+		
+		//DISC
+		
+		folder = settingsBean.getCoverPath()
+		+File.separatorChar
+		+"discs";
+
+		FileUtils.checkAndCreateFolder(folder);
+
+		coverPath = folder
+		+File.separatorChar
+		+gameId
+		+".png";
+		
+		if(FileUtils.coverFileExist(coverPath) && !updateCover){
+			GuiUtils.setCoverDisc(coverPath);			
+		}else{
+			GuiUtils.setCoverDisc(Constants.NODISC);
+		
 		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
 			if(settingsBean.isCoverDiscs()){
-				String folder = settingsBean.getCoverPath()
-				+File.separatorChar
-				+"discs";
 
-				FileUtils.checkAndCreateFolder(folder);
-
-				coverPath = folder
-				+File.separatorChar
-				+gameId
-				+".png";
-				if(!FileUtils.coverFileExist(coverPath) && !updateCover){
+	
 					downloadCover(CoverConstants.DISC_URL,coverPath);
-				}
+		
+					if(FileUtils.coverFileExist(coverPath)){
+						//Cover Found
+						GuiUtils.setCoverDisc(coverPath);
+					}else{
+						//Not found
+						GuiUtils.setCoverDisc(Constants.NODISC);
+					}
+					
 				//progressbar
 				((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(getProgress()>2?3:getProgress());
 
 			}
-
+		}
 		settingsBean.setUpdateCover(false);
+	
 	}
-
+		
 	private int getProgress() {
 
 		int tot = 1;
@@ -185,15 +220,6 @@ public class UpdateCoverHandler extends AbstractHandler {
 		}
 	}
 
-	private void setCover(String coverPath) {
-
-		System.out.println("Setting cover:");
-		System.out.println(coverPath);
-		Image img = new Image(GuiUtils.getDisplay(),coverPath);
-		((CoverView) GuiUtils.getView(CoverView.ID)).getImageButton().setImage(img);
-
-
-	}
 
 	private InputStream checkAndValidate(String url,String region, String gameId, int cycle) {
 

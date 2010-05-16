@@ -50,8 +50,9 @@ public class Constants {
 												"TITLE [ID]/ID.ext"};
 
 	public static final String NOIMAGE = Utils.getRoot("jwbfs.ui")+"icons/noimg.png";
-
-	public static final String TESTIMAGE = Utils.getRoot("jwbfs.ui")+"icons/test.png";
+	public static final String NOIMAGE3D = Utils.getRoot("jwbfs.ui")+"icons/noimg3d.png";
+	public static final String NODISC = Utils.getRoot("jwbfs.ui")+"icons/nodisc.png";
+	
 	
 	
 	/*

@@ -54,7 +54,7 @@ public class Model {
 		return (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 	}
 	
-	public static GameBean getGameBean() {
+	public static GameBean getConvertGameBean() {
 		return (GameBean) Model.getBeans().get(GameBean.INDEX);
 	}
 

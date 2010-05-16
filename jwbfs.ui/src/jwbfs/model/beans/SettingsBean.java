@@ -3,7 +3,6 @@ package jwbfs.model.beans;
 import java.util.LinkedHashMap;
 
 import jwbfs.model.Constants;
-import jwbfs.model.CoverConstants;
 
 public class SettingsBean extends ModelObject {
 	
@@ -34,7 +33,7 @@ public class SettingsBean extends ModelObject {
 		splitSize = Constants.SPLITSIZE_Text[0];
 		copyPartitions = Constants.COPY_PARTITIONS_Text[0];
 		enableTXT = true;
-		txtLayout = Constants.TXT_LAYOUT_Text[0];
+		txtLayout = System.getProperty("wbfs.txt.layout");
 		
 		//WIITDB SETTINGS
 		region = System.getProperty("cover.region");
@@ -57,13 +56,10 @@ public class SettingsBean extends ModelObject {
 	}
 
 	public void setFolderPath(String folderPath) {
-		if(isManagerMode()){
-			propertyChangeSupport.firePropertyChange("diskPath", this.diskPath,
-					this.diskPath = folderPath);
-		}else{
+
 			propertyChangeSupport.firePropertyChange("folderPath", this.folderPath,
 					this.folderPath = folderPath);
-		}
+		
 	}
 	
 	

@@ -5,7 +5,7 @@ import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.listeners.ConvertButtonListener;
 import jwbfs.ui.listeners.FileDialogListener;
-import jwbfs.ui.listeners.FolderDialogListener;
+import jwbfs.ui.listeners.mainView.FolderDialogListener;
 import jwbfs.ui.views.WidgetCreator;
 
 import org.eclipse.swt.widgets.Button;
@@ -26,7 +26,7 @@ public class ProcessView extends ViewPart {
 	
 
 	public ProcessView() {
-		bean = (GameBean) Model.getGameBean() ;
+		bean = (GameBean) Model.getConvertGameBean() ;
 	}
 	public ProgressBar getProgressBar() {
 		
@@ -39,12 +39,12 @@ public class ProcessView extends ViewPart {
 
 		Composite composite  = WidgetCreator.createComposite(parent);
 		Group group = WidgetCreator.createGroup(composite, "Conversion Type");
-		Button button = WidgetCreator.createRadio(group, "ISO to WBFS",Model.getGameBean(),"isoToWbfs");
-		button = WidgetCreator.createRadio(group, "WBFS to ISO",Model.getGameBean(),"wbfsToIso");
+		Button button = WidgetCreator.createRadio(group, "ISO to WBFS",Model.getConvertGameBean(),"isoToWbfs");
+		button = WidgetCreator.createRadio(group, "WBFS to ISO",Model.getConvertGameBean(),"wbfsToIso");
 		
 		group = WidgetCreator.createGroup(composite, "File Selection");
 		@SuppressWarnings("unused")
-		Text text = WidgetCreator.createText(group,false,Model.getGameBean(),"filePath");
+		Text text = WidgetCreator.createText(group,false,Model.getConvertGameBean(),"filePath");
 		button = WidgetCreator.createButton(group, "open");
 		addHandlerFileDialog(button);
 
@@ -60,11 +60,11 @@ public class ProcessView extends ViewPart {
 		
 		group = WidgetCreator.createGroup(composite, "Game Info",4);
 		text = WidgetCreator.createText(group,false,null,"id:");
-		text = WidgetCreator.createText(group,false,Model.getGameBean(),"id");
+		text = WidgetCreator.createText(group,false,Model.getConvertGameBean(),"id");
 		text = WidgetCreator.createText(group,false,null,"title:");
-		text = WidgetCreator.createText(group,false,Model.getGameBean(),"title");
+		text = WidgetCreator.createText(group,false,Model.getConvertGameBean(),"title");
 		text = WidgetCreator.createText(group,false,null,"scrubbed size:");
-		text = WidgetCreator.createText(group,false,Model.getGameBean(),"scrubGb");
+		text = WidgetCreator.createText(group,false,Model.getConvertGameBean(),"scrubGb");
 				
 		progressBar = WidgetCreator.createProgressBar(composite);
 		
@@ -78,8 +78,7 @@ public class ProcessView extends ViewPart {
 	private void addHandlerConvert(Button button) {
 		
 		button.addSelectionListener(new ConvertButtonListener(ID,bean));
-	
-		
+
 	}
 
 	private void addHandlerFolder(Button button) {

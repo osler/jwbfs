@@ -1,4 +1,4 @@
-package jwbfs.ui.listeners;
+package jwbfs.ui.listeners.coverView;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
