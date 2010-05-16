@@ -1,5 +1,7 @@
 package jwbfs.model;
 
+import java.io.File;
+
 import jwbfs.ui.utils.Utils;
 
 
@@ -49,11 +51,9 @@ public class Constants {
 												"ID_TITLE/ID.ext",
 												"TITLE [ID]/ID.ext"};
 
-	public static final String NOIMAGE = Utils.getRoot("jwbfs.ui")+"icons/noimg.png";
-	public static final String NOIMAGE3D = Utils.getRoot("jwbfs.ui")+"icons/noimg3d.png";
-	public static final String NODISC = Utils.getRoot("jwbfs.ui")+"icons/nodisc.png";
-	
-	
+	public static final String NOIMAGE = Utils.getRoot()+"icons"+File.separatorChar+"noimg.png";
+	public static final String NOIMAGE3D = Utils.getRoot()+"icons"+File.separatorChar+"noimg3d.png";
+	public static final String NODISC = Utils.getRoot()+"icons"+File.separatorChar+"nodisc.png";
 	
 	/*
 	 

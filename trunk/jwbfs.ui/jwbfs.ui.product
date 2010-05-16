@@ -3,6 +3,7 @@
 
 <product name="jwbfs" uid="jwbfs" id="jwbfs.ui.product" application="jwbfs.ui.application" useFeatures="false" includeLaunchers="true">
 
+
    <configIni use="default">
    </configIni>
 
@@ -26,6 +27,7 @@
       </win>
    </launcher>
 
+
    <vm>
    </vm>
 
@@ -39,7 +41,6 @@
    <plugins>
       <plugin id="com.ibm.icu"/>
       <plugin id="javax.servlet"/>
-      <plugin id="jwbfs.model"/>
       <plugin id="jwbfs.ui"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
