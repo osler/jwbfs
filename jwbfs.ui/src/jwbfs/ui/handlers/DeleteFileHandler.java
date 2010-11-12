@@ -4,7 +4,7 @@ import java.io.File;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
-import jwbfs.ui.utils.FileUtils;
+import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.core.commands.AbstractHandler;

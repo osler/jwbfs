@@ -8,9 +8,9 @@ import java.io.InputStreamReader;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
+import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.WBFSException;
-import jwbfs.ui.utils.FileUtils;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
 
@@ -72,7 +72,8 @@ public class CheckDiscHandler extends AbstractHandler {
 				System.out.println(line);
 
 					info[0] = fileWbfs.getName().replace(".wbfs", "");
-					info[1] = line.substring(line.indexOf("=")+1, line.length()).trim();
+					info[1] = line.split("=")[1].trim();
+//					info[1] = line.substring(line.indexOf("=")+1, line.length()).trim();
 					info[2] = Utils.getGB(fileWbfs.length());	
 
 
@@ -86,6 +87,8 @@ public class CheckDiscHandler extends AbstractHandler {
 
 
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

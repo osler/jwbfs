@@ -1,6 +1,8 @@
-package jwbfs.ui.utils;
+package jwbfs.model.utils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FileUtils {
 
@@ -78,5 +80,26 @@ public class FileUtils {
 			path = System.getProperty("java.io.tmpdir");
 		}
 		return path;
+	}
+
+	public static ArrayList<File> getDiskAvalaible() {
+		ArrayList<File> disks = new ArrayList<File>();
+		disks.addAll(Arrays.asList(File.listRoots()));
+		
+		if(disks != null && disks.size() < 2){
+			File[] tmp = new File(disks.get(0).getPath()+File.separatorChar+"media").listFiles();
+			for(int x = 0; x<tmp.length;x++){
+				File testMedia = tmp[x];
+				File testWBFS = new File(testMedia.getAbsolutePath()+File.separatorChar+"wbfs");
+				
+				if(testWBFS.exists()){
+					disks.add(testWBFS);
+				}
+
+			}
+		}
+		
+		
+		return  disks;
 	}
 }

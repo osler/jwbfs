@@ -21,7 +21,7 @@ public class Perspective implements IPerspectiveFactory {
 //		layout.addStandaloneView(MainView.ID,  false, IPageLayout.LEFT, 0.5f, editorArea);
 //		layout.addStandaloneView(CoverView.ID,  false, IPageLayout.RIGHT, 0.5f, editorArea);
 		
-		Model model = new Model();
+		new Model();
 		
 		folder.addView(ManagerView.ID);
 //		folder.addView(ProcessView.ID);
