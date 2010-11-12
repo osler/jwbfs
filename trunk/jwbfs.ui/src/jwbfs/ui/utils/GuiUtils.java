@@ -1,6 +1,6 @@
 package jwbfs.ui.utils;
 
-import jwbfs.model.Constants;
+import jwbfs.model.utils.Constants;
 import jwbfs.ui.views.CoverView;
 import jwbfs.ui.views.ManagerView;
 
@@ -81,9 +81,9 @@ public class GuiUtils {
 	}
 	
 	public static void setDefaultCovers() {
-		GuiUtils.setCover(Constants.NOIMAGE);
-		GuiUtils.setCover3d(Constants.NOIMAGE3D);
-		GuiUtils.setCoverDisc(Constants.NODISC);
+		GuiUtils.setCover(CoverConstants.NOIMAGE);
+		GuiUtils.setCover3d(CoverConstants.NOIMAGE3D);
+		GuiUtils.setCoverDisc(CoverConstants.NODISC);
 	}
 	
 }

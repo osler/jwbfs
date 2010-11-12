@@ -1,12 +1,12 @@
 package jwbfs.ui.views;
 
 
-import jwbfs.model.Constants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.listeners.coverView.FolderCoverDialogListener;
 import jwbfs.ui.listeners.coverView.UpdateCoverListener;
+import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.swt.graphics.Image;
@@ -48,18 +48,18 @@ public class CoverView extends ViewPart {
 
 		Group group =  WidgetCreator.createGroup(parent, "Cover",2);
 		
-		Image image = new Image( GuiUtils.getDisplay(),Constants.NOIMAGE);
+		Image image = new Image( GuiUtils.getDisplay(),CoverConstants.NOIMAGE);
 		cover = WidgetCreator.createImage(group);
 		cover.setImage(image);
 		
-		image = new Image( GuiUtils.getDisplay(),Constants.NOIMAGE3D);
+		image = new Image( GuiUtils.getDisplay(),CoverConstants.NOIMAGE3D);
 		cover3d = WidgetCreator.createImage(group);
 		cover3d.setSize(50,50);
 		cover3d.setImage(image);
 		
 		group = WidgetCreator.createGroup(parent, "Disc");
 		
-		image = new Image( GuiUtils.getDisplay(),Constants.NODISC);
+		image = new Image( GuiUtils.getDisplay(),CoverConstants.NODISC);
 		disk = WidgetCreator.createImage(group);
 		disk.setSize(50,50);
 		disk.setImage(image);

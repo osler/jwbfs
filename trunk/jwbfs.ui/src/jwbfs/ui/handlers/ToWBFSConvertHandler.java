@@ -5,10 +5,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import jwbfs.model.Constants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.Constants;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
 import jwbfs.ui.exceptions.WBFSException;

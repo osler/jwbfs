@@ -7,11 +7,11 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import jwbfs.model.Constants;
-import jwbfs.model.CoverConstants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.Constants;
+import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
 
@@ -115,7 +115,7 @@ public class UpdateTitlesTXTHandler extends AbstractHandler {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();	
-				immagine = new Image(GuiUtils.getDisplay(),Constants.NOIMAGE);			
+				immagine = new Image(GuiUtils.getDisplay(),CoverConstants.NOIMAGE);			
 			}
 
 

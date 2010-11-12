@@ -1,7 +1,7 @@
 package jwbfs.ui.listeners.mainView;
 
-import jwbfs.model.Constants;
 import jwbfs.model.Model;
+import jwbfs.model.utils.Constants;
 import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
 import jwbfs.ui.handlers.CheckDiscHandler;

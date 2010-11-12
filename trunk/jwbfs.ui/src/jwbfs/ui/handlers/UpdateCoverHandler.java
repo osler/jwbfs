@@ -7,12 +7,11 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import jwbfs.model.Constants;
-import jwbfs.model.CoverConstants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.ui.utils.FileUtils;
+import jwbfs.model.utils.FileUtils;
+import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.views.CoverView;
 
@@ -126,7 +125,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 	}
 		
 	private void processCoverDisc(String coverPath) {
-		GuiUtils.setCoverDisc(Constants.NODISC);
+		GuiUtils.setCoverDisc(CoverConstants.NODISC);
 		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
 			if(settingsBean.isCoverDiscs()){
 				downloadCover(CoverConstants.DISC_URL,coverPath);
@@ -136,7 +135,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 					GuiUtils.setCoverDisc(coverPath);
 				}else{
 					//Not found
-					GuiUtils.setCoverDisc(Constants.NODISC);
+					GuiUtils.setCoverDisc(CoverConstants.NODISC);
 				}
 
 				//progressbar
@@ -147,7 +146,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 	}
 
 	private void processCover3D(String coverPath) {
-		GuiUtils.setCover3d(Constants.NOIMAGE3D);
+		GuiUtils.setCover3d(CoverConstants.NOIMAGE3D);
 		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
 			if(settingsBean.isCover3D()){
 
@@ -157,7 +156,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 					GuiUtils.setCover3d(coverPath);
 				}else{
 					//Not found
-					GuiUtils.setCover3d(Constants.NOIMAGE3D);
+					GuiUtils.setCover3d(CoverConstants.NOIMAGE3D);
 				}
 				//progressbar
 				((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(getProgress()>2?2:getProgress());
@@ -167,7 +166,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 	}
 
 	private void processCover(String coverPath) {
-		GuiUtils.setCover(Constants.NOIMAGE);
+		GuiUtils.setCover(CoverConstants.NOIMAGE);
 		if(settingsBean.isAutomaticCoverDownload() || updateCover){
 
 			if(updateCover){
@@ -185,7 +184,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 				GuiUtils.setCover(coverPath);
 			}else{
 				//Not found
-				GuiUtils.setCover(Constants.NOIMAGE);
+				GuiUtils.setCover(CoverConstants.NOIMAGE);
 			}
 			//progressbar
 			((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setSelection(1);
@@ -294,7 +293,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();	
-				immagine = new Image(GuiUtils.getDisplay(),Constants.NOIMAGE);			
+				immagine = new Image(GuiUtils.getDisplay(),CoverConstants.NOIMAGE);			
 			}
 
 

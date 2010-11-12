@@ -1,11 +1,11 @@
 package jwbfs.ui.views.folder;
 
-import jwbfs.model.Constants;
-import jwbfs.model.CoverConstants;
 import jwbfs.model.Model;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.Constants;
 import jwbfs.ui.listeners.coverView.FolderCoverDialogListener;
 import jwbfs.ui.listeners.settings.UpdateTitlesTXTListener;
+import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.views.WidgetCreator;
 
 import org.eclipse.swt.widgets.Button;

@@ -194,9 +194,12 @@ public class Utils {
 	}
 
 	public static String getGB(long bytes) {
-		double gb = Double.valueOf(bytes)/1073741824;
+		double gb = Double.valueOf(bytes)/1073741824;	
 		String ret = String.valueOf(gb);
-		return ret.substring(0, ret.indexOf(".")+3);
+		String size = ret.substring(0,ret.indexOf("."));
+		String sizeDecimal = ret.substring(ret.indexOf("."),ret.length());
+		sizeDecimal = sizeDecimal.length()>2?sizeDecimal.substring(0,2):sizeDecimal;
+		return size+sizeDecimal;
 	}
 
 	public static String getMB(long bytes) {
