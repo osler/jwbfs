@@ -4,14 +4,12 @@ import jwbfs.model.Model;
 import jwbfs.model.utils.Constants;
 import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
-import jwbfs.ui.handlers.CheckDiscHandler;
 import jwbfs.ui.handlers.FileDialogAddHandler;
 import jwbfs.ui.handlers.ToWBFSConvertHandler;
 import jwbfs.ui.handlers.UpdateCoverHandler;
 import jwbfs.ui.handlers.UpdateGameListHandler;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
-import jwbfs.ui.views.ManagerView;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -38,8 +36,8 @@ public class AddButtonListener extends SelectionAdapter {
 		try {
 			Utils.getHandlerService(viewID).executeCommand(FileDialogAddHandler.ID, null);
 //			CheckDiscHandler.index = -1;
-			Model.getSettingsBean().setManagerMode(false);
-			Utils.getHandlerService(viewID).executeCommand(CheckDiscHandler.ID, null);
+		
+			Utils.getHandlerService(viewID).executeCommand(Constants.MAINVIEW_ID, null);
 			
 			if(Model.getConvertGameBean().getFilePath() == null || Model.getConvertGameBean().getFilePath().equals("")){
 				GuiUtils.setDefaultCovers();

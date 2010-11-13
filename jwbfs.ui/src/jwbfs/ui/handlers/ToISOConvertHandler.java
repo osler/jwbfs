@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
+import jwbfs.model.utils.Constants;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
 import jwbfs.ui.exceptions.WBFSException;
@@ -101,7 +102,7 @@ public class ToISOConvertHandler extends AbstractHandler {
 			      bar = Utils.getPercentual(line); 
 			      
 			      
-			      ((ManagerView) GuiUtils.getView(ManagerView.ID)).getProgressBar().setSelection(bar);
+			      ((ManagerView) GuiUtils.getView(Constants.MAINVIEW_ID)).getProgressBar().setSelection(bar);
 		      }
 		      input.close();
 			return true;

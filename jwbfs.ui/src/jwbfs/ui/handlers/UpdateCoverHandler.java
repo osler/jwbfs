@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -33,17 +34,8 @@ public class UpdateCoverHandler extends AbstractHandler {
 		settingsBean =  Model.getSettingsBean();
 		
 
-		if(settingsBean.isManagerMode()){
-
-			processBean = (GameBean) Model.getSelectedGame();			
-			executeForBean();
-
-
-		}else{
-			settingsBean = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
-
-			executeForBean();
-		}
+		processBean = (GameBean) Model.getSelectedGame();			
+		executeForBean();
 
 
 		return null;
@@ -128,6 +120,12 @@ public class UpdateCoverHandler extends AbstractHandler {
 		GuiUtils.setCoverDisc(CoverConstants.NODISC);
 		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
 			if(settingsBean.isCoverDiscs()){
+
+				//delete old cover if update forced
+//				if(updateCover && FileUtils.coverFileExist(coverPath)){
+//					new File(coverPath).delete();
+//				}
+				
 				downloadCover(CoverConstants.DISC_URL,coverPath);
 
 				if(FileUtils.coverFileExist(coverPath)){
@@ -212,9 +210,16 @@ public class UpdateCoverHandler extends AbstractHandler {
 			String region = settingsBean.getRegion();
 			String gameId = processBean.getId();
 
-			InputStream in = checkAndValidate(url,region,gameId,0);
+			InputStream in = obtainInputStream(url,region,gameId,-1);
 			if(in == null){
-				return;
+				//if disc, try custom, else return
+				if(url.equals(CoverConstants.DISC_URL)){
+					in = obtainInputStream(CoverConstants.DISCCUSTOM_URL,
+											region,gameId,-1);
+				}else{
+					return;
+				}
+
 			}
 			FileOutputStream out = new FileOutputStream(coverPath);
 
@@ -236,34 +241,43 @@ public class UpdateCoverHandler extends AbstractHandler {
 	}
 
 
-	private InputStream checkAndValidate(String url,String region, String gameId, int cycle) {
-
+	private InputStream obtainInputStream(String url,String region, String gameId, int cycle) {
 		String[] alternate = {"EN","US","JA"};
-
-		if(cycle >= alternate.length){
-			return null;
-		}
-
-		String address = url
-		+region
-		+"/"+gameId+".png";
-
 		InputStream in;
 		try {
-			URL u = new URL(checkUrl(address));
+
+			String address = url
+			+region
+			+"/"+gameId+".png";
+			
+			address = formatUrlAddress(address);
+			
 			System.out.println("Checking:\n"+address);
+			if(!urlExists(address)){
+				throw new MalformedURLException();
+			}
+
+			URL u = new URL(address);
 			in = u.openStream();
 			System.out.println("Url cover correct");
 
 
 		} catch (MalformedURLException e) {
+			cycle++;
+			if(cycle >= alternate.length){
+				return null;
+			}
 			System.out.println("Region cover not found trying "+alternate[cycle]);
-			in = checkAndValidate(url,alternate[cycle],gameId,++cycle);
+			in = obtainInputStream(url,alternate[cycle],gameId,cycle);
 			return in;
 
 		} catch (IOException e) {
+			cycle++;
+			if(cycle >= alternate.length){
+				return null;
+			}
 			System.out.println("Region cover not found trying "+alternate[cycle]);
-			in = checkAndValidate(url,alternate[cycle],gameId,++cycle);		
+			in = obtainInputStream(url,alternate[cycle],gameId,cycle);		
 			return in;
 		}
 
@@ -271,7 +285,23 @@ public class UpdateCoverHandler extends AbstractHandler {
 		return in;
 	}
 
-	public static String checkUrl(String indirizzo) {
+	private boolean urlExists(String updateServer) throws IOException {
+
+		HttpURLConnection.setFollowRedirects(false);
+		HttpURLConnection con;
+		con = (HttpURLConnection) new URL(updateServer).openConnection();
+
+		con.setRequestMethod("HEAD");
+
+		int resp = con.getResponseCode();
+		if(resp != HttpURLConnection.HTTP_OK){
+			return false;
+		}
+
+		return true;
+	}
+
+	public static String formatUrlAddress(String indirizzo) {
 		if (indirizzo.contains(" ")){
 			indirizzo = indirizzo.replaceAll(" ", "%20");
 		}
@@ -285,7 +315,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 		if(indirizzo.startsWith("http://")) {
 			URL url;
 			try {
-				url = new URL(checkUrl(indirizzo));
+				url = new URL(formatUrlAddress(indirizzo));
 				InputStream is = url.openStream();
 				immagine = new Image(null,is);
 

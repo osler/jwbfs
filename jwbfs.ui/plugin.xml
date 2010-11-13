@@ -2,51 +2,8 @@
 <?eclipse version="3.4"?>
 <plugin>
 
-   <extension
-         id="application"
-         point="org.eclipse.core.runtime.applications">
-      <application>
-         <run
-               class="jwbfs.ui.Application">
-         </run>
-      </application>
-   </extension>
-   <extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            name="RCP Perspective"
-            class="jwbfs.ui.Perspective"
-            id="jwbfs.ui.perspective">
-      </perspective>
-   </extension>
-   <extension
-         id="product"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="jwbfs.ui.application"
-            name="jwbfs">
-         <property
-               name="appName"
-               value="jwbfs">
-         </property>
-         <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini">
-         </property>
-         <property
-               name="startupForegroundColor"
-               value="000000">
-         </property>
-         <property
-               name="startupMessageRect"
-               value="7,252,445,20">
-         </property>
-         <property
-               name="startupProgressRect"
-               value="5,275,445,15">
-         </property>
-      </product>
-   </extension>
+
+  
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -67,12 +24,7 @@
             name="Settings"
             restorable="true">
       </view>
-      <view
-            class="jwbfs.ui.views.folder.ProcessView"
-            id="ProcessView"
-            name="Convert"
-            restorable="true">
-      </view>
+
       <view
             class="jwbfs.ui.views.ManagerView"
             id="ManagerView"

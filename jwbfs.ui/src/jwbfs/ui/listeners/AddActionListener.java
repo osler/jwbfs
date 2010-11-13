@@ -1,6 +1,7 @@
 package jwbfs.ui.listeners;
 
 import jwbfs.model.Model;
+import jwbfs.model.utils.Constants;
 import jwbfs.ui.handlers.CheckDiscHandler;
 import jwbfs.ui.handlers.FileDialogAddHandler;
 import jwbfs.ui.handlers.UpdateCoverHandler;
@@ -31,8 +32,8 @@ public class AddActionListener extends SelectionAdapter {
 		try {
 			Utils.getHandlerService(viewID).executeCommand(FileDialogAddHandler.ID, null);
 			CheckDiscHandler.index = -1;
-			Model.getSettingsBean().setManagerMode(false);
-			Utils.getHandlerService(viewID).executeCommand(CheckDiscHandler.ID, null);
+			Model.setSelectedGame(Model.getConvertGameBean());
+			Utils.getHandlerService(viewID).executeCommand(Constants.COMMAND_CHECKDISK_ID, null);
 			Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);
 
 		} catch (ExecutionException e1) {

@@ -1,11 +1,10 @@
 package jwbfs.ui.handlers;
 
 import jwbfs.model.Model;
-import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.Constants;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.Utils;
-import jwbfs.ui.views.ManagerView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -15,14 +14,13 @@ import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.common.NotDefinedException;
 
 public class UpdateGameListHandler extends AbstractHandler {
-	private GameBean processBean;
+	
 	private SettingsBean settingsBean;
 	public static final String ID = "updateGameList";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
-		processBean = (GameBean) Model.getBeans().get(GameBean.INDEX);
 		settingsBean = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 
 //	    ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar().setMaximum(getProgress());
@@ -32,12 +30,10 @@ public class UpdateGameListHandler extends AbstractHandler {
 
 			Model.setGames(Model.listGames(settingsBean.getDiskPath()));
 
-			((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).setManagerMode(true);
-
-			Utils.getHandlerService(ManagerView.ID).executeCommand(CheckDiscHandler.ID, null);
+			Utils.getHandlerService(Constants.MAINVIEW_ID).executeCommand(Constants.COMMAND_CHECKDISK_ID, null);
 
 			GuiUtils.getManagerTableViewer().refresh();
-//			((ManagerView)GuiUtils.getView(ManagerView.ID)).getTv().setInput(Model.getGames());
+
 		} catch (NotDefinedException e) {
 			e.printStackTrace();
 		} catch (NotEnabledException e) {
@@ -49,19 +45,6 @@ public class UpdateGameListHandler extends AbstractHandler {
 		return null;
 	}
 
-	private int getProgress() {
-
-		int tot = 1;
-		
-		if(settingsBean.isCover3D()){
-			tot++;
-		}
-		if(settingsBean.isCoverDiscs()){
-			tot++;
-		}
-	
-		return tot;
-	}
 
 
 }

@@ -1,26 +1,15 @@
 package jwbfs.ui.handlers;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 
-import jwbfs.model.Model;
-import jwbfs.model.beans.GameBean;
-import jwbfs.model.beans.SettingsBean;
-import jwbfs.model.utils.Constants;
-import jwbfs.ui.controls.ErrorHandler;
-import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
-import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.Utils;
-import jwbfs.ui.views.ManagerView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 public class ToWBFSConvertHandler extends AbstractHandler {
 
@@ -30,131 +19,30 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 	public ToWBFSConvertHandler() {
 	}
 
-	/**
-	 * the command has been executed, so extract extract the needed information
-	 * from the application context.
-	 */
+
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
+		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		.getShell();
 
-		GameBean bean = (GameBean) Model.getConvertGameBean();
+		try {
 
-		String filePath = bean.getFilePath();
-		String folderPath =  Model.getSettingsBean().getFolderPath();
-		
-		if(filePath.toLowerCase().endsWith(".wbfs")){
-			try {
-				throw new NotCorrectDiscFormatException();
-			} catch (NotCorrectDiscFormatException e) {
-				return null;
-			}
+			new ProgressMonitorDialog(sh).run(true, true, new ToWBFSConvertOperation());
+
+		} catch (InvocationTargetException e) {
+
+			e.printStackTrace();
+
+			return null;
+
+		} catch (InterruptedException e) {
+
+			GuiUtils.showError("Error: "+e.getMessage());
+			return null;
+
 		}
+
 		
-		File file = new File(filePath);
-
-		 if(folderPath == null || folderPath.equals("none") || folderPath.equals("") ){
-//			 folderPath = file.getAbsolutePath().replace(file.getName(), "");
-			 folderPath = Model.getSettingsBean().getDiskPath();
-		 }
-		
-		  try {
-			  String path = file.getAbsolutePath();			  	  			  
-			  String bin = Utils.getWBFSpath();
-
-
-
-			  //processa iso
-			  String[]  processo = getProcessParameter(bin,path,folderPath);
-			  System.out.println(processo);
-			  Process p = Runtime.getRuntime().exec(processo);
-			  checkProcessMessages(p);
-
-
-
-			  MessageBox msg = new MessageBox(new Shell());
-			  msg.setText("Info");
-			  msg.setMessage(bean.getTitle()+" Added");
-			  msg.open();
-
-		  }
-		  catch (WBFSException err) {
-			  return null;
-		    } catch (IOException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
 		return null;
-	}
-
-	private static boolean checkProcessMessages(Process p) throws IOException, WBFSException,Exception {
-	
-		  String line;
-		
-	      BufferedReader input =
-		        new BufferedReader
-		          (new InputStreamReader(p.getInputStream()));
-		      while ((line = input.readLine()) != null) {
-		    	  
-			      System.out.println(line);
-			      
-			      ErrorHandler.processError(line);
-			      
-			      int bar = 0;
-			      bar = Utils.getPercentual(line); 
-			      
-			      ((ManagerView) GuiUtils.getView(ManagerView.ID)).getProgressBar().setSelection(bar);
-					
-		      }
-		      input.close();
-			return true;
-		
-	}
-
-	private static String[] getProcessParameter(String bin, String path, String folderPath) {
-//		if(toIso){
-//			String[]par = new String[4];
-//			par[0] = bin;
-//			par[1]  = path;
-//			par[2] = "convert"; 
-//			par[3] = folderPath;
-//	
-//			return par;
-//	
-//		}else{
-			
-	
-		String[] par = new String[8];
-	
-		SettingsBean tab = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
-		
-		par[0] = bin; 
-		
-		par[1] = Constants.decodeValue(tab.getCopyPartitions(), 
-				Constants.COPY_PARTITIONS_Text, 
-				Constants.COPY_PARTITIONS_Values);
-		
-		par[2] = Constants.decodeValue(tab.getSplitSize(), 
-				Constants.SPLITSIZE_Text, 
-				Constants.SPLITSIZE_Values);
-	
-		
-		par[3] = Constants.decodeValue(tab.isEnableTXT(),  
-				Constants.ENABLE_TXT_CREATION_Values);
-	
-		par[4] =  Constants.decodeValue(tab.getTxtLayout(), 
-				Constants.TXT_LAYOUT_Text, 
-				Constants.TXT_LAYOUT_Values);
-		
-		par[5] = path;
-		
-		//COMMAND
-		par[6] = "convert";
-		
-		par[7] = folderPath;
-	
-		return par;
-//		}
 	}
 }

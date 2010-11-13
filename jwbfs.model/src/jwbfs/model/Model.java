@@ -7,7 +7,16 @@ import java.util.List;
 
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.Constants;
 import jwbfs.model.utils.FileUtils;
+
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.IHandlerService;
 
 public class Model {
 	
@@ -65,6 +74,9 @@ public class Model {
 		
 		File f = new File(folder);
 		File[] folderList = f.listFiles();
+		if(folderList == null){ //NO GAMES in folder
+			return game;
+		}
 				
 		for(int x = 0; x<folderList.length;x++){
 			File f2 = folderList[x];
@@ -73,6 +85,32 @@ public class Model {
 				if(files != null){
 					for(int j = 0; j < files.length; j++){
 						game = checkFile(files,j,game);
+						if(game.size() > j){
+							setSelectedGame(game.get(j));
+							
+							IHandlerService handlerService = (IHandlerService) 
+												PlatformUI.getWorkbench()
+												.getActiveWorkbenchWindow()
+												.getService(IHandlerService.class);
+							
+							try {
+								handlerService.executeCommand(Constants.COMMAND_CHECKDISK_ID, null);
+							} catch (ExecutionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (NotDefinedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (NotEnabledException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (NotHandledException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					
+
 					}
 				}
 			}else{
