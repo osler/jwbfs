@@ -2,9 +2,8 @@ Eclipse-BundleShape: dir
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ui
-Bundle-SymbolicName: jwbfs.ui; singleton:=true
+Bundle-SymbolicName: jwbfs.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: jwbfs.ui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.databinding.beans;bundle-version="1.2.0",
@@ -15,3 +14,16 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .
+Export-Package: jwbfs.ui.controls,
+ jwbfs.ui.exceptions,
+ jwbfs.ui.handlers,
+ jwbfs.ui.interfaces,
+ jwbfs.ui.listeners,
+ jwbfs.ui.listeners.coverView,
+ jwbfs.ui.listeners.mainView,
+ jwbfs.ui.listeners.settings,
+ jwbfs.ui.utils,
+ jwbfs.ui.views,
+ jwbfs.ui.views.dialogs,
+ jwbfs.ui.views.folder,
+ jwbfs.ui.views.table

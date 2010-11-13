@@ -53,19 +53,19 @@ public class FileUtils {
 	public static String exist(String path, boolean cover2d, boolean cover3d, boolean coverDisc) {
 		path = exist(path);
 
-		String tempDir = System.getProperty("java.io.tmpdir");
+//		String tempDir = System.getProperty("java.io.tmpdir");
 		
-			if(cover2d && path.equals(tempDir)){
-				path = path+File.separatorChar+"2d";
+			if(cover2d /*&& path.equals(tempDir)*/){
+				path = path+File.separatorChar+"2D";
 				FileUtils.checkAndCreateFolder(path);
 			}
 			
-			if(cover3d && path.equals(tempDir)){
-				path = path+File.separatorChar+"3d";
+			if(cover3d /*&& path.equals(tempDir)*/){
+				path = path+File.separatorChar+"";
 				FileUtils.checkAndCreateFolder(path);
 			}
 			
-			if(coverDisc && path.equals(tempDir)){
+			if(coverDisc /*&& path.equals(tempDir)*/){
 				path = path+File.separatorChar+"disc";
 				FileUtils.checkAndCreateFolder(path);	
 			}
@@ -87,19 +87,36 @@ public class FileUtils {
 		disks.addAll(Arrays.asList(File.listRoots()));
 		
 		if(disks != null && disks.size() < 2){
-			File[] tmp = new File(disks.get(0).getPath()+File.separatorChar+"media").listFiles();
-			for(int x = 0; x<tmp.length;x++){
-				File testMedia = tmp[x];
-				File testWBFS = new File(testMedia.getAbsolutePath()+File.separatorChar+"wbfs");
-				
-				if(testWBFS.exists()){
-					disks.add(testWBFS);
+			for(int f = 0; f<DiscContants.LINUX_MOUNT_FOLDERS.length; f++){
+				File[] tmp = new File(disks.get(0).getPath()+File.separatorChar+DiscContants.LINUX_MOUNT_FOLDERS[f]).listFiles();
+				for(int x = 0; x<tmp.length;x++){
+					File testMedia = tmp[x];
+					File testWBFS = new File(testMedia.getAbsolutePath()+File.separatorChar+DiscContants.WBFS_GAMES_FOLDER);
+					
+					if(testWBFS.exists()){
+						disks.add(testWBFS);
+					}
 				}
-
 			}
+
 		}
 		
 		
 		return  disks;
+	}
+
+	public static void deleteFolder(String folder, boolean deleteAlsoFiles) {
+		
+		File parent = new File(folder);
+		
+		if(deleteAlsoFiles){
+			File[] files = parent.listFiles();
+			for(int i = 0; i<files.length; i++){
+				files[i].delete();
+			}
+		}
+
+		parent.delete();
+		
 	}
 }

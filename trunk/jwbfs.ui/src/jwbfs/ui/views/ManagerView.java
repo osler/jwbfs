@@ -6,11 +6,12 @@ import java.util.List;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.Constants;
 import jwbfs.ui.handlers.UpdateCoverHandler;
 import jwbfs.ui.listeners.mainView.AddButtonListener;
 import jwbfs.ui.listeners.mainView.DeleteButtonListener;
-import jwbfs.ui.listeners.mainView.ExportButtonListener;
 import jwbfs.ui.listeners.mainView.DiskFolderSelectionListener;
+import jwbfs.ui.listeners.mainView.ExportButtonListener;
 import jwbfs.ui.listeners.mainView.UpdateGameListListener;
 import jwbfs.ui.utils.Utils;
 import jwbfs.ui.views.table.ManagerViewContentProvider;
@@ -48,15 +49,13 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	private TableViewer tv;
 	private ProgressBar progressBar;
 
-	public static final String ID = "ManagerView";
-
 	public ManagerView() {
 
 	}
 
 	private void addHandlerFolder(Button button) {
 		//TODO FolderDialog for disk path
-		button.addSelectionListener(new DiskFolderSelectionListener(ID));
+		button.addSelectionListener(new DiskFolderSelectionListener(Constants.MAINVIEW_ID));
 	}
 
 
@@ -145,12 +144,12 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	}
 
 	private void addHandlerUpdate(Button button) {
-		button.addSelectionListener(new UpdateGameListListener(ID));
+		button.addSelectionListener(new UpdateGameListListener(Constants.MAINVIEW_ID));
 
 	}
 	
 	private void deleteAction(Button button) {
-		button.addSelectionListener(new DeleteButtonListener(ID));
+		button.addSelectionListener(new DeleteButtonListener(Constants.MAINVIEW_ID));
 
 	}
 
@@ -162,9 +161,6 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 
-		if(!((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).isManagerMode()){
-			((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).setManagerMode(true);
-		}
 
 
 		List<GameBean> games = Model.getGames();
@@ -176,7 +172,7 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 			Model.setSelectedGame(selectedGame);
 		}
 		try {
-			Utils.getHandlerService(ID).executeCommand(UpdateCoverHandler.ID, null);
+			Utils.getHandlerService(Constants.MAINVIEW_ID).executeCommand(UpdateCoverHandler.ID, null);
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		} catch (NotDefinedException e) {
@@ -209,14 +205,14 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 
 	private void exportAction(Button button) {
 
-		button.addSelectionListener(new ExportButtonListener(ID));
+		button.addSelectionListener(new ExportButtonListener(Constants.MAINVIEW_ID));
 
 
 	}
 
 	public void addAction(Button button){
 
-		button.addSelectionListener(new AddButtonListener(ID));
+		button.addSelectionListener(new AddButtonListener(Constants.MAINVIEW_ID));
 
 	}
 

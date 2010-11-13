@@ -6,6 +6,7 @@ import jwbfs.ui.views.ManagerView;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.MessageBox;
@@ -37,10 +38,18 @@ public class GuiUtils {
 		msg.open();
 		
 	}
+	
+	public static void showInfo(String message, String text, int style) {
+		MessageBox msg = new MessageBox(new Shell(), style);
+		msg.setMessage(message);
+		msg.setText(text);
+		msg.open();
+		
+	}
 
 	public static TableViewer getManagerTableViewer() {
 		// TODO Auto-generated method stub
-		return 	((ManagerView)GuiUtils.getView(ManagerView.ID)).getTv();
+		return 	((ManagerView)GuiUtils.getView(Constants.MAINVIEW_ID)).getTv();
 	}
 
 	public static boolean showConfirmDialog(String message) {
@@ -71,12 +80,24 @@ public class GuiUtils {
 	}
 	
 	public static void setCoverDisc(String coverPath) {
+		Image img = null;
+		try{
+			System.out.println("Setting cover disc:");
+			System.out.println(coverPath);
+			img =  new Image(GuiUtils.getDisplay(),coverPath);
 
-		System.out.println("Setting cover disc:");
-		System.out.println(coverPath);
-		Image img = new Image(GuiUtils.getDisplay(),coverPath);
+		}catch (Exception e) {
+			if(coverPath.toLowerCase().contains("2d")){
+				coverPath = CoverConstants.NOIMAGE;
+			}else if(coverPath.toLowerCase().contains("3d")){
+				coverPath = CoverConstants.NOIMAGE3D;
+			}else if(coverPath.toLowerCase().contains("disc")){
+				coverPath = CoverConstants.NODISC;
+			}
+			
+			img =  new Image(GuiUtils.getDisplay(),coverPath);
+		}
 		((CoverView) GuiUtils.getView(CoverView.ID)).getDisk().setImage(img);
-
 
 	}
 	
@@ -84,6 +105,14 @@ public class GuiUtils {
 		GuiUtils.setCover(CoverConstants.NOIMAGE);
 		GuiUtils.setCover3d(CoverConstants.NOIMAGE3D);
 		GuiUtils.setCoverDisc(CoverConstants.NODISC);
+	}
+
+	public static void showError(String message) {
+		MessageBox msg = new MessageBox(new Shell(), SWT.ERROR);
+		msg.setMessage(message);
+		msg.open();
+		
+		
 	}
 	
 }

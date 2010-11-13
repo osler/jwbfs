@@ -22,7 +22,7 @@ import org.eclipse.swt.SWT;
 public class CheckDiscHandler extends AbstractHandler {
 
 
-	public static final String ID = "checkDisk";
+
 	public static  int index = -1;
 	
 
@@ -30,33 +30,24 @@ public class CheckDiscHandler extends AbstractHandler {
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		GameBean bean = null;
 		
-		if(Model.getSettingsBean().isManagerMode()){
+		GameBean bean = null;
 
-			for(int x =0; x<Model.getGames().size();x++){
-				bean = (GameBean) Model.getGames().toArray()[x];
-				checkWbfs(bean);
-			}
-			
-		}else{
-			bean = Model.getConvertGameBean();
-			
+		bean = Model.getSelectedGame();
 
-			if(bean.isWbfsToIso()){
-				checkWbfs(bean);
-			}else {
-				checkIso(bean);
-			}
 
+		if(bean.isWbfsToIso()){
+			checkWbfs(bean);
+		}else {
+			checkIso(bean);
 		}
 
-		 Model.getSettingsBean().setManagerMode(false);
+
 		return null;
 
 	}
 
-	private void checkWbfs(GameBean bean) {
+	private boolean checkWbfs(GameBean bean) {
 		try {
 			String[] info = new String [3];
 			File fileWbfs = new File(bean.getFilePath());
@@ -88,13 +79,15 @@ public class CheckDiscHandler extends AbstractHandler {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			GuiUtils.showError("Error: \nfile "+bean.getFilePath()+ " has errors. Skipping");
+			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
+			GuiUtils.showError("Error: \nfile "+bean.getFilePath()+ " has errors. Skipping");
+			return false;
 		}
 
-	
-
-		
+		return true;
 	}
 
 	private void checkIso(GameBean bean) {

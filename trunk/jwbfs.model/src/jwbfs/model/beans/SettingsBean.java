@@ -2,7 +2,6 @@ package jwbfs.model.beans;
 
 import java.util.LinkedHashMap;
 
-import jwbfs.model.utils.Constants;
 import jwbfs.model.utils.FileUtils;
 
 public class SettingsBean extends ModelObject {
@@ -28,14 +27,14 @@ public class SettingsBean extends ModelObject {
 	
 	//MANAGER SETTINGS
 	private String diskPath;
-	private boolean managerMode = false;
+
 	private String folderPath;
 	
 	public SettingsBean(){
 		this.addPropertyChangeListener(this);
 		
-		splitSize = Constants.SPLITSIZE_Text[0];
-		copyPartitions = Constants.COPY_PARTITIONS_Text[0];
+		splitSize = System.getProperty("settings.split.size");
+		copyPartitions = System.getProperty("settings.split.partitions");
 		enableTXT = true;
 		txtLayout = System.getProperty("wbfs.txt.layout");
 		
@@ -53,15 +52,16 @@ public class SettingsBean extends ModelObject {
 		updateCover = false;
 
 		//MANAGER
-		diskPath =  FileUtils.exist(System.getProperty("wbfs.disk.path"));
+		diskPath =  System.getProperty("wbfs.disk.path");
 
 	}
 	
 	public String getFolderPath() {
-		if(isManagerMode()){
+		//TODO
+//		if(isManagerMode()){
 			return diskPath;
-		}
-		return folderPath;
+//		}
+//		return folderPath;
 	}
 
 	public void setFolderPath(String folderPath) {
@@ -189,13 +189,6 @@ public class SettingsBean extends ModelObject {
 		return diskPath;
 	}
 	
-	public void setManagerMode(boolean managerMode) {
-		this.managerMode = managerMode;
-	}
-
-	public boolean isManagerMode() {
-		return managerMode;
-	}
 
 
 }

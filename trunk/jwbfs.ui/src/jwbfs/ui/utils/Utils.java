@@ -140,7 +140,7 @@ public class Utils {
 	}
 	
 	public static File getWbfsINI(){
-		String ini = getFile("wbfs.ini");
+		String ini = getFile(CoreConstants.wbfsINI);
 		System.out.println(ini);
 		return new File(ini);
 	}
@@ -149,10 +149,10 @@ public class Utils {
 			String path = null;
 			try {
 			path = FileLocator.toFileURL (
-			Platform.getBundle ("jwbfs.ui"). getEntry ("wbfs.ini")). getPath ();
+			Platform.getBundle (CoreConstants.bundleName_core). getEntry (CoreConstants.wbfsINI)). getPath ();
 //			path = path.substring (path.indexOf ("/") + 1, path.length ());
 			
-			path = path.replaceAll("wbfs.ini", "");
+			path = path.replaceAll(CoreConstants.wbfsINI, "");
 			
 			} catch (Exception e) {
 				e.printStackTrace ();
@@ -166,7 +166,7 @@ public class Utils {
 		String path = null;
 		try {
 		path = FileLocator.toFileURL (
-		Platform.getBundle ("jwbfs.ui"). getEntry (file)). getPath ();
+		Platform.getBundle (CoreConstants.bundleName_core). getEntry (file)). getPath ();
 //		path = path.substring (path.indexOf ("/") + 1, path.length ());
 		
 //		path = path.replaceAll("wbfs.ini", "");

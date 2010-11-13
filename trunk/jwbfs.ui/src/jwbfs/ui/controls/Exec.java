@@ -12,6 +12,8 @@ import java.util.Properties;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.Constants;
+import jwbfs.ui.utils.CoreConstants;
 import jwbfs.ui.utils.Utils;
 
 import org.eclipse.core.runtime.Platform;
@@ -23,13 +25,13 @@ public class Exec {
 	public static void initConfigFile(){
 		
 		
-		String nomeFileProps = "wbfs.ini";
+		String nomeFileProps = CoreConstants.wbfsINI;
 
 		try {
 
 			Properties props = new Properties();
 			
-			Bundle bundle = Platform.getBundle("jwbfs.ui");		
+			Bundle bundle = Platform.getBundle(CoreConstants.bundleName_core);		
 			InputStream is = bundle.getEntry("/" + nomeFileProps).openStream();
 			props.load(is);
 
@@ -141,6 +143,9 @@ public class Exec {
 		if(line.contains("wbfs.txt.layout")){
 			return subLine + bean.getTxtLayout();
 		}
+		if(line.contains("wbfs.region")){
+			return subLine + bean.getRegion();
+		}
 		if(line.contains("cover.region")){
 			return subLine + bean.getRegion();
 		}
@@ -152,6 +157,13 @@ public class Exec {
 		}
 		if(line.contains("cover.path.disc")){
 			return subLine + bean.getCoverPathDisc();
+		}
+
+		if(line.contains("settings.split.size")){
+			return subLine +  bean.getSplitSize();
+		}
+		if(line.contains("settings.split.partitions")){
+			return subLine + bean.getCopyPartitions();
 		}
 		
 		return line;

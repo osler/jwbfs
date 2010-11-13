@@ -240,11 +240,11 @@ public class WidgetCreator {
 
 	}
 	
-	public static Button createButton(Group group, String text){
+	public static Button createButton(Composite group, String text){
 		return createButton(group, text,100);
 	}
 
-	public static Button createButton(Group group, String text,int widthHint) {
+	public static Button createButton(Composite group, String text,int widthHint) {
 		
 		GridData gridBtn = new GridData();
 		gridBtn.horizontalAlignment = GridData.CENTER;

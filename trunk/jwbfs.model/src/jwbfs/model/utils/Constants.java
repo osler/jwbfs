@@ -48,6 +48,13 @@ public class Constants {
 												"ID/ID.ext",
 												"ID_TITLE/ID.ext",
 												"TITLE [ID]/ID.ext"};
+	
+	public static final String MAINVIEW_ID = "ManagerView";
+	public static final String COMMAND_CHECKDISK_ID = 	"checkDisk";
+	public static final String SETTINGSVIEW_ID = "SettingsView";
+	public static final String BUNDLE_CORE = "jwbfs.core";
+	public static final String BUNDLE_MODEL = "jwbfs.model";
+	public static final String BUNDLE_UI = "jwbfs.ui";
 
 
 	/*

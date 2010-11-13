@@ -29,19 +29,18 @@ public class UpdateCoverListener extends SelectionAdapter {
 
 		
 		try {
-			if(!((SettingsBean) Model.getBeans().get(SettingsBean.INDEX)).isManagerMode()){
 
-		if(bean.getFilePath() == null || bean.getFilePath().equals("")){
-			 
-			throw new FileNotSelectedException();
+				if(bean.getFilePath() == null || bean.getFilePath().equals("")){
 
-		}
-		
-		if(bean.getId().equals("not a wii disc")){
-			throw new NotValidDiscException();
+					throw new FileNotSelectedException();
 
-		}
-			}
+				}
+
+				if(bean.getId().equals("not a wii disc")){
+					throw new NotValidDiscException();
+
+				}
+			
 
 		((SettingsBean)Model.getBeans().get(SettingsBean.INDEX)).setUpdateCover(true);
 		Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);

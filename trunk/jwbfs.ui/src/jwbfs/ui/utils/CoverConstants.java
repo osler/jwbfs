@@ -36,5 +36,10 @@ http://wiitdb.com/titles.txt?LANG=XX
 	public static final String NOIMAGE3D = Utils.getRoot()+"icons"+File.separatorChar+"noimg3d.png";
 	public static final String NODISC = Utils.getRoot()+"icons"+File.separatorChar+"nodisc.png";
 	
+	public static final String IMAGE_FOLDER_NAME = "images";
+	public static final String IMAGE_2D_NAME = "2D";
+	public static final String IMAGE_3D_NAME = "";
+	public static final String IMAGE_DISC_NAME = "disc";
+	
 	
 }

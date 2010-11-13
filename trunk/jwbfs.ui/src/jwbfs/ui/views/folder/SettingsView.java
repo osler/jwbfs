@@ -17,9 +17,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
 public class SettingsView extends ViewPart{
-	
-	public static final String ID = "SettingsView";
-	
+	 
 	protected SettingsBean bean = null;
 	
 	public SettingsView() {
@@ -79,12 +77,12 @@ public class SettingsView extends ViewPart{
 	}
 
 	private void addCoverListener(Button button, String type) {
-		button.addSelectionListener(new FolderCoverDialogListener(ID, type));
+		button.addSelectionListener(new FolderCoverDialogListener(Constants.SETTINGSVIEW_ID, type));
 		
 	}
 
 	private void addHandlerUpdateTXT(Button button) {
-		button.addSelectionListener(new UpdateTitlesTXTListener(ID));
+		button.addSelectionListener(new UpdateTitlesTXTListener(Constants.SETTINGSVIEW_ID));
 		
 	}
 
