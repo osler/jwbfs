@@ -11,9 +11,6 @@ import org.eclipse.swt.widgets.Shell;
 
 public class FolderDiskDialogHandler extends AbstractHandler {
 
-
-	public static final String ID = "folderDialog";
-
 	public FolderDiskDialogHandler() {
 	}
 

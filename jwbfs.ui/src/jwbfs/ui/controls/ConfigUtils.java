@@ -12,14 +12,13 @@ import java.util.Properties;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.model.utils.Constants;
-import jwbfs.ui.utils.CoreConstants;
-import jwbfs.ui.utils.Utils;
+import jwbfs.model.utils.CoreConstants;
+import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
-public class Exec {
+public class ConfigUtils {
 	
 	
 	public static void initConfigFile(){
@@ -31,12 +30,12 @@ public class Exec {
 
 			Properties props = new Properties();
 			
-			Bundle bundle = Platform.getBundle(CoreConstants.bundleName_core);		
+			Bundle bundle = Platform.getBundle(CoreConstants.BUNDLE_CORE);		
 			InputStream is = bundle.getEntry("/" + nomeFileProps).openStream();
 			props.load(is);
 
 
-			String[] keys = getFileProperty(Utils.getWbfsINI());	
+			String[] keys = getFileProperty(PlatformUtils.getWbfsINI());	
 
 			
 //			String key[]  =  {"wbfs.bin","window.x","window.y"};
@@ -100,7 +99,7 @@ public class Exec {
 	public static void saveConfigFile() {
 		try {
 
-			File configFile = Utils.getWbfsINI();
+			File configFile = PlatformUtils.getWbfsINI();
 
 			int numLines = getNumLine(configFile);
 

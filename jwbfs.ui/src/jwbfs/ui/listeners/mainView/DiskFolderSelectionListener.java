@@ -1,8 +1,7 @@
 package jwbfs.ui.listeners.mainView;
 
-import jwbfs.ui.handlers.FolderDiskDialogHandler;
-import jwbfs.ui.handlers.UpdateGameListHandler;
-import jwbfs.ui.utils.Utils;
+import jwbfs.model.utils.CoreConstants;
+import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -24,8 +23,8 @@ public class DiskFolderSelectionListener extends SelectionAdapter {
 
 		System.out.println("Launching Folder Selection Dialog");
 		try {
-			Utils.getHandlerService(viewID).executeCommand(FolderDiskDialogHandler.ID, null);
-			Utils.getHandlerService(viewID).executeCommand(UpdateGameListHandler.ID, null);
+			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_FOLDER_DISK_DIALOG_ID, null);
+			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
 			
 		} catch (ExecutionException e1) {
 

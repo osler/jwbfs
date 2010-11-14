@@ -26,6 +26,12 @@ public class ErrorHandler {
 		    	  throw new WBFSException(line,WBFSException.FILE_EXISTS);
 		    	  
 		      }
+ 
+	    	  if(ErrorHandler.folderExist(line)){
+		    	  
+		    	  throw new WBFSException(line,WBFSException.FOLDER_EXISTS);
+		    	  
+		      }
 		      
 	    	  throw new WBFSException(line);
 	    	  
@@ -33,8 +39,15 @@ public class ErrorHandler {
 
 	}
 
-	private static boolean fileExist(String line) {
+	private static boolean folderExist(String line) {
 		if(line.toLowerCase().contains("exists")){
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean fileExist(String line) {
+		if(line.toLowerCase().contains("iso")){
 			return true;
 		}
 		

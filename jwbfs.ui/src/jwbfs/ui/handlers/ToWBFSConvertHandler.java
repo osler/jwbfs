@@ -13,9 +13,6 @@ import org.eclipse.ui.PlatformUI;
 
 public class ToWBFSConvertHandler extends AbstractHandler {
 
-
-	public static final String ID = "toWbfs";
-
 	public ToWBFSConvertHandler() {
 	}
 

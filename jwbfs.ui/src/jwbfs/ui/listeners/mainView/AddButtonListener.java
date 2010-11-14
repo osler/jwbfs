@@ -1,15 +1,11 @@
 package jwbfs.ui.listeners.mainView;
 
 import jwbfs.model.Model;
-import jwbfs.model.utils.Constants;
+import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
-import jwbfs.ui.handlers.FileDialogAddHandler;
-import jwbfs.ui.handlers.ToWBFSConvertHandler;
-import jwbfs.ui.handlers.UpdateCoverHandler;
-import jwbfs.ui.handlers.UpdateGameListHandler;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.Utils;
+import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -31,29 +27,28 @@ public class AddButtonListener extends SelectionAdapter {
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 	
-		Model.getConvertGameBean().clean();
+		Model.getSelectedGame().clean();
 		
 		try {
-			Utils.getHandlerService(viewID).executeCommand(FileDialogAddHandler.ID, null);
-//			CheckDiscHandler.index = -1;
+			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_FILE_IMPORT_DIALOG_ID, null);
 		
-			Utils.getHandlerService(viewID).executeCommand(Constants.MAINVIEW_ID, null);
+			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_CHECKDISK_ID, null);
 			
-			if(Model.getConvertGameBean().getFilePath() == null || Model.getConvertGameBean().getFilePath().equals("")){
+			if(Model.getSelectedGame().getFilePath() == null || Model.getSelectedGame().getFilePath().equals("")){
 				GuiUtils.setDefaultCovers();
 				throw new FileNotSelectedException();
 			}
 			
-			if(Model.getConvertGameBean().getId().contains("not a wii disc")){
+			if(Model.getSelectedGame().getId().contains("not a wii disc")){
 				GuiUtils.setDefaultCovers();
 				throw new NotValidDiscException();
 
 			}
 
-			Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);
-			if(Model.getConvertGameBean().isIsoToWbfs()){
-				Utils.getHandlerService(viewID).executeCommand(ToWBFSConvertHandler.ID, null);
-				Utils.getHandlerService(viewID).executeCommand(UpdateGameListHandler.ID, null);
+			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_COVER_UPDATE_ID, null);
+			if(Model.getSelectedGame().isIsoToWbfs()){
+				PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_TOWBFS_ID, null);
+				PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
 				GuiUtils.setDefaultCovers();
 			}
 

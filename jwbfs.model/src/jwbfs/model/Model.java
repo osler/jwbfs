@@ -7,14 +7,13 @@ import java.util.List;
 
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.model.utils.Constants;
+import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.FileUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.common.NotDefinedException;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 
@@ -63,7 +62,7 @@ public class Model {
 		return (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
 	}
 	
-	public static GameBean getConvertGameBean() {
+	public static GameBean getExportGameBean() {
 		return (GameBean) Model.getBeans().get(GameBean.INDEX);
 	}
 		
@@ -85,31 +84,6 @@ public class Model {
 				if(files != null){
 					for(int j = 0; j < files.length; j++){
 						game = checkFile(files,j,game);
-						if(game.size() > j){
-							setSelectedGame(game.get(j));
-							
-							IHandlerService handlerService = (IHandlerService) 
-												PlatformUI.getWorkbench()
-												.getActiveWorkbenchWindow()
-												.getService(IHandlerService.class);
-							
-							try {
-								handlerService.executeCommand(Constants.COMMAND_CHECKDISK_ID, null);
-							} catch (ExecutionException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (NotDefinedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (NotEnabledException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (NotHandledException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					
 
 					}
 				}
@@ -126,7 +100,30 @@ public class Model {
 			GameBean g = new GameBean();
 			g.setFilePath(files[j].getAbsolutePath());
 			System.out.println(g.getFilePath());
-			game.add(g);
+
+			setSelectedGame(g);
+
+			IHandlerService handlerService = (IHandlerService) 
+			PlatformUI.getWorkbench()
+			.getActiveWorkbenchWindow()
+			.getService(IHandlerService.class);
+
+			boolean infoOK = true;
+			try {
+				infoOK = (Boolean) handlerService.executeCommand(CoreConstants.COMMAND_CHECKDISK_ID, null);
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} catch (NotDefinedException e) {
+				e.printStackTrace();
+			} catch (NotEnabledException e) {
+				e.printStackTrace();
+			} catch (NotHandledException e) {
+				e.printStackTrace();
+			}
+
+			if(infoOK){
+				game.add(g);	
+			}
 		}
 		return game;
 	}

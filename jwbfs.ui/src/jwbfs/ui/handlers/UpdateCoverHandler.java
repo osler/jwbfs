@@ -24,13 +24,12 @@ import org.eclipse.swt.graphics.Image;
 public class UpdateCoverHandler extends AbstractHandler {
 	private GameBean processBean;
 	private SettingsBean settingsBean;
-	public static final String ID = "updateCover";
 	boolean updateCover;
 	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		processBean = Model.getConvertGameBean();
+		processBean = Model.getSelectedGame();
 		settingsBean =  Model.getSettingsBean();
 		
 

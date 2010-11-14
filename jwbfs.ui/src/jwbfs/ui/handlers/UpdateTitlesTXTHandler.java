@@ -13,7 +13,7 @@ import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.Constants;
 import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.Utils;
+import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -43,7 +43,7 @@ public class UpdateTitlesTXTHandler extends AbstractHandler {
 			String address = CoverConstants.TITLES_URL;
 			String region = settingsBean.getRegion();
 
-			String txtFile = Utils.getTitlesTXTpath();
+			String txtFile = PlatformUtils.getTitlesTXTpath();
 			InputStream in;
 			try {
 				URL url = new URL(checkUrl(address+region));

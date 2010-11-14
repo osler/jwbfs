@@ -107,7 +107,7 @@
             commandId="checkDisk">
       </handler>
       <handler
-            class="jwbfs.ui.handlers.FileDialogAddHandler"
+            class="jwbfs.ui.handlers.FileDialogImportHandler"
             commandId="fileDialog">
       </handler>
       <handler

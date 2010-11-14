@@ -13,9 +13,6 @@ import org.eclipse.core.commands.ExecutionException;
 
 public class DeleteFileHandler extends AbstractHandler {
 
-
-	public static final String ID = "deleteFile";
-
 	public DeleteFileHandler() {
 	}
 

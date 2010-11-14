@@ -12,7 +12,7 @@ import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.Utils;
+import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -35,15 +35,15 @@ public class CheckDiscHandler extends AbstractHandler {
 
 		bean = Model.getSelectedGame();
 
-
+		boolean ok = true;
 		if(bean.isWbfsToIso()){
-			checkWbfs(bean);
+			ok = checkWbfs(bean);
 		}else {
-			checkIso(bean);
+			ok =checkIso(bean);
 		}
 
 
-		return null;
+		return ok;
 
 	}
 
@@ -53,6 +53,7 @@ public class CheckDiscHandler extends AbstractHandler {
 			File fileWbfs = new File(bean.getFilePath());
 			String fileTxt = FileUtils.getTxtFile(fileWbfs);
 			File fileTxtPath = new File(fileTxt);
+			
 	
 			FileReader fis = new FileReader(fileTxtPath); 			
 			BufferedReader input = new BufferedReader(fis);
@@ -65,7 +66,7 @@ public class CheckDiscHandler extends AbstractHandler {
 					info[0] = fileWbfs.getName().replace(".wbfs", "");
 					info[1] = line.split("=")[1].trim();
 //					info[1] = line.substring(line.indexOf("=")+1, line.length()).trim();
-					info[2] = Utils.getGB(fileWbfs.length());	
+					info[2] = PlatformUtils.getGB(fileWbfs.length());	
 
 
 				bean.setId(info[0]);
@@ -78,19 +79,21 @@ public class CheckDiscHandler extends AbstractHandler {
 
 
 		} catch (IOException e) {
-			e.printStackTrace();
-			GuiUtils.showError("Error: \nfile "+bean.getFilePath()+ " has errors. Skipping");
+//			e.printStackTrace();
+			System.out.println("Error: \nfile "+bean.getFilePath()+ " has errors. Skipping");
+//			GuiUtils.showError("Error: \nfile "+bean.getFilePath()+ " has errors. Skipping");
 			return false;
 		} catch (Exception e) {
-			e.printStackTrace();
-			GuiUtils.showError("Error: \nfile "+bean.getFilePath()+ " has errors. Skipping");
+//			e.printStackTrace();
+			System.out.println("Error: \nfile "+bean.getFilePath()+ " has errors. Skipping");
+//			GuiUtils.showError("Error: \nfile "+bean.getFilePath()+ " has errors. Skipping");
 			return false;
 		}
 
 		return true;
 	}
 
-	private void checkIso(GameBean bean) {
+	private boolean checkIso(GameBean bean) {
 
 		try {
 
@@ -99,11 +102,11 @@ public class CheckDiscHandler extends AbstractHandler {
 			String filePath = bean.getFilePath();
 			if(filePath == null || filePath.equals("")){
 				GuiUtils.showInfo("Select a File", SWT.ERROR);
-				return;
+				return false;
 			}
 
 			String path = new File(filePath).getAbsolutePath();			  	  			  
-			String bin = Utils.getWBFSpath();
+			String bin = PlatformUtils.getWBFSpath();
 
 			new File(bin).setExecutable(true);
 
@@ -163,9 +166,12 @@ public class CheckDiscHandler extends AbstractHandler {
 
 		} catch (WBFSException e) {
 			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 
+		return true;
 	}
 }
