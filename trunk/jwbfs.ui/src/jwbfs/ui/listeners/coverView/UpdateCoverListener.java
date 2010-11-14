@@ -3,11 +3,11 @@ package jwbfs.ui.listeners.coverView;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
-import jwbfs.ui.handlers.UpdateCoverHandler;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.Utils;
+import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -43,7 +43,7 @@ public class UpdateCoverListener extends SelectionAdapter {
 			
 
 		((SettingsBean)Model.getBeans().get(SettingsBean.INDEX)).setUpdateCover(true);
-		Utils.getHandlerService(viewID).executeCommand(UpdateCoverHandler.ID, null);
+		PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_COVER_UPDATE_ID, null);
 		
 
 		} catch (NotValidDiscException e1) {

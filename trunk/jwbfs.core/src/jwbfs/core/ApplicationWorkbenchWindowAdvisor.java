@@ -13,12 +13,12 @@ import java.util.Properties;
 
 import jwbfs.model.Model;
 import jwbfs.model.utils.Constants;
-import jwbfs.ui.controls.Exec;
+import jwbfs.model.utils.CoreConstants;
+import jwbfs.ui.controls.ConfigUtils;
 import jwbfs.ui.handlers.FolderDiskDialogHandler;
 import jwbfs.ui.handlers.UpdateGameListHandler;
-import jwbfs.ui.utils.CoreConstants;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.Utils;
+import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -58,7 +58,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	public void preWindowOpen() {
-		Exec.initConfigFile();
+		ConfigUtils.initConfigFile();
 
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		int x = Integer.parseInt(System.getProperty("window.x"));
@@ -72,7 +72,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 	@Override
 	public void postWindowClose() {
-		Exec.saveConfigFile();
+		ConfigUtils.saveConfigFile();
 	}
 
 	@Override
@@ -84,9 +84,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 			
 			if(Model.getSettingsBean().getDiskPath().trim().equals("")
 					|| !new File(Model.getSettingsBean().getDiskPath()).exists()){
-				Utils.getHandlerService(Constants.MAINVIEW_ID).executeCommand(FolderDiskDialogHandler.ID, null);		
+				PlatformUtils.getHandlerService(CoreConstants.MAINVIEW_ID).executeCommand(CoreConstants.COMMAND_FOLDER_DISK_DIALOG_ID, null);		
 			}
-			Utils.getHandlerService(Constants.MAINVIEW_ID).executeCommand(UpdateGameListHandler.ID, null);
+			PlatformUtils.getHandlerService(CoreConstants.MAINVIEW_ID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
 			
 			GuiUtils.getManagerTableViewer().setInput(Model.getGames());
 			
@@ -467,7 +467,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 			Properties props = new Properties();
 
-			Bundle bundle = Platform.getBundle(CoreConstants.bundleName_core);
+			Bundle bundle = Platform.getBundle(CoreConstants.BUNDLE_CORE);
 
 			props.load(bundle.getEntry("/" + nomeFileProps).openStream());
 
@@ -494,6 +494,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	}
 	private boolean isDevelopment() {
 
-		return new File(Utils.getRoot()+"noUpdate").exists();
+		return new File(PlatformUtils.getRoot()+"noUpdate").exists();
 	}
 }

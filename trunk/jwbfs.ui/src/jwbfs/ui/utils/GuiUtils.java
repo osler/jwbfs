@@ -1,6 +1,6 @@
 package jwbfs.ui.utils;
 
-import jwbfs.model.utils.Constants;
+import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.views.CoverView;
 import jwbfs.ui.views.ManagerView;
 
@@ -9,19 +9,24 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class GuiUtils {
 
-	
+	public static IWorkbench getWorkbench(){
+		return PlatformUI.getWorkbench();		
+	}
+
 	public static ViewPart getView(String ID){
 		ViewPart view = null;
 		try{
 			view = (ViewPart) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ID);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -36,20 +41,20 @@ public class GuiUtils {
 		MessageBox msg = new MessageBox(new Shell(),style);
 		msg.setMessage(message);
 		msg.open();
-		
+
 	}
-	
+
 	public static void showInfo(String message, String text, int style) {
 		MessageBox msg = new MessageBox(new Shell(), style);
 		msg.setMessage(message);
 		msg.setText(text);
 		msg.open();
-		
+
 	}
 
 	public static TableViewer getManagerTableViewer() {
 		// TODO Auto-generated method stub
-		return 	((ManagerView)GuiUtils.getView(Constants.MAINVIEW_ID)).getTv();
+		return 	((ManagerView)GuiUtils.getView(CoreConstants.MAINVIEW_ID)).getTv();
 	}
 
 	public static boolean showConfirmDialog(String message) {
@@ -58,6 +63,19 @@ public class GuiUtils {
 		return ret;
 	}
 
+	public static boolean showConfirmDialog(final String message,boolean async) {
+		if(async){
+			Display.getDefault().asyncExec(								
+					new Runnable(){
+						public void run() {
+							showConfirmDialog(message);
+						}
+					});
+					
+		}
+	
+		return showConfirmDialog(message);
+	}
 
 	public static void setCover(String coverPath) {
 
@@ -68,7 +86,7 @@ public class GuiUtils {
 
 
 	}
-	
+
 	public static void setCover3d(String coverPath) {
 
 		System.out.println("Setting cover3d:");
@@ -78,7 +96,7 @@ public class GuiUtils {
 
 
 	}
-	
+
 	public static void setCoverDisc(String coverPath) {
 		Image img = null;
 		try{
@@ -94,13 +112,13 @@ public class GuiUtils {
 			}else if(coverPath.toLowerCase().contains("disc")){
 				coverPath = CoverConstants.NODISC;
 			}
-			
+
 			img =  new Image(GuiUtils.getDisplay(),coverPath);
 		}
 		((CoverView) GuiUtils.getView(CoverView.ID)).getDisk().setImage(img);
 
 	}
-	
+
 	public static void setDefaultCovers() {
 		GuiUtils.setCover(CoverConstants.NOIMAGE);
 		GuiUtils.setCover3d(CoverConstants.NOIMAGE3D);
@@ -111,8 +129,23 @@ public class GuiUtils {
 		MessageBox msg = new MessageBox(new Shell(), SWT.ERROR);
 		msg.setMessage(message);
 		msg.open();
-		
-		
+
+
 	}
-	
+
+	public static void showInfo(final String message, final int style, boolean async) {
+		if(async){
+			Display.getDefault().asyncExec(								
+					new Runnable(){
+						public void run() {
+							GuiUtils.showInfo(message,style);
+						}
+					}
+			);	
+		}else{
+			showInfo(message, style);
+		}
+
+	}
+
 }

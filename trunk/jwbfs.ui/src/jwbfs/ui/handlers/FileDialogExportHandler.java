@@ -11,8 +11,6 @@ import org.eclipse.swt.widgets.Shell;
 
 
 public class FileDialogExportHandler extends AbstractHandler {
-	
-	public static final String ID = "fileDialogExport";
 
 	public FileDialogExportHandler() {
 	}
@@ -23,24 +21,19 @@ public class FileDialogExportHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
+		GameBean bean = Model.getExportGameBean();
 
-		GameBean bean = Model.getConvertGameBean();
 		if(bean != null){
 
 		FileDialog d = new FileDialog(new Shell()) ;
 
-//		if(bean.isIsoToWbfs() && !bean.isWbfsToIso()){
 			d.setFilterExtensions(new String[]{"*.iso;*.ISO;*.wbfs;*.WBFS"});	
-//		}else {
-//			d.setFilterExtensions(new String[]{"*.wbfs","*.WBFS"});	
-//		}
-		
-			String oldValue = bean.getFilePath();
+
 			String line = d.open();
 			
 			//If cancel, set the old value
 			if(line == null || line.equals("")){
-				line = oldValue;
+				return null;
 			}
 			
 			if(!line.endsWith(".iso")){

@@ -18,32 +18,40 @@ import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.PlatformUtils;
 import jwbfs.ui.views.ManagerView;
 
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-public class ToWBFSConvertOperation implements IRunnableWithProgress {
+public class ToISOConvertOperation implements IRunnableWithProgress {
 
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
-		
-			GameBean bean = (GameBean) Model.getSelectedGame();
-//			GameBean bean = (GameBean) Model.getConvertGameBean();
 			
-			monitor.beginTask("Creating wbfs-file: "+bean.getTitle(), 
+			GameBean exportBean =  Model.getExportGameBean();
+			GameBean gameToExport =  Model.getSelectedGame();
+			
+			monitor.beginTask("Creating wbfs-file: "+gameToExport.getTitle(), 
 //					100);
 					IProgressMonitor.UNKNOWN);
 			
-			monitor.subTask("reading iso infos");
+			monitor.subTask("reading wbfs infos");
 
 			monitor.worked(5);
 			
-			String filePath = bean.getFilePath();
-			String folderPath =  Model.getSettingsBean().getFolderPath();
+			//File selected
+			String filePath = gameToExport.getFilePath();
+			File fileToExport = new File(filePath);
 			
-			if(filePath.toLowerCase().endsWith(".wbfs")){
+			//Dest File
+			String folderPath = exportBean.getFilePath();
+			folderPath = folderPath.replace(fileToExport.getName(), "");
+			
+			if(filePath.toLowerCase().endsWith(".iso")){
 				try {
 					throw new NotCorrectDiscFormatException();
 				} catch (NotCorrectDiscFormatException e) {
@@ -51,44 +59,37 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 				}
 			}
 			
-			File file = new File(filePath);
-
-			 if(folderPath == null || folderPath.equals("none") || folderPath.equals("") ){
-//				 folderPath = file.getAbsolutePath().replace(file.getName(), "");
-				 folderPath = Model.getSettingsBean().getDiskPath();
-			 }
-			
 			  try {
-				  String path = file.getAbsolutePath();			  	  			  
+				  String path = fileToExport.getAbsolutePath();			  	  			  
 				  String bin = PlatformUtils.getWBFSpath();
-
-
-				  monitor.worked(10);
-				  
+		
 				  //processa iso
 				  String[]  processo = getProcessParameter(bin,path,folderPath);
 				  System.out.println(processo);
 				  Process p = Runtime.getRuntime().exec(processo);
 				  checkProcessMessages(p,monitor);
-
-			      monitor.done();
-
-				  MessageBox msg = new MessageBox(new Shell());
-				  msg.setText("Info");
-				  msg.setMessage(bean.getTitle()+" Added");
-				  msg.open();
-
+		
+				  monitor.done();
+		
+				  GuiUtils.showInfo(gameToExport.getTitle() + " exported to 1n"
+						  + gameToExport.getFolderPath(), SWT.NONE, true);
+		
 			  }
 			  catch (WBFSException err) {
-				  return ;
+				  return;
 			    } catch (IOException e) {
 					e.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
+		
+		
+			
+			return ;
+		
 
 	}
+
 
 	private  static boolean  checkProcessMessages(Process p, IProgressMonitor monitor) throws IOException, WBFSException {
 	
@@ -125,16 +126,6 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 	}
 
 	private static String[] getProcessParameter(String bin, String path, String folderPath) {
-	//		if(toIso){
-	//			String[]par = new String[4];
-	//			par[0] = bin;
-	//			par[1]  = path;
-	//			par[2] = "convert"; 
-	//			par[3] = folderPath;
-	//	
-	//			return par;
-	//	
-	//		}else{
 				
 		
 			String[] par = new String[8];

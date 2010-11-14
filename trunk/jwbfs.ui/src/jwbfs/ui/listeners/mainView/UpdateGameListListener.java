@@ -1,8 +1,8 @@
 package jwbfs.ui.listeners.mainView;
 
-import jwbfs.ui.handlers.UpdateGameListHandler;
+import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.Utils;
+import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -23,7 +23,7 @@ public class UpdateGameListListener extends SelectionAdapter {
 		
 		try {
 		
-		Utils.getHandlerService(viewID).executeCommand(UpdateGameListHandler.ID, null);
+		PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
 		
 
 		} catch (Exception ex) {

@@ -32,9 +32,9 @@ http://wiitdb.com/titles.txt?LANG=XX
 	public static final  String TITLES_URL = "http://wiitdb.com/titles.txt?LANG=";
 	
 
-	public static final String NOIMAGE = Utils.getRoot()+"icons"+File.separatorChar+"noimg.png";
-	public static final String NOIMAGE3D = Utils.getRoot()+"icons"+File.separatorChar+"noimg3d.png";
-	public static final String NODISC = Utils.getRoot()+"icons"+File.separatorChar+"nodisc.png";
+	public static final String NOIMAGE = PlatformUtils.getRoot()+"icons"+File.separatorChar+"noimg.png";
+	public static final String NOIMAGE3D = PlatformUtils.getRoot()+"icons"+File.separatorChar+"noimg3d.png";
+	public static final String NODISC = PlatformUtils.getRoot()+"icons"+File.separatorChar+"nodisc.png";
 	
 	public static final String IMAGE_FOLDER_NAME = "images";
 	public static final String IMAGE_2D_NAME = "2D";

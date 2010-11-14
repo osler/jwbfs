@@ -4,7 +4,7 @@ import jwbfs.model.Model;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.handlers.UpdateCoverHandler;
 import jwbfs.ui.handlers.UpdateTitlesTXTHandler;
-import jwbfs.ui.utils.Utils;
+import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -25,7 +25,7 @@ public class UpdateTitlesTXTListener extends SelectionAdapter {
 	public void widgetSelected(SelectionEvent e) {
 		try {
 		
-			Utils.getHandlerService(viewID).executeCommand(UpdateTitlesTXTHandler.ID, null);
+			PlatformUtils.getHandlerService(viewID).executeCommand(UpdateTitlesTXTHandler.ID, null);
 		
 		} catch (ExecutionException e1) {
 			e1.printStackTrace();

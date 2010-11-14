@@ -3,6 +3,7 @@ package jwbfs.ui.views.folder;
 import jwbfs.model.Model;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.Constants;
+import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.listeners.coverView.FolderCoverDialogListener;
 import jwbfs.ui.listeners.settings.UpdateTitlesTXTListener;
 import jwbfs.ui.utils.CoverConstants;
@@ -77,12 +78,12 @@ public class SettingsView extends ViewPart{
 	}
 
 	private void addCoverListener(Button button, String type) {
-		button.addSelectionListener(new FolderCoverDialogListener(Constants.SETTINGSVIEW_ID, type));
+		button.addSelectionListener(new FolderCoverDialogListener(CoreConstants.SETTINGSVIEW_ID, type));
 		
 	}
 
 	private void addHandlerUpdateTXT(Button button) {
-		button.addSelectionListener(new UpdateTitlesTXTListener(Constants.SETTINGSVIEW_ID));
+		button.addSelectionListener(new UpdateTitlesTXTListener(CoreConstants.SETTINGSVIEW_ID));
 		
 	}
 

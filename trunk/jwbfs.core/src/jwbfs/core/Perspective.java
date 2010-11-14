@@ -1,7 +1,7 @@
 package jwbfs.core;
 
 import jwbfs.model.Model;
-import jwbfs.model.utils.Constants;
+import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.views.CoverView;
 
 import org.eclipse.ui.IFolderLayout;
@@ -22,8 +22,8 @@ public class Perspective implements IPerspectiveFactory {
 		
 		new Model();
 		
-		folder.addView(Constants.MAINVIEW_ID);
-		folder.addView(Constants.SETTINGSVIEW_ID);
+		folder.addView(CoreConstants.MAINVIEW_ID);
+		folder.addView(CoreConstants.SETTINGSVIEW_ID);
 	
 		
 		layout.addStandaloneView(CoverView.ID,  false, IPageLayout.RIGHT, 0.5f, editorArea);

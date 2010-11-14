@@ -2,10 +2,9 @@ package jwbfs.ui.listeners.mainView;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
-import jwbfs.ui.handlers.DeleteFileHandler;
-import jwbfs.ui.handlers.UpdateGameListHandler;
+import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.Utils;
+import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -37,8 +36,8 @@ public class DeleteButtonListener extends SelectionAdapter {
 		
 		
 		try {
-			Utils.getHandlerService(viewID).executeCommand(DeleteFileHandler.ID, null);
-			Utils.getHandlerService(viewID).executeCommand(UpdateGameListHandler.ID, null);
+			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_FILE_DELETE_DIALOG_ID, null);
+			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
 			GuiUtils.setDefaultCovers();
 			
 		} catch (ExecutionException e1) {
