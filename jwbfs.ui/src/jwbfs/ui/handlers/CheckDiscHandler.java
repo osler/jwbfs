@@ -11,6 +11,7 @@ import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.WBFSException;
+import jwbfs.ui.exceptions.WBFSFileExistsException;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.PlatformUtils;
 
@@ -39,7 +40,11 @@ public class CheckDiscHandler extends AbstractHandler {
 		if(bean.isWbfsToIso()){
 			ok = checkWbfs(bean);
 		}else {
-			ok =checkIso(bean);
+			try {
+				ok =checkIso(bean);
+			} catch (WBFSFileExistsException e) {
+				e.printStackTrace();
+			}
 		}
 
 
@@ -49,7 +54,7 @@ public class CheckDiscHandler extends AbstractHandler {
 
 	private boolean checkWbfs(GameBean bean) {
 		try {
-			String[] info = new String [3];
+			String[] info = new String [4];
 			File fileWbfs = new File(bean.getFilePath());
 			String fileTxt = FileUtils.getTxtFile(fileWbfs);
 			File fileTxtPath = new File(fileTxt);
@@ -66,12 +71,14 @@ public class CheckDiscHandler extends AbstractHandler {
 					info[0] = fileWbfs.getName().replace(".wbfs", "");
 					info[1] = line.split("=")[1].trim();
 //					info[1] = line.substring(line.indexOf("=")+1, line.length()).trim();
-					info[2] = PlatformUtils.getGB(fileWbfs.length());	
+					info[2] = PlatformUtils.getGB(fileWbfs.length());
+					info[3] = PlatformUtils.getKB(fileWbfs.length());	
 
 
 				bean.setId(info[0]);
 				bean.setTitle(info[1]);
 				bean.setScrubGb(info[2]);
+				bean.setScrubSize(Long.parseLong(info[3]));
 
 				line =input.readLine();
 			}
@@ -93,12 +100,12 @@ public class CheckDiscHandler extends AbstractHandler {
 		return true;
 	}
 
-	private boolean checkIso(GameBean bean) {
+	private boolean checkIso(GameBean bean) throws WBFSFileExistsException {
 
 		try {
 
 			String[] info = new String [3];
-			
+			long scrubSize =0;
 			String filePath = bean.getFilePath();
 			if(filePath == null || filePath.equals("")){
 				GuiUtils.showInfo("Select a File", SWT.ERROR);
@@ -127,7 +134,7 @@ public class CheckDiscHandler extends AbstractHandler {
 
 				System.out.println(line);
 
-				ErrorHandler.processError(line);
+				ErrorHandler.processError(line,null);
 
 				String control = "id:";
 				if(line.contains(control)){
@@ -146,6 +153,11 @@ public class CheckDiscHandler extends AbstractHandler {
 					line = line.substring(line.indexOf(control),line.length());
 					info[2] = line.replaceAll(control, "").trim();
 				}
+				control = "scrub size:";
+				if(line.contains(control)){
+					line = line.substring(line.indexOf(control),line.length());
+					scrubSize = Long.parseLong(line.replaceAll(control, "").trim());
+				}
 
 				control = "not a wii disc:";
 				if(line.toLowerCase().contains(control) ||
@@ -156,6 +168,8 @@ public class CheckDiscHandler extends AbstractHandler {
 				bean.setId(info[0]);
 				bean.setTitle(info[1]);
 				bean.setScrubGb(info[2]);
+				bean.setScrubSize(scrubSize);
+				
 
 				line =input.readLine();
 				

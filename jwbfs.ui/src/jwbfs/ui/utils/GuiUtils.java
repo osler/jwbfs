@@ -43,6 +43,22 @@ public class GuiUtils {
 		msg.open();
 
 	}
+	
+	public static void showError(final String message, boolean async){
+		if(async){
+			Display.getDefault().asyncExec(								
+					new Runnable(){
+						public void run() {
+							GuiUtils.showError(message);
+						}
+					}
+			);	
+		}else{
+			showError(message);
+		}
+
+	}
+	
 
 	public static void showInfo(String message, String text, int style) {
 		MessageBox msg = new MessageBox(new Shell(), style);
@@ -63,15 +79,18 @@ public class GuiUtils {
 		return ret;
 	}
 
+	private static boolean confirm = false;
+	
 	public static boolean showConfirmDialog(final String message,boolean async) {
 		if(async){
 			Display.getDefault().asyncExec(								
 					new Runnable(){
 						public void run() {
-							showConfirmDialog(message);
+							confirm = showConfirmDialog(message);				
 						}
 					});
-					
+			
+					return confirm;
 		}
 	
 		return showConfirmDialog(message);

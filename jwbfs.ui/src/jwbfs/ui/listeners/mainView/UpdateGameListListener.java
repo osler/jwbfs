@@ -1,5 +1,6 @@
 package jwbfs.ui.listeners.mainView;
 
+import jwbfs.model.Model;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.PlatformUtils;
@@ -24,7 +25,8 @@ public class UpdateGameListListener extends SelectionAdapter {
 		try {
 		
 		PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
-		
+
+		Model.getExportGameBean().clean();
 
 		} catch (Exception ex) {
 			GuiUtils.showInfo(ex.getMessage(),SWT.ERROR);

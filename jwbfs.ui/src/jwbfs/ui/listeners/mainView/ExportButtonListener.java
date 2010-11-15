@@ -1,9 +1,9 @@
 package jwbfs.ui.listeners.mainView;
 
 import jwbfs.model.Model;
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.exceptions.FileNotSelectedException;
-import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -25,20 +25,32 @@ public class ExportButtonListener extends SelectionAdapter {
 
 	@Override
 	public void widgetSelected(SelectionEvent e) {
-	
-		//TODO 
 		
 		try {
-			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_FILE_EXPORT_DIALOG_ID, null);
+			
+			GameBean gameSelected = Model.getSelectedGame();
 
-			if(Model.getSelectedGame().getFilePath() == null || Model.getSelectedGame().getFilePath().equals("")){
-				GuiUtils.setDefaultCovers();
+			if(gameSelected.getFilePath() == null 
+					|| gameSelected.getFilePath().equals("")){
+				 
 				throw new FileNotSelectedException();
+
 			}
+			
+			boolean ok = (Boolean) PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_FILE_EXPORT_DIALOG_ID, null);
+
+			if(!ok){
+				return;
+			}
+			
+//			if(Model.getSelectedGame().getFilePath() == null || Model.getSelectedGame().getFilePath().equals("")){
+//				GuiUtils.setDefaultCovers();
+//				throw new FileNotSelectedException();
+//			}
 			
 
 			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_TOISO_ID, null);
-
+			
 		} catch (ExecutionException e1) {
 			e1.printStackTrace();
 		} catch (NotDefinedException e1) {

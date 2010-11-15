@@ -15,13 +15,11 @@ public class FileDialogExportHandler extends AbstractHandler {
 	public FileDialogExportHandler() {
 	}
 
-	/**
-	 * the command has been executed, so extract extract the needed information
-	 * from the application context.
-	 */
+
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
 		GameBean bean = Model.getExportGameBean();
+		bean.clean();
 
 		if(bean != null){
 
@@ -33,7 +31,7 @@ public class FileDialogExportHandler extends AbstractHandler {
 			
 			//If cancel, set the old value
 			if(line == null || line.equals("")){
-				return null;
+				return false;
 			}
 			
 			if(!line.endsWith(".iso")){
@@ -43,6 +41,6 @@ public class FileDialogExportHandler extends AbstractHandler {
 		}
 		
 
-		return null;
+		return true;
 	}
 }

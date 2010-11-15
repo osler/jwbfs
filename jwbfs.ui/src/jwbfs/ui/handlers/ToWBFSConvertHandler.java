@@ -2,6 +2,8 @@ package jwbfs.ui.handlers;
 
 import java.lang.reflect.InvocationTargetException;
 
+import jwbfs.model.Model;
+import jwbfs.model.utils.Constants;
 import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -18,9 +20,13 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+
+		if(!check()){
+			return false;
+		}
 		
-		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-		.getShell();
+
+		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 
 		try {
 
@@ -30,16 +36,28 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 
 			e.printStackTrace();
 
-			return null;
+			return false;
 
 		} catch (InterruptedException e) {
 
 			GuiUtils.showError("Error: "+e.getMessage());
-			return null;
+			return false;
 
 		}
 
+		return true;
+	}
+
+
+	private boolean check() {
 		
-		return null;
+		long size = Model.getSelectedGame().getScrubSize();
+		
+		if(size > 4194304 && Model.getSettingsBean().getSplitSize().equals(Constants.SPLITSIZE_Text[0])){
+			boolean confirm = GuiUtils.showConfirmDialog("The scrub size of the selected ISO is over 4 gb. If you are using FAT32 you should split the iso");
+			return confirm;
+		}
+
+		return true;
 	}
 }

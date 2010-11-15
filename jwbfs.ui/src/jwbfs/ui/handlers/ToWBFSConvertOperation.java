@@ -10,27 +10,26 @@ import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.Constants;
-import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.controls.ErrorHandler;
+import jwbfs.ui.exceptions.MonitorCancelException;
 import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
 import jwbfs.ui.exceptions.WBFSException;
+import jwbfs.ui.exceptions.WBFSFileExistsException;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.PlatformUtils;
-import jwbfs.ui.views.ManagerView;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.SWT;
 
 public class ToWBFSConvertOperation implements IRunnableWithProgress {
+
+	GameBean bean = (GameBean) Model.getSelectedGame();
 
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 		
-			GameBean bean = (GameBean) Model.getSelectedGame();
-//			GameBean bean = (GameBean) Model.getConvertGameBean();
 			
 			monitor.beginTask("Creating wbfs-file: "+bean.getTitle(), 
 //					100);
@@ -41,7 +40,7 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 			monitor.worked(5);
 			
 			String filePath = bean.getFilePath();
-			String folderPath =  Model.getSettingsBean().getFolderPath();
+			String fileOutPath =  Model.getSettingsBean().getFolderPath();
 			
 			if(filePath.toLowerCase().endsWith(".wbfs")){
 				try {
@@ -53,9 +52,9 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 			
 			File file = new File(filePath);
 
-			 if(folderPath == null || folderPath.equals("none") || folderPath.equals("") ){
-//				 folderPath = file.getAbsolutePath().replace(file.getName(), "");
-				 folderPath = Model.getSettingsBean().getDiskPath();
+			 if(fileOutPath == null || fileOutPath.equals("none") || fileOutPath.equals("") ){
+//				 fileOutPath = file.getAbsolutePath().replace(file.getName(), "");
+				 fileOutPath = Model.getSettingsBean().getDiskPath();
 			 }
 			
 			  try {
@@ -66,49 +65,57 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 				  monitor.worked(10);
 				  
 				  //processa iso
-				  String[]  processo = getProcessParameter(bin,path,folderPath);
+				  String[]  processo = getProcessParameter(bin,path,fileOutPath);
 				  System.out.println(processo);
 				  Process p = Runtime.getRuntime().exec(processo);
 				  checkProcessMessages(p,monitor);
 
 			      monitor.done();
 
-				  MessageBox msg = new MessageBox(new Shell());
-				  msg.setText("Info");
-				  msg.setMessage(bean.getTitle()+" Added");
-				  msg.open();
-
-			  }
-			  catch (WBFSException err) {
-				  return ;
+			      GuiUtils.showInfo(bean.getTitle()+" Added to:\n"+bean.getFilePath(), SWT.NONE, true);
+			      
 			    } catch (IOException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				  	  monitor.done();
+				  	  e.printStackTrace();
+					} catch (WBFSFileExistsException e) {
+					  	  monitor.done();
+					} catch (WBFSException e) {
+					  	  monitor.done();
+					} catch (MonitorCancelException e) {
+					  	  monitor.done();
+					}
 
-
+			  monitor.done();	
 	}
 
-	private  static boolean  checkProcessMessages(Process p, IProgressMonitor monitor) throws IOException, WBFSException {
-	
 
-		
+	private  boolean  checkProcessMessages(Process p, IProgressMonitor monitor) throws IOException, WBFSException, WBFSFileExistsException, MonitorCancelException {
+
 		  String line;
 	      int bar = 0;
 	      
 	      BufferedReader input =
 		        new BufferedReader
 		          (new InputStreamReader(p.getInputStream()));
+	      
+	      String outputFileName = "";
+	      
 		      while ((line = input.readLine()) != null) {
+		    	
+		    	  if(line.contains("Writing:")){
+		    		  outputFileName = line.substring(line.indexOf(":")+1, line.length());
+		    		  outputFileName = outputFileName.trim();
+		    	  }
 		    	  
 		    	  if(monitor.isCanceled()){
-		    		  throw new WBFSException("Process cancelled by user",WBFSException.USER_CANCEL);
+		    		  p.destroy();
+
+		    		  throw new MonitorCancelException("User cancelled",new File(outputFileName));
 		    	  }
 		    	  
 			      System.out.println(line);
 			      
-			      ErrorHandler.processError(line);
+			      ErrorHandler.processError(line,this);
 
 			      bar = PlatformUtils.getPercentual(line); 
 			      monitor.subTask(line);
@@ -124,18 +131,7 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 		
 	}
 
-	private static String[] getProcessParameter(String bin, String path, String folderPath) {
-	//		if(toIso){
-	//			String[]par = new String[4];
-	//			par[0] = bin;
-	//			par[1]  = path;
-	//			par[2] = "convert"; 
-	//			par[3] = folderPath;
-	//	
-	//			return par;
-	//	
-	//		}else{
-				
+	private static String[] getProcessParameter(String bin, String path, String fileOutPath) {
 		
 			String[] par = new String[8];
 		
@@ -164,7 +160,7 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 			//COMMAND
 			par[6] = "convert";
 			
-			par[7] = folderPath;
+			par[7] = fileOutPath;
 		
 			return par;
 	//		}

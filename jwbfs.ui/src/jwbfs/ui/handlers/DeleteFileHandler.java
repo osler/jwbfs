@@ -45,12 +45,11 @@ public class DeleteFileHandler extends AbstractHandler {
 					System.out.println("Deleted!");
 				}
 				
+				return true;
 			}
-
-
 
 		}
 
-		return null;
+		return false;
 	}
 }

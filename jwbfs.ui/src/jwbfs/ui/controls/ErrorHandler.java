@@ -1,6 +1,11 @@
 package jwbfs.ui.controls;
 
+import java.io.File;
+
 import jwbfs.ui.exceptions.WBFSException;
+import jwbfs.ui.exceptions.WBFSFileExistsException;
+
+import org.eclipse.jface.operation.IRunnableWithProgress;
 
 public class ErrorHandler {
 
@@ -17,37 +22,27 @@ public class ErrorHandler {
 		return false;
 	}
 
-	public static void processError(String line) throws WBFSException{
+	public static void processError(String line, IRunnableWithProgress operation) throws WBFSException, WBFSFileExistsException{
 
 	      if(ErrorHandler.lineHasError(line)){
 		      
 	    	  if(ErrorHandler.fileExist(line)){
-		    	  
-		    	  throw new WBFSException(line,WBFSException.FILE_EXISTS);
-		    	  
+		    	
+	    		  String filePath = line.split("exists:")[1].trim();;
+	    		  File file = new File(filePath);
+	    		  
+		    	  throw new WBFSFileExistsException(line,file,operation);
 		      }
- 
-	    	  if(ErrorHandler.folderExist(line)){
-		    	  
-		    	  throw new WBFSException(line,WBFSException.FOLDER_EXISTS);
-		    	  
-		      }
-		      
+    
 	    	  throw new WBFSException(line);
 	    	  
 	      }
 
 	}
 
-	private static boolean folderExist(String line) {
-		if(line.toLowerCase().contains("exists")){
-			return true;
-		}
-		return false;
-	}
 
 	private static boolean fileExist(String line) {
-		if(line.toLowerCase().contains("iso")){
+		if(line.toLowerCase().contains("file already exists")){
 			return true;
 		}
 		

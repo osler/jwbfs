@@ -169,19 +169,19 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		for (Iterator<GameBean> iterator = sel.iterator(); iterator.hasNext();) {
 			GameBean selectedGame = iterator.next();
 			Model.setSelectedGame(selectedGame);
-		}
-		try {
-			PlatformUtils.getHandlerService(CoreConstants.MAINVIEW_ID).executeCommand(CoreConstants.COMMAND_COVER_UPDATE_ID, null);
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} catch (NotDefinedException e) {
-			e.printStackTrace();
-		} catch (NotEnabledException e) {
-			e.printStackTrace();
-		} catch (NotHandledException e) {
-			e.printStackTrace();
-		}
 
+			try {
+				PlatformUtils.getHandlerService(CoreConstants.MAINVIEW_ID).executeCommand(CoreConstants.COMMAND_COVER_UPDATE_ID, null);
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} catch (NotDefinedException e) {
+				e.printStackTrace();
+			} catch (NotEnabledException e) {
+				e.printStackTrace();
+			} catch (NotHandledException e) {
+				e.printStackTrace();
+			}
+		}
 		//		GuiUtils.getManagerTableViewer().refresh();
 
 	}
