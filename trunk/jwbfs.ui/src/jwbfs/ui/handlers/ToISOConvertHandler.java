@@ -17,6 +17,7 @@ public class ToISOConvertHandler extends AbstractHandler {
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+
 		
 		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 		.getShell();
@@ -38,7 +39,6 @@ public class ToISOConvertHandler extends AbstractHandler {
 
 		}
 
-		
 		return null;
 	}
 }

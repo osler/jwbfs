@@ -32,13 +32,13 @@ public class FileDialogImportHandler extends AbstractHandler {
 			
 			//If cancel, set the old value
 			if(line == null || line.equals("")){
-				line = oldValue;
+				return false;
 			}
 			
 			bean.setFilePath(line);			
 		}
 		
 
-		return null;
+		return true;
 	}
 }

@@ -33,8 +33,7 @@ public abstract class ModelObject implements PropertyChangeListener,IContainsMod
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println(evt.getPropertyName() + " changed");
-		
+		System.out.println(evt.getPropertyName() + " changed to "+evt.getNewValue());
 //		System.out.println("Writing settings to ini file...");
 		//TODO
 	}

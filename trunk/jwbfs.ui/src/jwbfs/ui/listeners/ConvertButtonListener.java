@@ -4,8 +4,6 @@ import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
-import jwbfs.ui.handlers.ToISOConvertHandler;
-import jwbfs.ui.handlers.ToWBFSConvertHandler;
 import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.swt.events.SelectionAdapter;

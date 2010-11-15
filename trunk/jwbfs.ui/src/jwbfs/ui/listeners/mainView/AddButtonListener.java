@@ -2,7 +2,6 @@ package jwbfs.ui.listeners.mainView;
 
 import jwbfs.model.Model;
 import jwbfs.model.utils.CoreConstants;
-import jwbfs.ui.exceptions.FileNotSelectedException;
 import jwbfs.ui.exceptions.NotValidDiscException;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.PlatformUtils;
@@ -27,17 +26,15 @@ public class AddButtonListener extends SelectionAdapter {
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 	
-		Model.getSelectedGame().clean();
-		
 		try {
-			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_FILE_IMPORT_DIALOG_ID, null);
+			boolean ok = (Boolean) PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_FILE_IMPORT_DIALOG_ID, null);
 		
-			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_CHECKDISK_ID, null);
-			
-			if(Model.getSelectedGame().getFilePath() == null || Model.getSelectedGame().getFilePath().equals("")){
-				GuiUtils.setDefaultCovers();
-				throw new FileNotSelectedException();
+			if(!ok){
+				return;
 			}
+			
+			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_CHECKDISK_ID, null);
+		
 			
 			if(Model.getSelectedGame().getId().contains("not a wii disc")){
 				GuiUtils.setDefaultCovers();
@@ -52,6 +49,7 @@ public class AddButtonListener extends SelectionAdapter {
 				GuiUtils.setDefaultCovers();
 			}
 
+			
 		} catch (ExecutionException e1) {
 			e1.printStackTrace();
 		} catch (NotDefinedException e1) {
@@ -59,8 +57,6 @@ public class AddButtonListener extends SelectionAdapter {
 		} catch (NotEnabledException e1) {
 			e1.printStackTrace();
 		} catch (NotHandledException e1) {
-			e1.printStackTrace();
-		} catch (FileNotSelectedException e1) {
 			e1.printStackTrace();
 		} catch (NotValidDiscException e1) {
 			e1.printStackTrace();

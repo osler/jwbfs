@@ -21,10 +21,13 @@ public class FolderDiskDialogHandler extends AbstractHandler {
 		if(bean != null){
 
 			DialogSelectDisk sel = new DialogSelectDisk(new Shell());
-			sel.open();
+			int ret = sel.open();
+			if(ret == DialogSelectDisk.CANCEL){
+				return false;
+			}
 						
 		}
 		
-		return null;
+		return true;
 	}
 }

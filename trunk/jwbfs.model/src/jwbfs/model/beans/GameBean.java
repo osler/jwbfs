@@ -10,13 +10,22 @@ public class GameBean extends ModelObject  {
 	private boolean isoToWbfs = true;
 	private boolean wbfsToIso = false;
 	//PATH
-	private String filePath;
-	private String folderPath;
+	private String filePath = "";
+	private String folderPath = "";
 	//INFOS
-	private String id;
-	private String title;
-	private String scrubGb;
-	private String region;
+	private String id = "";
+	private String title = "";
+	private String scrubGb = "";
+	private String region = "";
+	private long scrubSize = 0;
+	
+	public String toString(){
+		return id +" - "+ title;
+	}
+	
+	public boolean isEmpty(){
+		return id.trim().equals("");
+	}
 	
 	public GameBean(){
 		this.addPropertyChangeListener(this);
@@ -57,6 +66,16 @@ public class GameBean extends ModelObject  {
 	public void setScrubGb(String scrubGb) {
 		propertyChangeSupport.firePropertyChange("scrubGb", this.scrubGb,
 				this.scrubGb = scrubGb);
+	}
+
+	public long getScrubSize() {
+		return scrubSize;
+	}
+
+	
+	public void setScrubSize(long scrubSize) {
+		propertyChangeSupport.firePropertyChange("scrubSize", this.scrubSize,
+				this.scrubSize = scrubSize);
 	}
 
 	public String getFilePath() {
@@ -103,12 +122,13 @@ public class GameBean extends ModelObject  {
 	}
 
 	public void clean() {
-		filePath = null;
-		id = null;
-		scrubGb = null;
-		title = null;
-		region = null;
-		folderPath = null;
+		filePath = "";
+		id = "";
+		scrubGb = "";
+		scrubSize = 0;
+		title = "";
+		region = "";
+		folderPath = "";
 	}
 	
 	public void setFolderPath(String folderPath) {
