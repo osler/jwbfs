@@ -27,6 +27,8 @@ public class SettingsBean extends ModelObject {
 	
 	//MANAGER SETTINGS
 	private String diskPath;
+	
+	private CoverSettings coverSettings; 
 
 	private String folderPath;
 	
@@ -187,6 +189,17 @@ public class SettingsBean extends ModelObject {
 
 	public String getDiskPath() {
 		return diskPath;
+	}
+
+	public void setCoverSettings(CoverSettings coverSettings) {
+		this.coverSettings = coverSettings;
+	}
+
+	public CoverSettings getCoverSettings() {
+		if(coverSettings == null){
+			coverSettings = new CoverSettings();
+		}
+		return coverSettings;
 	}
 	
 

@@ -12,8 +12,6 @@ public abstract class ModelObject implements PropertyChangeListener,IContainsMod
 	
 	public static final String  INDEX = "modelObject";
 	
-	protected abstract ModelObject getBean();
-	
 	protected PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
 			this);
 
