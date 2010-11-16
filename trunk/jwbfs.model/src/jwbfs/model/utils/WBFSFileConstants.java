@@ -3,7 +3,7 @@ package jwbfs.model.utils;
 
 
 
-public class Constants {
+public class WBFSFileConstants {
 	
 	/**
 	 *     -s SIZE  :  Set split size [4294934528] (8388544 sectors)
@@ -13,6 +13,7 @@ public class Constants {
     -0       :  Don't split (split size: 10000000000)
 	 */
 	public static final  String[] SPLITSIZE_Values = {"-0","-2","-4"};
+	public static final  long[] SPLITSIZE_kb_Values = {10000000000l, 2147450880l, 4294934528l};
 	public static final  String[] SPLITSIZE_Text = {"Don't split","2GB-32kb (2147450880)","4GB-32kb (4294934528)"};
 		
 	/**

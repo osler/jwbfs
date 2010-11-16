@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Properties;
 
 import jwbfs.model.Model;
-import jwbfs.model.utils.Constants;
+import jwbfs.model.utils.WBFSFileConstants;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.controls.ConfigUtils;
 import jwbfs.ui.handlers.FolderDiskDialogHandler;

@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.model.utils.Constants;
+import jwbfs.model.utils.WBFSFileConstants;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.MonitorCancelException;
 import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
@@ -131,21 +131,21 @@ public class ToISOConvertOperation implements IRunnableWithProgress {
 			
 			par[0] = bin; 
 			
-			par[1] = Constants.decodeValue(tab.getCopyPartitions(), 
-					Constants.COPY_PARTITIONS_Text, 
-					Constants.COPY_PARTITIONS_Values);
+			par[1] = WBFSFileConstants.decodeValue(tab.getCopyPartitions(), 
+					WBFSFileConstants.COPY_PARTITIONS_Text, 
+					WBFSFileConstants.COPY_PARTITIONS_Values);
 			
-			par[2] = Constants.decodeValue(tab.getSplitSize(), 
-					Constants.SPLITSIZE_Text, 
-					Constants.SPLITSIZE_Values);
+			par[2] = WBFSFileConstants.decodeValue(tab.getSplitSize(), 
+					WBFSFileConstants.SPLITSIZE_Text, 
+					WBFSFileConstants.SPLITSIZE_Values);
 		
 			
-			par[3] = Constants.decodeValue(tab.isEnableTXT(),  
-					Constants.ENABLE_TXT_CREATION_Values);
+			par[3] = WBFSFileConstants.decodeValue(tab.isEnableTXT(),  
+					WBFSFileConstants.ENABLE_TXT_CREATION_Values);
 		
-			par[4] =  Constants.decodeValue(tab.getTxtLayout(), 
-					Constants.TXT_LAYOUT_Text, 
-					Constants.TXT_LAYOUT_Values);
+			par[4] =  WBFSFileConstants.decodeValue(tab.getTxtLayout(), 
+					WBFSFileConstants.TXT_LAYOUT_Text, 
+					WBFSFileConstants.TXT_LAYOUT_Values);
 			
 			par[5] = path;
 			

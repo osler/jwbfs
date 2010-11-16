@@ -10,7 +10,7 @@ import java.net.URL;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.model.utils.Constants;
+import jwbfs.model.utils.WBFSFileConstants;
 import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.PlatformUtils;
