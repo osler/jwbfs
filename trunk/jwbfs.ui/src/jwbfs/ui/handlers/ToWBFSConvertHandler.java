@@ -1,10 +1,8 @@
 package jwbfs.ui.handlers;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import jwbfs.model.Model;
-import jwbfs.model.utils.FileUtils;
 import jwbfs.model.utils.WBFSFileConstants;
 import jwbfs.ui.utils.GuiUtils;
 
@@ -55,7 +53,8 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 		
 		long size = Model.getSelectedGame().getScrubSize();
 		
-		FileUtils.createTempFile();
+		//FileUtils.createTempFile();
+		
 		if(size > 4194304 && Model.getSettingsBean().getSplitSize().equals(WBFSFileConstants.SPLITSIZE_Text[0])){
 			boolean confirm = GuiUtils.showConfirmDialog("The scrub size of the selected ISO is over 4 gb. If you are using FAT32 you should split the iso");
 			return confirm;

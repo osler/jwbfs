@@ -2,8 +2,6 @@ package jwbfs.model.beans;
 
 import java.util.LinkedHashMap;
 
-import jwbfs.model.utils.FileUtils;
-
 public class SettingsBean extends ModelObject {
 	
 	public static final String INDEX = "settingsBean";
@@ -16,9 +14,6 @@ public class SettingsBean extends ModelObject {
 	
 	//WIITDB SETTINGS
 	private String region;
-	private String coverPath2d;
-	private String coverPath3d;
-	private String coverPathDisc;
 	
 	private boolean automaticCoverDownload;
 	private boolean updateCover;
@@ -29,11 +24,13 @@ public class SettingsBean extends ModelObject {
 	private String diskPath;
 	
 	private CoverSettings coverSettings; 
-
+	private SystemSettings systemSettings; 
+	
 	private String folderPath;
 	
 	public SettingsBean(){
 		this.addPropertyChangeListener(this);
+		coverSettings = new CoverSettings();
 		
 		splitSize = System.getProperty("settings.split.size");
 		copyPartitions = System.getProperty("settings.split.partitions");
@@ -42,11 +39,7 @@ public class SettingsBean extends ModelObject {
 		
 		//WIITDB SETTINGS
 		region = System.getProperty("cover.region");
-		coverPath2d = FileUtils.exist(System.getProperty("cover.path.2d"),true,false,false);
-		coverPath3d = FileUtils.exist(System.getProperty("cover.path.3d"),false,true,false);
-		coverPathDisc = FileUtils.exist(System.getProperty("cover.path.disc"),false,false,true);
 		
-	
 		automaticCoverDownload = true;
 		cover3Denabled = true;
 		coverDiscsEnabled = true;
@@ -116,33 +109,7 @@ public class SettingsBean extends ModelObject {
 				this.txtLayout = txtLayout);	
 	}
 
-	public String getCoverPath2d() {
-		return coverPath2d;
-	}
-	
-	public void setCoverPath2d(String coverPath2d) {
-		propertyChangeSupport.firePropertyChange("coverPath2d", this.coverPath2d,
-				this.coverPath2d = coverPath2d);
-	}
-	
-	public void setCoverPath3d(String coverPath3d) {
-		propertyChangeSupport.firePropertyChange("coverPath3d", this.coverPath3d,
-				this.coverPath3d = coverPath3d);
-	}
 
-	public String getCoverPath3d() {
-		return coverPath3d;
-	}
-
-	public void setCoverPathDisc(String coverPathDisc) {
-		propertyChangeSupport.firePropertyChange("coverPathDisc", this.coverPathDisc,
-				this.coverPathDisc = coverPathDisc);
-	}
-
-	public String getCoverPathDisc() {
-		return coverPathDisc;
-	}
-	
 	public void setAutomaticCoverDownload(boolean automaticCoverDownload) {
 		propertyChangeSupport.firePropertyChange("automaticCoverDownload", this.automaticCoverDownload,
 		this.automaticCoverDownload = automaticCoverDownload);
@@ -200,6 +167,17 @@ public class SettingsBean extends ModelObject {
 			coverSettings = new CoverSettings();
 		}
 		return coverSettings;
+	}
+
+	public void setSystemSettings(SystemSettings systemSettings) {
+		this.systemSettings = systemSettings;
+	}
+
+	public SystemSettings getSystemSettings() {
+		if(systemSettings == null){
+			systemSettings = new SystemSettings();
+		}
+		return systemSettings;
 	}
 	
 

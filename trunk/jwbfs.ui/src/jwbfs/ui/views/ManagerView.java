@@ -160,9 +160,6 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 
-
-
-		List<GameBean> games = Model.getGames();
 		ISelection selection = tv.getSelection();
 		IStructuredSelection sel = (IStructuredSelection) selection;
 

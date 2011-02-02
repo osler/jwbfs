@@ -4,16 +4,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import jwbfs.model.Model;
+import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.utils.GuiUtils;
+import jwbfs.ui.utils.WebUtils;
 import jwbfs.ui.views.CoverView;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -29,12 +30,14 @@ public class UpdateCoverHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
+		boolean offlineMode = Model.getSettingsBean().getSystemSettings().isOfflineMode();
 
 		GameBean processBean = Model.getSelectedGame();
 		if(processBean == null || processBean.isEmpty()){
 			return false;
 		}
 		SettingsBean settingsBean =  Model.getSettingsBean();
+		CoverPaths coverPaths = settingsBean.getCoverSettings().getCoverPaths();
 		
 		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar();
 		progressBar.setMaximum(getProgress());
@@ -43,32 +46,36 @@ public class UpdateCoverHandler extends AbstractHandler {
 		updateCover = settingsBean.isUpdateCover();
 		
 		String gameId = processBean.getId();
-		String folder = settingsBean.getCoverPath2d();
 		
-		String coverPath = folder
-		+File.separatorChar
-		+gameId
-		+".png";
-
 		//IF not wii disc return and set default image
 		if(gameId.contains("not a wii disc")){
 			GuiUtils.setDefaultCovers();
 			settingsBean.setUpdateCover(false);
 			return false;
 		}
-
-		//COVER
-		if(FileUtils.coverFileExist(coverPath) && !updateCover){
-			GuiUtils.setCover(coverPath);		
-			//progressbar
-			progressBar.setSelection(1);
-		}else{
-			FileUtils.checkAndCreateFolder(folder);
-			processCover(coverPath);
+		
+		
+//		return true; //TODO temporary fix no cover
+		//COVERS
+		
+		//2D
+		String folder = coverPaths.getCover2d();
+		String coverPath = folder
+		+File.separatorChar
+		+gameId
+		+".png";
+		
+		if(!processCover(offlineMode, 
+				coverPath, 
+				folder, 
+				progressBar, 
+				CoverConstants.COVER_2D)){
+			return false;
 		}
-
+	
+	
 		//3D
-		folder = settingsBean.getCoverPath3d()
+		folder = coverPaths.getCover3d()
 		+File.separatorChar;
 
 		FileUtils.checkAndCreateFolder(folder);
@@ -78,16 +85,16 @@ public class UpdateCoverHandler extends AbstractHandler {
 		+gameId
 		+".png";
 		
-		if(FileUtils.coverFileExist(coverPath) && !updateCover){
-			GuiUtils.setCover3d(coverPath);		
-			//progressbar
-			progressBar.setSelection(getProgress()>2?2:getProgress());
-		}else{
-			processCover3D(coverPath);
+		if(!processCover(offlineMode, 
+				coverPath, 
+				folder, 
+				progressBar, 
+				CoverConstants.COVER_3D)){
+			return false;
 		}
-		
+
 		//DISC
-		folder = settingsBean.getCoverPathDisc()
+		folder = coverPaths.getCoverDisc()//TODO gestire la path in maniera relative con le costanti del loader
 		+File.separatorChar;
 
 		FileUtils.checkAndCreateFolder(folder);
@@ -97,14 +104,15 @@ public class UpdateCoverHandler extends AbstractHandler {
 		+gameId
 		+".png";
 		
-		if(FileUtils.coverFileExist(coverPath) && !updateCover){
-			GuiUtils.setCoverDisc(coverPath);	
-			//progressbar
-			progressBar.setSelection(getProgress()>2?3:getProgress());	
-		}else{
-			processCoverDisc(coverPath);
+		if(!processCover(offlineMode, 
+				coverPath, 
+				folder, 
+				progressBar, 
+				CoverConstants.COVER_DISC)){
+			return false;
 		}
 		
+		//RESET SELECTION
 		progressBar.setSelection(0);
 		settingsBean.setUpdateCover(false);
 	
@@ -113,12 +121,47 @@ public class UpdateCoverHandler extends AbstractHandler {
 	}
 
 		
-	private void processCoverDisc(String coverPath) {
+	private boolean processCover(boolean offlineMode, String coverPath, String folder, ProgressBar progressBar, String coverCode) {
+
+		if(FileUtils.coverFileExist(coverPath) && !updateCover){
+			GuiUtils.setCover(coverPath,coverCode);		
+			progressBar.setSelection(1);
+			return true;
+		}
+
+		if(offlineMode){
+				GuiUtils.setDefaultCovers();
+				return false;
+			
+		}else{
+			FileUtils.checkAndCreateFolder(folder);
+			downloadCover(coverPath,coverCode);
+			return true;
+		}
+	}
+
+
+	private void downloadCover(String coverPath, String coverCode) {
+		
+		if(coverCode.equals(CoverConstants.COVER_2D)){
+			downloadCover2D(coverPath);
+		}
+		if(coverCode.equals(CoverConstants.COVER_3D)){
+			downloadCover3D(coverPath);
+		}
+		if(coverCode.equals(CoverConstants.COVER_DISC)){
+			downloadCoverDisc(coverPath);
+		}
+		
+	}
+
+
+	private void downloadCoverDisc(String coverPath) {
 		
 		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar();
 		SettingsBean settingsBean =  Model.getSettingsBean();
 		
-		GuiUtils.setCoverDisc(CoverConstants.NODISC);
+		GuiUtils.setCover(CoverConstants.NODISC,CoverConstants.COVER_DISC);
 		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
 			if(settingsBean.isCoverDiscs()){
 
@@ -127,14 +170,14 @@ public class UpdateCoverHandler extends AbstractHandler {
 //					new File(coverPath).delete();
 //				}
 				
-				downloadCover(CoverConstants.DISC_URL,coverPath);
+				processCover(CoverConstants.DISC_URL,coverPath);
 
 				if(FileUtils.coverFileExist(coverPath)){
 					//Cover Found
-					GuiUtils.setCoverDisc(coverPath);
+					GuiUtils.setCover(coverPath,CoverConstants.COVER_DISC);
 				}else{
 					//Not found
-					GuiUtils.setCoverDisc(CoverConstants.NODISC);
+					GuiUtils.setCover(CoverConstants.NODISC,CoverConstants.COVER_DISC);
 				}
 
 				//progressbar
@@ -144,23 +187,23 @@ public class UpdateCoverHandler extends AbstractHandler {
 	
 	}
 
-	private void processCover3D(String coverPath) {
+	private void downloadCover3D(String coverPath) {
 		
 		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar();
 		
 		SettingsBean settingsBean =  Model.getSettingsBean();
 		
-		GuiUtils.setCover3d(CoverConstants.NOIMAGE3D);
+		GuiUtils.setCover(CoverConstants.NOIMAGE3D,CoverConstants.COVER_3D);
 		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
 			if(settingsBean.isCover3D()){
 
-				downloadCover(CoverConstants.COVER3D_URL,coverPath);	
+				processCover(CoverConstants.COVER3D_URL,coverPath);	
 				if(FileUtils.coverFileExist(coverPath)){
 					//Cover Found
-					GuiUtils.setCover3d(coverPath);
+					GuiUtils.setCover(coverPath,CoverConstants.COVER_3D);
 				}else{
 					//Not found
-					GuiUtils.setCover3d(CoverConstants.NOIMAGE3D);
+					GuiUtils.setCover(CoverConstants.NOIMAGE3D,CoverConstants.COVER_3D);
 				}
 				//progressbar
 				progressBar.setSelection(getProgress()>2?2:getProgress());
@@ -169,13 +212,13 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 	}
 
-	private void processCover(String coverPath) {
+	private void downloadCover2D(String coverPath) {
 		
 		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar();
 		
 		SettingsBean settingsBean =  Model.getSettingsBean();
 		
-		GuiUtils.setCover(CoverConstants.NOIMAGE);
+		GuiUtils.setCover(CoverConstants.NOIMAGE,CoverConstants.COVER_2D);
 		if(settingsBean.isAutomaticCoverDownload() || updateCover){
 
 			if(updateCover){
@@ -186,14 +229,14 @@ public class UpdateCoverHandler extends AbstractHandler {
 				}	
 			}
 			//search cover
-			downloadCover(CoverConstants.COVER_URL,coverPath);
+			processCover(CoverConstants.COVER_URL,coverPath);
 
 			if(FileUtils.coverFileExist(coverPath)){
 				//Cover Found
-				GuiUtils.setCover(coverPath);
+				GuiUtils.setCover(coverPath,CoverConstants.COVER_2D);
 			}else{
 				//Not found
-				GuiUtils.setCover(CoverConstants.NOIMAGE);
+				GuiUtils.setCover(CoverConstants.NOIMAGE,CoverConstants.COVER_2D);
 			}
 			//progressbar
 			progressBar.setSelection(1);
@@ -218,7 +261,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 		return tot;
 	}
 
-	private void downloadCover(String url,String coverPath) {
+	private void processCover(String url,String coverPath) {
 
 		GameBean processBean = Model.getSelectedGame();
 		SettingsBean settingsBean =  Model.getSettingsBean();
@@ -229,10 +272,14 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 			InputStream in = obtainInputStream(url,region,gameId,-1);
 			if(in == null){
+				//PORCATA
 				//if disc, try custom, else return
 				if(url.equals(CoverConstants.DISC_URL)){
 					in = obtainInputStream(CoverConstants.DISCCUSTOM_URL,
 											region,gameId,-1);
+					if(in == null){
+						return;
+					}
 				}else{
 					return;
 				}
@@ -254,6 +301,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			return;
 		}
 	}
 
@@ -267,10 +315,10 @@ public class UpdateCoverHandler extends AbstractHandler {
 			+region
 			+"/"+gameId+".png";
 			
-			address = formatUrlAddress(address);
+			address = WebUtils.formatUrlAddress(address);
 			
 			System.out.println("Checking:\n"+address);
-			if(!urlExists(address)){
+			if(!WebUtils.urlExists(address)){
 				throw new MalformedURLException();
 			}
 
@@ -302,29 +350,6 @@ public class UpdateCoverHandler extends AbstractHandler {
 		return in;
 	}
 
-	private boolean urlExists(String updateServer) throws IOException {
-
-		HttpURLConnection.setFollowRedirects(false);
-		HttpURLConnection con;
-		con = (HttpURLConnection) new URL(updateServer).openConnection();
-
-		con.setRequestMethod("HEAD");
-
-		int resp = con.getResponseCode();
-		if(resp != HttpURLConnection.HTTP_OK){
-			return false;
-		}
-
-		return true;
-	}
-
-	public static String formatUrlAddress(String indirizzo) {
-		if (indirizzo.contains(" ")){
-			indirizzo = indirizzo.replaceAll(" ", "%20");
-		}
-		return indirizzo;
-	}
-
 	public static Image imgAddress(String indirizzo){
 
 		Image immagine = null;
@@ -332,7 +357,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 		if(indirizzo.startsWith("http://")) {
 			URL url;
 			try {
-				url = new URL(formatUrlAddress(indirizzo));
+				url = new URL(WebUtils.formatUrlAddress(indirizzo));
 				InputStream is = url.openStream();
 				immagine = new Image(null,is);
 

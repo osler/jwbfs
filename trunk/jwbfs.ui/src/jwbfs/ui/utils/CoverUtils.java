@@ -3,6 +3,7 @@ package jwbfs.ui.utils;
 import java.io.File;
 
 import jwbfs.model.Model;
+import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.FileUtils;
 
@@ -15,7 +16,9 @@ public class CoverUtils {
 	 */
 	public static String createCoverFolder(String diskPath) {
 		
-		String coverPath = diskPath+File.separatorChar+CoverConstants.IMAGE_FOLDER_NAME;
+		String coverPath = diskPath+File.separatorChar
+						  +CoverConstants.getFolderName();
+		
 		File dirImg = new File(coverPath);
 		if(!dirImg.exists()){
 			boolean create = GuiUtils.showConfirmDialog("Folder "+dirImg.getAbsolutePath()+" does not exist, create it?");
@@ -37,14 +40,23 @@ public class CoverUtils {
 	 */
 	public static void createCoverSubFolders(String coverPath) {
 		
-		FileUtils.exist(coverPath,true,false,false);
-		FileUtils.exist(coverPath,false,true,false);
-		FileUtils.exist(coverPath,false,false,true);
+		FileUtils.exist(coverPath,CoverConstants.getImage2D());
+		FileUtils.exist(coverPath,CoverConstants.getImage3D());
+		FileUtils.exist(coverPath,CoverConstants.getImageDisc());
+		FileUtils.exist(coverPath,CoverConstants.getImageFullCover());
 	}
 
 	public static String get2DPath(String coverPath) {
 
-		coverPath = coverPath+File.separatorChar+CoverConstants.IMAGE_2D_NAME;;
+		//reset the coverPath to temp if the loader don't support this kind of cover
+		String subPath = CoverConstants.getImage2D();
+		if(subPath == null){
+			coverPath = System.getProperty("java.io.tmpdir");
+		}
+		
+		coverPath = coverPath+File.separatorChar
+					+subPath;
+		
 		FileUtils.checkAndCreateFolder(coverPath);
 
 		return coverPath;
@@ -53,7 +65,15 @@ public class CoverUtils {
 	
 	public static String get3DPath(String coverPath) {
 
-		coverPath = coverPath+File.separatorChar+CoverConstants.IMAGE_3D_NAME;;
+		//reset the coverPath to temp if the loader don't support this kind of cover
+		String subPath = CoverConstants.getImage3D();
+		if(subPath == null){
+			coverPath = System.getProperty("java.io.tmpdir");
+		}
+		
+		coverPath = coverPath+File.separatorChar
+					+CoverConstants.getImage3D();
+		
 		FileUtils.checkAndCreateFolder(coverPath);
 
 		return coverPath;
@@ -62,7 +82,15 @@ public class CoverUtils {
 	
 	public static String getDISCSPath(String coverPath) {
 
-		coverPath = coverPath+File.separatorChar+CoverConstants.IMAGE_DISC_NAME;;
+		//reset the coverPath to temp if the loader don't support this kind of cover
+		String subPath = CoverConstants.getImageDisc();
+		if(subPath == null){
+			coverPath = System.getProperty("java.io.tmpdir");
+		}
+		
+		coverPath = coverPath+File.separatorChar
+					+CoverConstants.getImageDisc();
+		
 		FileUtils.checkAndCreateFolder(coverPath);
 
 		return coverPath;
@@ -79,15 +107,17 @@ public class CoverUtils {
 		
 		String diskPath = new File(bean.getDiskPath()).getParent();
 		
+		CoverPaths coverPaths = bean.getCoverSettings().getCoverPaths();
+		
 		String coverPath = CoverUtils.createCoverFolder(diskPath);
 		
 		String coverPath2d = CoverUtils.get2DPath(coverPath);
 		String coverPath3d = CoverUtils.get3DPath(coverPath);
 		String coverPathDisc = CoverUtils.getDISCSPath(coverPath);
 		
-		bean.setCoverPath2d(coverPath2d);
-		bean.setCoverPath3d(coverPath3d);
-		bean.setCoverPathDisc(coverPathDisc);
+		coverPaths.setCover2d(coverPath2d);
+		coverPaths.setCover3d(coverPath3d);
+		coverPaths.setCoverDisc(coverPathDisc);
 	}
 
 }

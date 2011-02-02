@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import jwbfs.model.Model;
 
@@ -33,8 +33,12 @@ public class FileUtils {
 	}
 
 	public static void checkAndCreateFolder(String folder) {
-
+		
 		File fol = new File(folder);
+		if(!fol.getParentFile().exists()){
+			fol.getParentFile().mkdir();
+			System.out.println("Folder created: \n"+folder);
+		}
 		if(fol.exists() && fol.isDirectory()){
 			return;
 		}else{
@@ -55,26 +59,15 @@ public class FileUtils {
 		return exist;
 	}
 
-	public static String exist(String path, boolean cover2d, boolean cover3d, boolean coverDisc) {
+	public static String exist(String path, String coverSubFolder) {
+//		if(coverSubFolder == null){		
+//			path = System.getProperty("java.io.tmpdir")+File.separatorChar+coverSubFolder;
+//		}
 		path = exist(path);
 
-		//		String tempDir = System.getProperty("java.io.tmpdir");
-
-		if(cover2d /*&& path.equals(tempDir)*/){
-			path = path+File.separatorChar+"2D";
-			FileUtils.checkAndCreateFolder(path);
-		}
-
-		if(cover3d /*&& path.equals(tempDir)*/){
-			path = path+File.separatorChar+"";
-			FileUtils.checkAndCreateFolder(path);
-		}
-
-		if(coverDisc /*&& path.equals(tempDir)*/){
-			path = path+File.separatorChar+"disc";
-			FileUtils.checkAndCreateFolder(path);	
-		}
-
+		path = path+File.separatorChar+coverSubFolder;
+		FileUtils.checkAndCreateFolder(path);
+		
 		return path;
 	}
 
@@ -175,15 +168,18 @@ public class FileUtils {
 		try {
 			FileOutputStream out = new FileOutputStream(Model.getSelectedGame().getFolderPath()+"tmp.size");
 
+	        RandomAccessFile f = new RandomAccessFile("t", "rw");
+	        f.setLength(WBFSFileConstants.SPLITSIZE_kb_Values[2]);
 
-			int c = 0;
-			while (c != WBFSFileConstants.SPLITSIZE_kb_Values[2]){
-				out.write(c);
-			}
 
-			if (out != null) {
-				out.close();
-			}
+//			int c = 0;
+//			while (c != WBFSFileConstants.SPLITSIZE_kb_Values[2]){
+//				out.write(c);
+//			}
+//
+//			if (out != null) {
+//				out.close();
+//			}
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

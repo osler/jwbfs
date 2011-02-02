@@ -39,7 +39,8 @@ public class DialogSelectDisk extends Dialog{
 		CoverSettings coverSettings = Model.getSettingsBean().getCoverSettings();
 		//if no type selected
 		if(!coverSettings.isCoverTypeUSBLoaderCFG() 
-				&& !coverSettings.isCoverTypeUSBLoaderCFG()){
+				&& !coverSettings.isCoverTypeUSBLoaderCFG()
+				&& !coverSettings.isCoverTypeUSBLoaderWIIFLOW()){
 			GuiUtils.showError("Please select an USB Loader");
 			return false;
 		}
@@ -144,13 +145,17 @@ public class DialogSelectDisk extends Dialog{
 
 
 	private void createGroupUSBLoader(Composite mainComposite) {
-		Group usbLoaderType = WidgetCreator.createGroup(mainComposite, "USB Loader covers path");
+		Group usbLoaderType = WidgetCreator
+				.createGroup(mainComposite, "USB Loader covers path",3);
 
 		WidgetCreator.createRadio(usbLoaderType, "USBLoaderGX", 
 				Model.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderGX");
 		
 		WidgetCreator.createRadio(usbLoaderType, "Configurable USB Loader", 
 				Model.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderCFG");
+		
+		WidgetCreator.createRadio(usbLoaderType, "Wiiflow", 
+				Model.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderWIIFLOW");
 		
 	}
 
