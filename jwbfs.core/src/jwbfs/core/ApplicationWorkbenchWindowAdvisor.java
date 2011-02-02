@@ -1,3 +1,4 @@
+
 package jwbfs.core;
 
 import java.io.File;
@@ -12,13 +13,12 @@ import java.util.List;
 import java.util.Properties;
 
 import jwbfs.model.Model;
-import jwbfs.model.utils.WBFSFileConstants;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.controls.ConfigUtils;
-import jwbfs.ui.handlers.FolderDiskDialogHandler;
-import jwbfs.ui.handlers.UpdateGameListHandler;
+import jwbfs.ui.utils.CoverUtils;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.PlatformUtils;
+import jwbfs.ui.utils.WebUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -85,6 +85,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 			if(Model.getSettingsBean().getDiskPath().trim().equals("")
 					|| !new File(Model.getSettingsBean().getDiskPath()).exists()){
 				PlatformUtils.getHandlerService(CoreConstants.MAINVIEW_ID).executeCommand(CoreConstants.COMMAND_FOLDER_DISK_DIALOG_ID, null);		
+			}else{				
+				CoverUtils.setCoversPathFromDiskPath();	
 			}
 			PlatformUtils.getHandlerService(CoreConstants.MAINVIEW_ID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
 			
@@ -108,7 +110,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	private void update(String updateServer) {
 
 		final String site = updateServer;
-		
+	
 		if(!checkUpdateSite(updateServer)){
 			return;
 		}
@@ -435,10 +437,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		try {
 		    HttpURLConnection.setFollowRedirects(false);
 		    HttpURLConnection con;
-			con = (HttpURLConnection) new URL(updateServer).openConnection();
+			con = (HttpURLConnection) new URL(updateServer+"/site.xml").openConnection();
 			
 		    con.setRequestMethod("HEAD");
-		      
+//		    con.setReadTimeout(2000);//TIMEOUT
+		    
 			int resp = con.getResponseCode();
 			if(resp != HttpURLConnection.HTTP_OK){
 				throw new MalformedURLException();

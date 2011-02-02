@@ -1,10 +1,13 @@
 package jwbfs.ui.views.folder;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import jwbfs.model.Model;
+import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.model.utils.WBFSFileConstants;
 import jwbfs.model.utils.CoreConstants;
-import jwbfs.ui.listeners.coverView.FolderCoverDialogListener;
+import jwbfs.model.utils.WBFSFileConstants;
 import jwbfs.ui.listeners.settings.UpdateTitlesTXTListener;
 import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.views.WidgetCreator;
@@ -14,15 +17,15 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
-public class SettingsView extends ViewPart{
+public class SettingsView extends ViewPart implements PropertyChangeListener{
 	 
 	protected SettingsBean bean = null;
 	
 	public SettingsView() {
 		bean = (SettingsBean) getTabBean() ;
+		
 	}
 
 	@Override
@@ -60,27 +63,37 @@ public class SettingsView extends ViewPart{
 		addHandlerUpdateTXT(button);
 		label = WidgetCreator.createLabel(group,"");
 		
+		WidgetCreator.createRadio(group, "USBLoaderGX", 
+				Model.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderGX");
+		
+		WidgetCreator.createRadio(group, "Configurable USB Loader", 
+				Model.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderCFG");
+		
+		WidgetCreator.createRadio(group, "Wiiflow", 
+				Model.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderWIIFLOW");
+		
 		label = WidgetCreator.createLabel(group,"Cover save Path",3);
 		label = WidgetCreator.createLabel(group,"2D");
-		Text text =  WidgetCreator.createText(group, false, (SettingsBean) getTabBean(), "coverPath2d");
-		button = WidgetCreator.createButton(group,"open");	
-		addCoverListener(button,"2d");
+		CoverPaths coverBean = ((SettingsBean) getTabBean()).getCoverSettings().getCoverPaths();
+		WidgetCreator.createText(group, false, coverBean, "cover2d",2);
+//		button = WidgetCreator.createButton(group,"open");	
+//		addCoverListener(button,"2d");
 		
 		label = WidgetCreator.createLabel(group,"3D");
-		text =  WidgetCreator.createText(group, false, (SettingsBean) getTabBean(), "coverPath3d");
-		button = WidgetCreator.createButton(group,"open");	
-		addCoverListener(button,"3d");
+		WidgetCreator.createText(group, false, coverBean, "cover3d",2);
+//		button = WidgetCreator.createButton(group,"open");	
+//		addCoverListener(button,"3d");
 		
 		label = WidgetCreator.createLabel(group,"Disc");
-		text =  WidgetCreator.createText(group, false, (SettingsBean) getTabBean(), "coverPathDisc");
-		button = WidgetCreator.createButton(group,"open");	
-		addCoverListener(button,"disc");
+		WidgetCreator.createText(group, false, coverBean, "coverDisc",2);
+//		button = WidgetCreator.createButton(group,"open");	
+//		addCoverListener(button,"disc");
 	}
 
-	private void addCoverListener(Button button, String type) {
-		button.addSelectionListener(new FolderCoverDialogListener(CoreConstants.SETTINGSVIEW_ID, type));
-		
-	}
+//	private void addCoverListener(Button button, String type) {
+//		button.addSelectionListener(new FolderCoverDialogListener(CoreConstants.SETTINGSVIEW_ID, type));
+//		
+//	}
 
 	private void addHandlerUpdateTXT(Button button) {
 		button.addSelectionListener(new UpdateTitlesTXTListener(CoreConstants.SETTINGSVIEW_ID));
@@ -94,6 +107,11 @@ public class SettingsView extends ViewPart{
 	@Override
 	public void setFocus() {
 		
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		System.out.println("TEST");
 	}
 
 			

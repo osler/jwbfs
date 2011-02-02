@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import jwbfs.model.Model;
+import jwbfs.model.beans.CoverPaths;
+import jwbfs.model.beans.CoverSettings;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.utils.PlatformUtils;
@@ -148,15 +150,23 @@ public class ConfigUtils {
 		if(line.contains("cover.region")){
 			return subLine + bean.getRegion();
 		}
-		if(line.contains("cover.path.2d")){
-			return subLine + bean.getCoverPath2d();
+		if(line.contains("cover.path.type")){
+			String type = decodeCoverType();
+		return subLine + type;
 		}
-		if(line.contains("cover.path.3d")){
-			return subLine + bean.getCoverPath3d();
-		}
-		if(line.contains("cover.path.disc")){
-			return subLine + bean.getCoverPathDisc();
-		}
+
+//		if(line.contains("cover.path.2d")){
+//			return subLine + bean.getCoverSettings().getCoverPaths().getCover2d();
+//		}
+//		if(line.contains("cover.path.3d")){
+//			return subLine + bean.getCoverSettings().getCoverPaths().getCover3d();
+//		}
+//		if(line.contains("cover.path.disc")){
+//			return subLine + bean.getCoverSettings().getCoverPaths().getCoverDisc();
+//		}
+//		if(line.contains("cover.path.full")){
+//			return subLine + bean.getCoverSettings().getCoverPaths().getCoverFull();
+//		}
 
 		if(line.contains("settings.split.size")){
 			return subLine +  bean.getSplitSize();
@@ -166,6 +176,19 @@ public class ConfigUtils {
 		}
 		
 		return line;
+	}
+
+	private static String decodeCoverType() {
+		String type = null;
+		CoverSettings bean = Model.getSettingsBean().getCoverSettings();
+		if(bean.isCoverTypeUSBLoaderCFG()){
+			type = CoverPaths.CFG;
+		}else if(bean.isCoverTypeUSBLoaderGX()){
+				type = CoverPaths.GX;			
+		}else	if(bean.isCoverTypeUSBLoaderWIIFLOW()){
+			type = CoverPaths.WIIFLOW;
+		}
+		return type;
 	}
 
 }

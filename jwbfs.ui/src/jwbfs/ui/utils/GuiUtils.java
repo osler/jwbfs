@@ -96,7 +96,24 @@ public class GuiUtils {
 		return showConfirmDialog(message);
 	}
 
-	public static void setCover(String coverPath) {
+	public static void setCover(String coverPath, String coverCode) {
+
+		if(coverCode.equals(CoverConstants.COVER_2D)){
+			setCover(coverPath);
+		}
+		if(coverCode.equals(CoverConstants.COVER_3D)){
+			setCover3d(coverPath);
+		}
+		if(coverCode.equals(CoverConstants.COVER_DISC)){
+			setCoverDisc(coverPath);
+		}
+//		if(coverCode.equals(CoverConstants.COVER_FULLBOX)){
+//			setCover(coverPath);
+//		}
+
+	}
+	
+	private static void setCover(String coverPath) {
 
 		System.out.println("Setting cover:");
 		System.out.println(coverPath);
@@ -106,7 +123,7 @@ public class GuiUtils {
 
 	}
 
-	public static void setCover3d(String coverPath) {
+	private static void setCover3d(String coverPath) {
 
 		System.out.println("Setting cover3d:");
 		System.out.println(coverPath);
@@ -116,7 +133,7 @@ public class GuiUtils {
 
 	}
 
-	public static void setCoverDisc(String coverPath) {
+	private static void setCoverDisc(String coverPath) {
 		Image img = null;
 		try{
 			System.out.println("Setting cover disc:");

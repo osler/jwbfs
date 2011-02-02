@@ -29,7 +29,7 @@ public class GameBean extends ModelObject  {
 	
 	public GameBean(){
 		this.addPropertyChangeListener(this);
-		setFolderPath(System.getProperty("wbfs.convert.folder"));
+//		setFolderPath(System.getProperty("wbfs.convert.folder"));
 	}
 	
 	public String getRegion() {

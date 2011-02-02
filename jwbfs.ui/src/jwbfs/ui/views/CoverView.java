@@ -4,7 +4,6 @@ package jwbfs.ui.views;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.ui.listeners.coverView.FolderCoverDialogListener;
 import jwbfs.ui.listeners.coverView.UpdateCoverListener;
 import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.utils.GuiUtils;
@@ -64,7 +63,7 @@ public class CoverView extends ViewPart {
 		disk.setSize(50,50);
 		disk.setImage(image);
 		
-		Composite filler = WidgetCreator.createComposite(parent);
+		WidgetCreator.createComposite(parent); //FILLER
 		
 		addHandlerUpdate(cover);
 		addHandlerUpdate(cover3d);
@@ -74,11 +73,6 @@ public class CoverView extends ViewPart {
 		
 	}
 
-	private void addHandlerFolder(Button button) {
-		
-		button.addSelectionListener(new FolderCoverDialogListener(ID));
-}
-	
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub

@@ -29,7 +29,7 @@ public class UpdateCoverListener extends SelectionAdapter {
 
 		
 		try {
-
+				bean = Model.getSelectedGame();
 				if(bean.getFilePath() == null || bean.getFilePath().equals("")){
 
 					throw new FileNotSelectedException();

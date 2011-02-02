@@ -1,7 +1,7 @@
 package jwbfs.ui.listeners.coverView;
 
 import jwbfs.model.Model;
-import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.beans.CoverPaths;
 
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -27,19 +27,19 @@ public class FolderCoverDialogListener extends SelectionAdapter {
 
 		System.out.println("Launching Cover Folder Selection Dialog");
 
-		SettingsBean bean = Model.getSettingsBean();
+		CoverPaths bean = Model.getSettingsBean().getCoverSettings().getCoverPaths();
 		if(bean != null){
 			
 		String oldValue = "";
 		
 		if(type.equals("2d")){
-			oldValue = bean.getCoverPath2d();
+			oldValue = bean.getCover2d();
 		}
 		if(type.equals("3d")){
-			oldValue = bean.getCoverPath3d();
+			oldValue = bean.getCover3d();
 		}
 		if(type.equals("disc")){
-			oldValue = bean.getCoverPathDisc();
+			oldValue = bean.getCoverDisc();
 		}
 
 		DirectoryDialog d = new DirectoryDialog(new Shell());
@@ -52,13 +52,13 @@ public class FolderCoverDialogListener extends SelectionAdapter {
 			}
 
 			if(type.equals("2d")){
-				bean.setCoverPath2d(open);
+				bean.setCover2d(open);
 			}
 			if(type.equals("3d")){
-				bean.setCoverPath3d(open);
+				bean.setCover3d(open);
 			}
 			if(type.equals("disc")){
-				bean.setCoverPathDisc(open);
+				bean.setCoverDisc(open);
 			}
 		}
 			
