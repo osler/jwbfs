@@ -7,12 +7,6 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="jwbfs.ui.views.MainView"
-            id="jwbfs.ui.ConvertView"
-            name="MainView"
-            restorable="true">
-      </view>
-      <view
             class="jwbfs.ui.views.CoverView"
             id="CoverView"
             name="Cover"
@@ -136,5 +130,5 @@
       </handler>
       
    </extension>
-  
+   
 </plugin>
