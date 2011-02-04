@@ -7,14 +7,21 @@
    </configIni>
 
    <launcherArgs>
-      <programArgs>-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog</programArgs>
       <vmArgs>-Xms40m -Xmx256m</vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
+   <windowImages/>
+
+   <splash
+      location="jwbfs.core"
+      startupProgressRect="5,275,445,15"
+      startupMessageRect="7,252,445,20"
+      startupForegroundColor="000000" />
    <launcher name="jwbfs">
+      <linux icon="/jwbfs.core/icons/jwbfs.xpm"/>
       <solaris/>
-      <win useIco="false">
+      <win useIco="true">
+         <ico path="/jwbfs.core/icons/jwbfs.ico"/>
          <bmp/>
       </win>
    </launcher>
@@ -67,11 +74,5 @@
       <feature id="Feature.jwbfs.ui" version="1.0.0.qualifier"/>
    </features>
 
-   <configurations>
-      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
-      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
-      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="3" />
-   </configurations>
 
 </product>
