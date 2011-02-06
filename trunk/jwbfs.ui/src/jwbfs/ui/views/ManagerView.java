@@ -1,17 +1,19 @@
 package jwbfs.ui.views;
 
 import java.util.Iterator;
-import java.util.List;
 
+import jwbfs.i18n.Messages;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoreConstants;
+import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.listeners.mainView.AddButtonListener;
 import jwbfs.ui.listeners.mainView.DeleteButtonListener;
 import jwbfs.ui.listeners.mainView.DiskFolderSelectionListener;
 import jwbfs.ui.listeners.mainView.ExportButtonListener;
 import jwbfs.ui.listeners.mainView.UpdateGameListListener;
+import jwbfs.ui.utils.GameUtils;
 import jwbfs.ui.utils.PlatformUtils;
 import jwbfs.ui.views.table.ManagerViewContentProvider;
 import jwbfs.ui.views.table.ManagerViewLabelProvider;
@@ -20,11 +22,13 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.jface.util.Policy;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
@@ -38,6 +42,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
@@ -64,34 +69,35 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 
 		parent = WidgetCreator.createComposite(parent);
 
-		Group group = WidgetCreator.createGroup(parent, "Disk Path", 4);
-		Text text =  WidgetCreator.createText(group, false, (SettingsBean) getSettingsBean(), "diskPath",3);
-		Button button = WidgetCreator.createButton(group,"open");
+		Group group = WidgetCreator.createGroup(parent, Messages.view_disk_path, 4);
+		Text text =  WidgetCreator.createText(group, false, (SettingsBean) getSettingsBean(), "diskPath",3); //$NON-NLS-1$
+		Button button = WidgetCreator.createButton(group,Messages.view_disk_open);
 		addHandlerFolder(button);
 
-		group = WidgetCreator.createGroup(parent, "Actions", 4);
-		button = WidgetCreator.createButton(group,"Add");
+		group = WidgetCreator.createGroup(parent, Messages.view_actions, 4);
+		button = WidgetCreator.createButton(group,Messages.view_add);
 		addAction(button);
-		button = WidgetCreator.createButton(group,"Export");
+		button = WidgetCreator.createButton(group,Messages.view_export);
 		exportAction(button);
-		button = WidgetCreator.createButton(group,"Delete");
+		button = WidgetCreator.createButton(group,Messages.view_delete);
 		deleteAction(button);
-		button = WidgetCreator.createButton(group,"Update List");
+		button = WidgetCreator.createButton(group,Messages.view_gamelist_update);
 		addHandlerUpdate(button);
 
 		Composite tableComp = WidgetCreator.createComposite(parent);				
 		String[] columnsNames = {
-				"ID", "Name", /*"Region",*/"Size" };
+				Messages.view_gamelist_column_id, Messages.view_gamelist_column_name, /*"Region",*/Messages.view_gamelist_column_size };
 		int[] columnsSize = {15, 60, /*15,*/ 10};
 
 		table = WidgetCreator.createTable(tableComp, SWT.Selection | SWT.FULL_SELECTION, columnsNames, columnsSize);
 		tv = new TableViewer(table);
 		tv.setContentProvider(new ManagerViewContentProvider());
 		tv.setLabelProvider(  new ManagerViewLabelProvider());
-
+		
+//		col.setEditingSupport(new GenderEditingSupport(tv));
 		getSite().setSelectionProvider(tv);
 
-		//		addTableEditor();
+		addTableEditor();
 
 		tv.addSelectionChangedListener(this);
 		
@@ -100,6 +106,17 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 
 	}
 
+	public static TableViewerColumn[] getTableViewerColumns(
+			TableViewer tableViewer) {
+		TableColumn[] columns = tableViewer.getTable().getColumns();
+		TableViewerColumn[] viewerColumns = new TableViewerColumn[columns.length];
+		for (int i = 0; i < columns.length; i++) {
+			TableColumn tableColumn = columns[i];
+			viewerColumns[i] = (TableViewerColumn) tableColumn
+					.getData(Policy.JFACE + ".columnViewer");
+		}
+		return viewerColumns;
+	}
 
 	private void addTableEditor() {
 		final TableEditor editor = new TableEditor(table);
@@ -108,38 +125,54 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
 		editor.minimumWidth = 50;
-		// editing the second column
-		final int EDITABLECOLUMN = 1;
-
+		
 		table.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				// Clean up any previous editor control
-				Control oldEditor = editor.getEditor();
-				if (oldEditor != null) oldEditor.dispose();
-
-				// Identify the selected row
-				TableItem item = (TableItem)e.item;
-				if (item == null) return;
-
-				// The control that will be the editor must be a child of the Table
-				Combo newEditor = new Combo(table, SWT.READ_ONLY);
-
-				String[] temp = {"test","test2"};
-				newEditor.setItems(temp);
-
-				newEditor.setText(item.getText(EDITABLECOLUMN));
-				newEditor.addModifyListener(new ModifyListener() {
-					public void modifyText(ModifyEvent me) {
-						Text text = (Text)editor.getEditor();
-						editor.getItem().setText(EDITABLECOLUMN, text.getText());
-					}
-				});
-				//				newEditor.selectAll();
-				newEditor.setFocus();
-				editor.setEditor(newEditor, item, EDITABLECOLUMN);
+				
+				updateCellAndTxtFile(editor,e);
 			}
 		});
 
+	}
+
+	protected void updateCellAndTxtFile(final TableEditor editor, SelectionEvent e) {
+		
+
+		// editing the second column
+		final int EDITABLECOLUMN = 1;
+		
+		// Clean up any previous editor control
+		Control oldEditor = editor.getEditor();
+		if (oldEditor != null) oldEditor.dispose();
+
+		// Identify the selected row
+		final TableItem item = (TableItem)e.item;
+		if (item == null) return;
+
+		// The control that will be the editor must be a child of the Table
+		Combo newEditor = new Combo(table, SWT.NONE);
+		final String oldText = item.getText().trim();
+		String[] temp =  GameUtils.getGameNames(oldText);
+		newEditor.setItems(temp);
+
+		newEditor.setText(item.getText(EDITABLECOLUMN));
+		newEditor.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent me) {
+				Combo text = (Combo)editor.getEditor();
+				String newText = text.getText().trim();
+				editor.getItem().setText(EDITABLECOLUMN, newText);
+				
+				if(!oldText.equals(newText)){
+					FileUtils.updateGameTxtFile(item.getText(),text.getText());
+				}
+			}
+		});
+	
+		//				newEditor.selectAll();
+		newEditor.setFocus();
+		editor.setEditor(newEditor, item, EDITABLECOLUMN);
+	
+	
 	}
 
 	private void addHandlerUpdate(Button button) {
