@@ -1,6 +1,7 @@
 package jwbfs.ui.views;
 
 
+import jwbfs.i18n.Messages;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
@@ -17,7 +18,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class CoverView extends ViewPart {
 
-	public static final String ID = "CoverView";
+	public static final String ID = "CoverView"; //$NON-NLS-1$
 	protected GameBean processBean = null;
 	protected SettingsBean settingsBean = null;
 	protected Button cover ;
@@ -45,7 +46,7 @@ public class CoverView extends ViewPart {
 		
 		parent = WidgetCreator.formatComposite(parent);
 
-		Group group =  WidgetCreator.createGroup(parent, "Cover",2);
+		Group group =  WidgetCreator.createGroup(parent, Messages.view_cover,2);
 		
 		Image image = new Image( GuiUtils.getDisplay(),CoverConstants.NOIMAGE);
 		cover = WidgetCreator.createImage(group);
@@ -56,7 +57,7 @@ public class CoverView extends ViewPart {
 		cover3d.setSize(50,50);
 		cover3d.setImage(image);
 		
-		group = WidgetCreator.createGroup(parent, "Disc");
+		group = WidgetCreator.createGroup(parent, Messages.view_cover_disc);
 		
 		image = new Image( GuiUtils.getDisplay(),CoverConstants.NODISC);
 		disk = WidgetCreator.createImage(group);

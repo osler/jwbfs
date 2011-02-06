@@ -1,13 +1,20 @@
 package jwbfs.model.utils;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import jwbfs.model.Model;
+import jwbfs.model.beans.GameBean;
 
 public class FileUtils {
 
@@ -195,4 +202,47 @@ public class FileUtils {
 		new File(Model.getSelectedGame().getFolderPath()+"tmp.size").delete();
 		return true;
 	}
+
+	public static void updateGameTxtFile(String gameID, String gameName) {
+
+
+		try {
+			List<GameBean> games = Model.getGames();
+			String txtFile = null;
+			for (Iterator<GameBean> iterator = games.iterator(); iterator.hasNext();) {
+				GameBean gameBean = (GameBean) iterator.next();
+				if(gameBean.getId().trim().equals(gameID)){			
+					txtFile = getTxtFile(new File(gameBean.getFilePath()));
+					break;
+				}		
+			}
+
+			if(!txtFile.trim().equals("")){
+				File file = new File(txtFile);
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String line = reader.readLine();
+				String tempLine = "";
+				while(line!=null){
+					tempLine = tempLine+line;
+					line = reader.readLine();
+				}
+				
+				String[] outLine= tempLine.split("=");
+				outLine[1] = " "+gameName.trim();
+				
+				String lineNewName = outLine[0]+ "="+outLine[1];
+				
+				BufferedWriter writer = new BufferedWriter(new FileWriter(txtFile));
+				writer.write(lineNewName);
+				writer.close();
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+		
 }
