@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
@@ -12,6 +13,7 @@ import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.exceptions.WBFSFileExistsException;
+import jwbfs.ui.utils.GameUtils;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.PlatformUtils;
 
@@ -47,7 +49,12 @@ public class CheckDiscHandler extends AbstractHandler {
 			}
 		}
 
-
+		//Aggiungo nomi aggiuntivi
+		if(ok){
+			ArrayList<String> gameTitles = GameUtils.getGameAlternativeTitles(bean.getId());
+			bean.setGameAlternativeTitles(gameTitles);
+		}
+		
 		return ok;
 
 	}

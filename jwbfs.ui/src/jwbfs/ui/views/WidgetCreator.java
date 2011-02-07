@@ -1,7 +1,6 @@
 package jwbfs.ui.views;
 
 import jwbfs.model.beans.ModelObject;
-import jwbfs.model.beans.SettingsBean;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -103,9 +102,11 @@ public class WidgetCreator {
 	}
 	
 
+	public static Combo createCombo(Composite composite, String[] items, final ModelObject bean, String valueToBind) {
+		return createCombo(composite, items, bean, valueToBind, false);
+	}
 	
-	
-	public static Combo createCombo(Composite composite, String[] items, final SettingsBean bean, String valueToBind) {
+	public static Combo createCombo(Composite composite, String[] items, final ModelObject bean, String valueToBind,boolean enabled) {
 		
 		GridData gridBtn = new GridData();
 		gridBtn.horizontalAlignment = GridData.CENTER;
@@ -113,7 +114,13 @@ public class WidgetCreator {
 		gridBtn.horizontalSpan = 1;
 		gridBtn.verticalAlignment = GridData.CENTER;
 
-		Combo combo = new Combo(composite, SWT.READ_ONLY);
+
+		int style = SWT.NONE;
+		if(!enabled){
+			style = SWT.READ_ONLY;
+		}
+	
+		Combo combo = new Combo(composite, style);
 		combo.setItems(items);
 		combo.setLayoutData(gridBtn);
 		
