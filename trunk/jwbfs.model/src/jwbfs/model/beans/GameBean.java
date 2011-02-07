@@ -1,5 +1,6 @@
 package jwbfs.model.beans;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 
@@ -18,6 +19,7 @@ public class GameBean extends ModelObject  {
 	private String scrubGb = "";
 	private String region = "";
 	private long scrubSize = 0;
+	private ArrayList<String> gameAlternativeTitles;
 	
 	public String toString(){
 		return id +" - "+ title;
@@ -138,6 +140,42 @@ public class GameBean extends ModelObject  {
 
 	public String getFolderPath() {
 		return folderPath;
+	}
+
+	public void setGameAlternativeTitles(ArrayList<String> gameTitles) {
+		this.gameAlternativeTitles = gameTitles;
+	}
+
+	public ArrayList<String> getGameAlternativeTitles() {
+
+		
+		ArrayList<String> gameTitlesMod = new ArrayList<String>();
+		
+		if(gameAlternativeTitles.contains(title.trim())){
+			gameTitlesMod.add(title);
+		}
+		
+		
+		for (int i = 0; i < gameAlternativeTitles.size(); i++) {
+			String string = gameAlternativeTitles.get(i);
+			gameTitlesMod.add(string);
+			
+		}
+		return gameTitlesMod;
+	}
+	
+	public String[] getGameAlternativeTitlesAsArray() {
+		
+		ArrayList<String> names = getGameAlternativeTitles();
+		
+		String[] ret = new String[names.size()];
+		for (int j = 0; j < ret.length; j++) {
+			String string = names.get(j);
+			ret[j] = string;
+		}
+		
+		return ret;
+		
 	}
 
 }

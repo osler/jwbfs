@@ -14,7 +14,10 @@ import jwbfs.ui.listeners.mainView.DiskFolderSelectionListener;
 import jwbfs.ui.listeners.mainView.ExportButtonListener;
 import jwbfs.ui.listeners.mainView.UpdateGameListListener;
 import jwbfs.ui.utils.GameUtils;
+import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.PlatformUtils;
+import jwbfs.ui.views.table.GameCellModifiers;
+import jwbfs.ui.views.table.GameTitleCellEditor;
 import jwbfs.ui.views.table.ManagerViewContentProvider;
 import jwbfs.ui.views.table.ManagerViewLabelProvider;
 
@@ -23,12 +26,15 @@ import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.jface.util.Policy;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
@@ -94,10 +100,26 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		tv.setContentProvider(new ManagerViewContentProvider());
 		tv.setLabelProvider(  new ManagerViewLabelProvider());
 		
-//		col.setEditingSupport(new GenderEditingSupport(tv));
+		//TEST CELL MOD
+
+	    CellEditor[] editors = new CellEditor[4];
+	    editors[0] = new TextCellEditor(table);
+	    editors[1] = new GameTitleCellEditor(table, SWT.READ_ONLY);
+	    editors[3] =new TextCellEditor(table);
+
+	    tv.setCellModifier(new GameCellModifiers(tv));
+	    tv.setCellEditors(editors);
+	    String[] props = new String[] {
+	    		Messages.view_gamelist_column_id,
+	    		Messages.view_gamelist_column_name,
+	    		Messages.view_gamelist_column_size};
+	    
+	    tv.setColumnProperties(props);
+	    
 		getSite().setSelectionProvider(tv);
 
-		addTableEditor();
+//		addTableEditor();
+
 
 		tv.addSelectionChangedListener(this);
 		
@@ -106,17 +128,7 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 
 	}
 
-	public static TableViewerColumn[] getTableViewerColumns(
-			TableViewer tableViewer) {
-		TableColumn[] columns = tableViewer.getTable().getColumns();
-		TableViewerColumn[] viewerColumns = new TableViewerColumn[columns.length];
-		for (int i = 0; i < columns.length; i++) {
-			TableColumn tableColumn = columns[i];
-			viewerColumns[i] = (TableViewerColumn) tableColumn
-					.getData(Policy.JFACE + ".columnViewer");
-		}
-		return viewerColumns;
-	}
+
 
 	private void addTableEditor() {
 		final TableEditor editor = new TableEditor(table);
@@ -152,7 +164,7 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		// The control that will be the editor must be a child of the Table
 		Combo newEditor = new Combo(table, SWT.NONE);
 		final String oldText = item.getText().trim();
-		String[] temp =  GameUtils.getGameNames(oldText);
+		String[] temp =  GuiUtils.getGameSelectedFromTableView().getGameAlternativeTitlesAsArray();
 		newEditor.setItems(temp);
 
 		newEditor.setText(item.getText(EDITABLECOLUMN));

@@ -235,6 +235,8 @@ public class FileUtils {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(txtFile));
 				writer.write(lineNewName);
 				writer.close();
+				
+				System.out.println("File "+txtFile+" written: "+lineNewName);
 			}
 			
 		} catch (FileNotFoundException e) {

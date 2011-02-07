@@ -1,10 +1,16 @@
 package jwbfs.ui.utils;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.views.CoverView;
 import jwbfs.ui.views.ManagerView;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
@@ -182,6 +188,34 @@ public class GuiUtils {
 			showInfo(message, style);
 		}
 
+	}
+
+	public static GameBean getGameSelectedFromTableView() {
+
+		TableViewer tv = GuiUtils.getManagerTableViewer();
+
+		ISelection selection = tv.getSelection();
+		IStructuredSelection sel = (IStructuredSelection) selection;
+
+		GameBean selectedGame = (GameBean) sel.getFirstElement(); //SOLO il primo oggetto perchè per i multipli non ha senso il rename
+
+		return selectedGame;
+	}
+	
+	public static ArrayList<GameBean>getGameSelectedMultipleFromTableView() {
+
+		TableViewer tv = GuiUtils.getManagerTableViewer();
+
+		ISelection selection = tv.getSelection();
+		IStructuredSelection sel = (IStructuredSelection) selection;
+
+		ArrayList<GameBean> multiSelectedGame = new ArrayList<GameBean>();
+		for (Iterator<GameBean> iterator = sel.iterator(); iterator.hasNext();) {
+			GameBean selectedGame = iterator.next();
+			multiSelectedGame.add(selectedGame);
+		}
+
+		return multiSelectedGame;
 	}
 
 }

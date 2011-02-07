@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class GameUtils {
 
-	public static String[] getGameNames(String gameID) {
+	public static ArrayList<String> getGameAlternativeTitles(String gameID) {
 
 		File txtFile = new File(PlatformUtils.getTitlesTXTpath());
 
@@ -21,7 +21,7 @@ public class GameUtils {
 			while(line!=null){
 				
 				if(line.trim().contains(gameID)){
-					names.add(line.split("=")[1].trim());
+					names.add((line.split("=")[1]).trim());
 				}
 				
 				line =  br.readLine();
@@ -33,13 +33,30 @@ public class GameUtils {
 			e.printStackTrace();
 		}
 		
-		String[] ret = new String[names.size()];
-		for (int i = 0; i < ret.length; i++) {
-			ret[i] = names.get(i);
-		}
-		
-		return ret;
+		return names;
 	}
 	
+	
+	public static String decodeGameName(int indexGame, String [] names){
+		if(indexGame == -1){
+			indexGame =  0;
+		}
+		
+		return names[indexGame];
+	}
+	
+	public static int indexOfGameName(String name, String [] names){
+		
+		for (int i = 0; i < names.length; i++) {
+			String string = names[i];
+			
+			if(string.trim().equals(name.trim())){
+				return i;
+			}
+			
+		}
+		
+		return 0;
+	}
 	
 }
