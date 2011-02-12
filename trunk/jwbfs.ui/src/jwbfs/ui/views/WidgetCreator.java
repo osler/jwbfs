@@ -202,7 +202,7 @@ public class WidgetCreator {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = horizontalSpan;
 		gridData.verticalAlignment = vAlign;
-
+		gridData.heightHint = 25;
 		Label txtFile = new Label(parent, SWT.SEPARATOR);
 		txtFile.setLayoutData(gridData);
 
