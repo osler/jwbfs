@@ -15,7 +15,7 @@ import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.CoverSettings;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoreConstants;
-import jwbfs.ui.utils.PlatformUtils;
+import jwbfs.model.utils.PlatformUtils;
 
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
@@ -139,7 +139,7 @@ public class ConfigUtils {
 		String subLine = (line.substring(0,line.indexOf("="))).trim() + " = ";
 		
 		if(line.contains("wbfs.disk.path")){
-			return subLine +  bean.getDiskPath();
+			return subLine +  PlatformUtils.convertPath(bean.getDiskPath());//TODO convertire
 		}
 		if(line.contains("wbfs.txt.layout")){
 			return subLine + bean.getTxtLayout();

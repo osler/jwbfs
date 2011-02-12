@@ -1,10 +1,7 @@
 package jwbfs.ui.listeners.settings;
 
-import jwbfs.model.Model;
-import jwbfs.model.beans.SettingsBean;
-import jwbfs.ui.handlers.UpdateCoverHandler;
+import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.handlers.UpdateTitlesTXTHandler;
-import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;

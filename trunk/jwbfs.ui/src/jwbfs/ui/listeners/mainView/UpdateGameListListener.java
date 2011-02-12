@@ -2,8 +2,8 @@ package jwbfs.ui.listeners.mainView;
 
 import jwbfs.model.Model;
 import jwbfs.model.utils.CoreConstants;
+import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

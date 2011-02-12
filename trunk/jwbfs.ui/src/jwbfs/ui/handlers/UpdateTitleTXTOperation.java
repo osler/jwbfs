@@ -10,9 +10,9 @@ import java.net.URL;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.ui.utils.CoverConstants;
+import jwbfs.model.utils.CoverConstants;
+import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -85,7 +85,7 @@ public class UpdateTitleTXTOperation implements IRunnableWithProgress {
 			if(fileExist(txtFile)){
 			System.out.println("titles.TXT downloaded!");
 			}
-	
+			
 	}
 
 	private boolean fileExist(String coverPath) {

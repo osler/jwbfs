@@ -12,11 +12,14 @@ public class Messages extends NLS {
 	public static String settings_cover_enable;
 	public static String settings_cover_save_path;
 	public static String settings_group_cover;
+	public static String settings_group_cover_type;
 	public static String settings_group_txt_file;
 	public static String settings_partitions;
 	public static String settings_partitions_copy;
 	public static String settings_partitions_split_size;
 	public static String settings_region;
+	public static String settings_tab_disk;
+	public static String settings_tab_general;
 	public static String settings_txt_file_enable;
 	public static String settings_txt_file_layout;
 	public static String settings_update;

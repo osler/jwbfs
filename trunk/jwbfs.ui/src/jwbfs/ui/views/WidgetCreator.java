@@ -8,12 +8,14 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -106,13 +108,22 @@ public class WidgetCreator {
 		return createCombo(composite, items, bean, valueToBind, false);
 	}
 	
-	public static Combo createCombo(Composite composite, String[] items, final ModelObject bean, String valueToBind,boolean enabled) {
+	public static Combo createCombo(Composite composite, String[] items, ModelObject model,
+			String valueToBind,boolean enabled) {
+		return createCombo(composite, items, model, valueToBind, enabled,1,GridData.CENTER,GridData.CENTER);	
+	}
+	
+	public static Combo createCombo(Composite composite, String[] items, final ModelObject bean, String valueToBind, int hSpan ) {
+		return createCombo(composite, items, bean, valueToBind, false,hSpan, GridData.CENTER, GridData.CENTER);
+	}
+	
+	public static Combo createCombo(Composite composite, String[] items, final ModelObject bean, String valueToBind,boolean enabled,int hSpan, int hAlign, int vAlign) {
 		
 		GridData gridBtn = new GridData();
-		gridBtn.horizontalAlignment = GridData.CENTER;
+		gridBtn.horizontalAlignment = hAlign;
 		gridBtn.widthHint = 200;
-		gridBtn.horizontalSpan = 1;
-		gridBtn.verticalAlignment = GridData.CENTER;
+		gridBtn.horizontalSpan = hSpan;
+		gridBtn.verticalAlignment = vAlign;
 
 
 		int style = SWT.NONE;
@@ -181,17 +192,35 @@ public class WidgetCreator {
 		Label txtFile = new Label(parent, SWT.NONE);
 		txtFile.setText(text);
 		txtFile.setLayoutData(gridData);
+		
+		return txtFile;	
+	}
+	
+	public static Label createSeparator(Composite parent,int horizontalSpan, int hAlign, int vAlign){
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = hAlign;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalSpan = horizontalSpan;
+		gridData.verticalAlignment = vAlign;
+
+		Label txtFile = new Label(parent, SWT.SEPARATOR);
+		txtFile.setLayoutData(gridData);
 
 		
 		return txtFile;	
 	}
 	
-	public static Button createCheck(Composite parent, String text, ModelObject bean, String valueToBind){
+	public static Button createCheck(Composite parent, String text, ModelObject bean, String valueToBind,int hSpan){
+		
+		return createCheck(parent, text, bean, valueToBind, hSpan,GridData.CENTER,GridData.CENTER);	
+	}
+	
+	public static Button createCheck(Composite parent, String text, ModelObject bean, String valueToBind,int hSpan,int hAlign, int vAlign){
 		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.CENTER;
+		gridData.horizontalAlignment = hAlign;
 		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalSpan = 1;
-		gridData.verticalAlignment = GridData.CENTER;
+		gridData.horizontalSpan = hSpan;
+		gridData.verticalAlignment = vAlign;
 
 		Button radio = new Button(parent, SWT.CHECK);
 		radio.setText(text);
@@ -303,5 +332,7 @@ public class WidgetCreator {
 
 		return table;
 	}
+
+
 	
 }

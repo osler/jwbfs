@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
+import jwbfs.model.utils.CoverConstants;
 import jwbfs.ui.views.CoverView;
 import jwbfs.ui.views.ManagerView;
 
@@ -13,6 +14,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -103,20 +105,24 @@ public class GuiUtils {
 	}
 
 	public static void setCover(String coverPath, String coverCode) {
+		try{
 
-		if(coverCode.equals(CoverConstants.COVER_2D)){
-			setCover(coverPath);
-		}
-		if(coverCode.equals(CoverConstants.COVER_3D)){
-			setCover3d(coverPath);
-		}
-		if(coverCode.equals(CoverConstants.COVER_DISC)){
-			setCoverDisc(coverPath);
-		}
-//		if(coverCode.equals(CoverConstants.COVER_FULLBOX)){
-//			setCover(coverPath);
-//		}
+			if(coverCode.equals(CoverConstants.COVER_2D)){
+				setCover(coverPath);
+			}
+			if(coverCode.equals(CoverConstants.COVER_3D)){
+				setCover3d(coverPath);
+			}
+			if(coverCode.equals(CoverConstants.COVER_DISC)){
+				setCoverDisc(coverPath);
+			}
+			//		if(coverCode.equals(CoverConstants.COVER_FULLBOX)){
+			//			setCover(coverPath);
+			//		}
 
+		}catch (SWTException e) {
+			setDefaultCovers();
+		}
 	}
 	
 	private static void setCover(String coverPath) {

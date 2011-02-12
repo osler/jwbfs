@@ -9,8 +9,8 @@ import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.FileUtils;
+import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

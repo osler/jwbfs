@@ -2,9 +2,9 @@ package jwbfs.ui.listeners.mainView;
 
 import jwbfs.model.Model;
 import jwbfs.model.utils.CoreConstants;
+import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.exceptions.NotValidDiscException;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;

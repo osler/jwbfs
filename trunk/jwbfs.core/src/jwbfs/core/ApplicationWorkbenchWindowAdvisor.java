@@ -14,11 +14,10 @@ import java.util.Properties;
 
 import jwbfs.model.Model;
 import jwbfs.model.utils.CoreConstants;
+import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.controls.ConfigUtils;
 import jwbfs.ui.utils.CoverUtils;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.PlatformUtils;
-import jwbfs.ui.utils.WebUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;

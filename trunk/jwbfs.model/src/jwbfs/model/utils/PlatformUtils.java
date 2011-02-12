@@ -1,5 +1,5 @@
 
-package jwbfs.ui.utils;
+package jwbfs.model.utils;
 
 import java.io.File;
 
@@ -7,12 +7,26 @@ import jwbfs.model.utils.CoreConstants;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 
 
 
 public class PlatformUtils {
 
+	public static String convertPath(String path) {
+		if (isWindows()) {
+			String[] tmp = path.split("\\");
+			path="";
+			for (int i = 0; i < tmp.length; i++) {
+				path = path + tmp[i]+File.separatorChar;
+			}
+		}
+
+		return path;
+	}
+	
+	
 	public static String convertPathSeparator(String path) {
 		path = path.replace(" ", "\\ " );
 
@@ -132,7 +146,7 @@ public class PlatformUtils {
 
 	public static IHandlerService getHandlerService(String viewID) {
 		try {
-			IHandlerService handlerService = (IHandlerService) GuiUtils.getView(viewID).getSite()
+			IHandlerService handlerService = (IHandlerService) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(viewID).getSite()
 			.getService(IHandlerService.class);
 
 			return handlerService;
@@ -147,7 +161,7 @@ public class PlatformUtils {
 	public static IHandlerService getHandlerService() {
 		try {
 			IHandlerService handlerService = (IHandlerService) 
-											GuiUtils.getWorkbench()
+											PlatformUI.getWorkbench()
 											.getService(IHandlerService.class);
 
 			return handlerService;
