@@ -3,8 +3,6 @@ package jwbfs.model.utils;
 
 import java.io.File;
 
-import jwbfs.model.utils.CoreConstants;
-
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.PlatformUI;
@@ -16,10 +14,15 @@ public class PlatformUtils {
 
 	public static String convertPath(String path) {
 		if (isWindows()) {
-			String[] tmp = path.split("\\");
+			System.out.print(path);
+			String[] tmp = path.split("\\\\");
 			path="";
 			for (int i = 0; i < tmp.length; i++) {
-				path = path + tmp[i]+File.separatorChar;
+				String separator = ""+File.separatorChar+File.separatorChar;
+				if(i==tmp.length-1){
+					separator = "";
+				}
+				path = (path + tmp[i]+separator).trim();
 			}
 		}
 
