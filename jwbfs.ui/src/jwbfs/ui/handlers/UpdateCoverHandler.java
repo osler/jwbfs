@@ -11,8 +11,8 @@ import jwbfs.model.Model;
 import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.CoverConstants;
 import jwbfs.model.utils.FileUtils;
-import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.utils.WebUtils;
 import jwbfs.ui.views.CoverView;
@@ -43,14 +43,14 @@ public class UpdateCoverHandler extends AbstractHandler {
 		progressBar.setMaximum(getProgress());
 		progressBar.setSelection(0);
 
-		updateCover = settingsBean.isUpdateCover();
+		updateCover = settingsBean.getCoverSettings().isUpdateCover();
 		
 		String gameId = processBean.getId();
 		
 		//IF not wii disc return and set default image
 		if(gameId.contains("not a wii disc")){
 			GuiUtils.setDefaultCovers();
-			settingsBean.setUpdateCover(false);
+			settingsBean.getCoverSettings().setUpdateCover(false);
 			return false;
 		}
 		
@@ -114,7 +114,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 		
 		//RESET SELECTION
 		progressBar.setSelection(0);
-		settingsBean.setUpdateCover(false);
+		settingsBean.getCoverSettings().setUpdateCover(false);
 	
 	
 		return true;
@@ -162,8 +162,8 @@ public class UpdateCoverHandler extends AbstractHandler {
 		SettingsBean settingsBean =  Model.getSettingsBean();
 		
 		GuiUtils.setCover(CoverConstants.NODISC,CoverConstants.COVER_DISC);
-		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
-			if(settingsBean.isCoverDiscs()){
+		if(settingsBean.getCoverSettings().isAutomaticCoverDownload() || !updateCover)
+			if(settingsBean.getCoverSettings().isCoverDiscs()){
 
 				//delete old cover if update forced
 //				if(updateCover && FileUtils.coverFileExist(coverPath)){
@@ -194,8 +194,8 @@ public class UpdateCoverHandler extends AbstractHandler {
 		SettingsBean settingsBean =  Model.getSettingsBean();
 		
 		GuiUtils.setCover(CoverConstants.NOIMAGE3D,CoverConstants.COVER_3D);
-		if(settingsBean.isAutomaticCoverDownload() || !updateCover)
-			if(settingsBean.isCover3D()){
+		if(settingsBean.getCoverSettings().isAutomaticCoverDownload() || !updateCover)
+			if(settingsBean.getCoverSettings().isCover3D()){
 
 				processCover(CoverConstants.COVER3D_URL,coverPath);	
 				if(FileUtils.coverFileExist(coverPath)){
@@ -219,12 +219,12 @@ public class UpdateCoverHandler extends AbstractHandler {
 		SettingsBean settingsBean =  Model.getSettingsBean();
 		
 		GuiUtils.setCover(CoverConstants.NOIMAGE,CoverConstants.COVER_2D);
-		if(settingsBean.isAutomaticCoverDownload() || updateCover){
+		if(settingsBean.getCoverSettings().isAutomaticCoverDownload() || updateCover){
 
 			if(updateCover){
 				System.out.println("Updating Cover");
 			}else{
-				if(settingsBean.isAutomaticCoverDownload()){
+				if(settingsBean.getCoverSettings().isAutomaticCoverDownload()){
 					System.out.println("Automatic Cover Download");
 				}	
 			}
@@ -251,10 +251,10 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 		int tot = 1;
 
-		if(settingsBean.isCover3D()){
+		if(settingsBean.getCoverSettings().isCover3D()){
 			tot++;
 		}
-		if(settingsBean.isCoverDiscs()){
+		if(settingsBean.getCoverSettings().isCoverDiscs()){
 			tot++;
 		}
 

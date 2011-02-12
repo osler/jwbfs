@@ -28,7 +28,7 @@ public class GameTitleCellEditor extends DialogCellEditor {
 
 	protected Button createButton (final Composite parent) {
         Button button = new Button(parent, SWT.DOWN);
-        button.setText("open");
+        button.setText("...");
 
         button.addFocusListener(new FocusAdapter() {
 

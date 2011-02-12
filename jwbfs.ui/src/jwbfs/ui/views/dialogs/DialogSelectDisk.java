@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.CoverSettings;
+import jwbfs.model.utils.DiskContants;
 import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.utils.CoverUtils;
 import jwbfs.ui.utils.GuiUtils;
@@ -37,8 +38,34 @@ public class DialogSelectDisk extends Dialog{
 
 	private boolean check() {
 		CoverSettings coverSettings = Model.getSettingsBean().getCoverSettings();
-		//if no type selected
-		if(!coverSettings.isCoverTypeUSBLoaderCFG() 
+		String testSubFolder = Model.getSettingsBean().getDiskPath()+File.separatorChar+DiskContants.WBFS_GAMES_FOLDER;
+		
+		boolean creatingFolders = false;
+		
+		//folder doesn't exists
+		if(!Model.getSettingsBean().getDiskPath().endsWith(DiskContants.WBFS_GAMES_FOLDER)
+				&& !new File(testSubFolder).exists()){
+			FileUtils.createRootFolderStructures(Model.getSettingsBean().getDiskPath());
+			creatingFolders = true;
+		}
+		//exists a subfolder with wbfs name
+		if(new File(testSubFolder).exists()){
+			//maybe selected root...propose a subfolder
+			if(!creatingFolders){
+			
+			creatingFolders = GuiUtils.showConfirmDialog("The folder you chose contains a wbfs subfolder with possible games. Maybe you mean to use that?\n"+
+					"("+testSubFolder+") which contains "+ new File(testSubFolder).list().length 
+					+" files/folders");
+			
+			}
+			
+			if(creatingFolders){
+				Model.getSettingsBean().setDiskPath(testSubFolder);
+			}
+		}
+		
+		//if no type selected	
+		if(!coverSettings.isCoverTypeUSBLoaderGX() 
 				&& !coverSettings.isCoverTypeUSBLoaderCFG()
 				&& !coverSettings.isCoverTypeUSBLoaderWIIFLOW()){
 			GuiUtils.showError("Please select an USB Loader");

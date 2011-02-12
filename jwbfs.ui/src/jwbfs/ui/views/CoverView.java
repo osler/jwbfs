@@ -5,8 +5,8 @@ import jwbfs.i18n.Messages;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.CoverConstants;
 import jwbfs.ui.listeners.coverView.UpdateCoverListener;
-import jwbfs.ui.utils.CoverConstants;
 import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.swt.graphics.Image;

@@ -1,7 +1,7 @@
 package jwbfs.ui.listeners.mainView;
 
 import jwbfs.model.utils.CoreConstants;
-import jwbfs.ui.utils.PlatformUtils;
+import jwbfs.model.utils.PlatformUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;

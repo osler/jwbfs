@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.PlatformUtils;
 import jwbfs.model.utils.WBFSFileConstants;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.MonitorCancelException;
@@ -16,7 +17,6 @@ import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
 import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.exceptions.WBFSFileExistsException;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;

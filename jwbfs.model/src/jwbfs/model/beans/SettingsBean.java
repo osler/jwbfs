@@ -15,10 +15,7 @@ public class SettingsBean extends ModelObject {
 	//WIITDB SETTINGS
 	private String region;
 	
-	private boolean automaticCoverDownload;
-	private boolean updateCover;
-	private boolean cover3Denabled;
-	private boolean coverDiscsEnabled;
+
 	
 	//MANAGER SETTINGS
 	private String diskPath;
@@ -39,12 +36,6 @@ public class SettingsBean extends ModelObject {
 		
 		//WIITDB SETTINGS
 		region = System.getProperty("cover.region");
-		
-		automaticCoverDownload = true;
-		cover3Denabled = true;
-		coverDiscsEnabled = true;
-		
-		updateCover = false;
 
 		//MANAGER
 		diskPath =  System.getProperty("wbfs.disk.path");
@@ -108,44 +99,6 @@ public class SettingsBean extends ModelObject {
 		propertyChangeSupport.firePropertyChange("txtLayout", this.txtLayout,
 				this.txtLayout = txtLayout);	
 	}
-
-
-	public void setAutomaticCoverDownload(boolean automaticCoverDownload) {
-		propertyChangeSupport.firePropertyChange("automaticCoverDownload", this.automaticCoverDownload,
-		this.automaticCoverDownload = automaticCoverDownload);
-	}
-
-	public boolean isAutomaticCoverDownload() {
-		return automaticCoverDownload;
-	}
-
-	public void setUpdateCover(boolean updateCover) {
-		this.updateCover = updateCover;
-	}
-
-	public boolean isUpdateCover() {
-		return updateCover;
-	}
-
-	public void setCover3D(boolean cover3D) {
-		propertyChangeSupport.firePropertyChange("cover3Denabled", this.cover3Denabled,
-		this.cover3Denabled = cover3D);
-	}
-
-	public boolean isCover3D() {
-		return cover3Denabled;
-	}
-
-	public void setCoverDiscs(boolean coverDiscs) {
-		propertyChangeSupport.firePropertyChange("coverDiscsEnabled", this.coverDiscsEnabled,
-		this.coverDiscsEnabled = coverDiscs);
-	}
-
-	public boolean isCoverDiscs() {
-		return coverDiscsEnabled;
-	}
-
-
 
 	public void setDiskPath(String diskPath) {
 		propertyChangeSupport.firePropertyChange("diskPath", this.diskPath,

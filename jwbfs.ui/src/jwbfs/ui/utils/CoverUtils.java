@@ -1,50 +1,17 @@
 package jwbfs.ui.utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+
+import org.eclipse.swt.SWT;
 
 import jwbfs.model.Model;
 import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.CoverConstants;
 import jwbfs.model.utils.FileUtils;
 
 public class CoverUtils {
-
-	/**
-	 * create the images folder and its subfolder (2D,3D,discs)
-	 * @param diskPath
-	 * @return
-	 */
-	public static String createCoverFolder(String diskPath) {
-		
-		String coverPath = diskPath+File.separatorChar
-						  +CoverConstants.getFolderName();
-		
-		File dirImg = new File(coverPath);
-		if(!dirImg.exists()){
-			boolean create = GuiUtils.showConfirmDialog("Folder "+dirImg.getAbsolutePath()+" does not exist, create it?");
-			if(create){
-				dirImg.mkdir();
-			}
-		}
-
-		createCoverSubFolders(coverPath);
-	
-		return coverPath;
-		
-	}
-
-	/**
-	 * 
-	 * create the images subfolder (2D,3D,discs)
-	 * @param coverPath
-	 */
-	public static void createCoverSubFolders(String coverPath) {
-		
-		FileUtils.exist(coverPath,CoverConstants.getImage2D());
-		FileUtils.exist(coverPath,CoverConstants.getImage3D());
-		FileUtils.exist(coverPath,CoverConstants.getImageDisc());
-		FileUtils.exist(coverPath,CoverConstants.getImageFullCover());
-	}
 
 	public static String get2DPath(String coverPath) {
 
@@ -101,15 +68,27 @@ public class CoverUtils {
 	 * Create all the image folder and sub folder from the wbfs disk path actually used.
 	 */
 	
-	public static void setCoversPathFromDiskPath() {
+	public static void setCoversPathFromDiskPath(){
 
+		  
 		SettingsBean bean = Model.getSettingsBean();
 		
 		String diskPath = new File(bean.getDiskPath()).getParent();
+
+		String coverPath = diskPath+File.separatorChar
+		  +CoverConstants.getFolderName();
 		
 		CoverPaths coverPaths = bean.getCoverSettings().getCoverPaths();
 		
-		String coverPath = CoverUtils.createCoverFolder(diskPath);
+
+		if(!coverPathExist(diskPath)){
+			GuiUtils.showInfo("No cover folder found. I will create it.\n"+
+					"("+coverPath+")", SWT.ERROR);
+			
+			coverPath = FileUtils.createCoverFolder(diskPath);	
+			
+		}
+		
 		
 		String coverPath2d = CoverUtils.get2DPath(coverPath);
 		String coverPath3d = CoverUtils.get3DPath(coverPath);
@@ -118,6 +97,16 @@ public class CoverUtils {
 		coverPaths.setCover2d(coverPath2d);
 		coverPaths.setCover3d(coverPath3d);
 		coverPaths.setCoverDisc(coverPathDisc);
+	}
+
+	public static boolean coverPathExist(String diskPath) {
+
+		String coverPath = diskPath+File.separatorChar
+						  +CoverConstants.getFolderName();
+		
+		File dirImg = new File(coverPath);
+		
+		return dirImg.exists();
 	}
 
 }

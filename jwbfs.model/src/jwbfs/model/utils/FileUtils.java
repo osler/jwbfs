@@ -16,6 +16,9 @@ import java.util.List;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Shell;
+
 public class FileUtils {
 
 	public static String getTxtFile(File fileWbfs) {
@@ -39,21 +42,36 @@ public class FileUtils {
 		return null;
 	}
 
+
 	public static void checkAndCreateFolder(String folder) {
-		
-		File fol = new File(folder);
-		if(!fol.getParentFile().exists()){
-			fol.getParentFile().mkdir();
-			System.out.println("Folder created: \n"+folder);
-		}
-		if(fol.exists() && fol.isDirectory()){
-			return;
-		}else{
-			fol.mkdir();
-			System.out.println("Folder created: \n"+folder);
-			return;
+		checkAndCreateFolder(folder, false);
+	}
+	
+	public static void checkAndCreateFolder(String folder,boolean prompt) {
+		boolean confirm = true;
+		if(prompt){
+			confirm = false;
+			confirm = MessageDialog.openConfirm(new Shell(), "Confirm", "The path don't contains needed folders. Create folder structures? \n"+
+					"("+folder+")");
+
 		}
 
+		if (confirm) {
+
+			File fol = new File(folder);
+			if(!fol.getParentFile().exists()){
+				fol.getParentFile().mkdir();
+				System.out.println("Folder created: \n"+folder);
+			}
+			if(fol.exists() && fol.isDirectory()){
+				return;
+			}else{
+				fol.mkdir();
+				System.out.println("Folder created: \n"+folder);
+				return;
+			}
+
+		}
 	}
 
 	public static boolean coverFileExist(String coverPath) {
@@ -245,6 +263,56 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 
+	}
+
+
+	public static void createRootFolderStructures(String diskPath) {
+		
+		String wbfsPath = diskPath+File.separatorChar+DiskContants.WBFS_GAMES_FOLDER;
+		File wbfsFile = new File(wbfsPath);
+		if(!diskPath.contains(DiskContants.WBFS_GAMES_FOLDER)
+				&&  !wbfsFile.exists()){
+	
+		FileUtils.checkAndCreateFolder(wbfsPath,true);
+		createCoverFolder(diskPath);
+		}
+		
+	}
+
+
+	/**
+	 * create the images folder and its subfolder (2D,3D,discs)
+	 * @param diskPath
+	 * @return
+	 */
+	public static String createCoverFolder(String diskPath) {
+		
+		String coverPath = diskPath+File.separatorChar
+						  +CoverConstants.getFolderName();
+		
+		File dirImg = new File(coverPath);
+		if(!dirImg.exists()){
+				dirImg.mkdir();
+		}
+	
+		createCoverSubFolders(coverPath);
+	
+		return coverPath;
+		
+	}
+
+
+	/**
+	 * 
+	 * create the images subfolder (2D,3D,discs)
+	 * @param coverPath
+	 */
+	public static void createCoverSubFolders(String coverPath) {
+		
+		FileUtils.exist(coverPath,CoverConstants.getImage2D());
+		FileUtils.exist(coverPath,CoverConstants.getImage3D());
+		FileUtils.exist(coverPath,CoverConstants.getImageDisc());
+		FileUtils.exist(coverPath,CoverConstants.getImageFullCover());
 	}
 		
 }

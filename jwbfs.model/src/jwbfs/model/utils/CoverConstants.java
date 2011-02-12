@@ -1,4 +1,4 @@
-package jwbfs.ui.utils;
+package jwbfs.model.utils;
 
 import java.io.File;
 

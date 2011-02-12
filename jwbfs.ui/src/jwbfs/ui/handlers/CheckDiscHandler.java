@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import jwbfs.model.Model;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.FileUtils;
+import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.controls.ErrorHandler;
 import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.exceptions.WBFSFileExistsException;
 import jwbfs.ui.utils.GameUtils;
 import jwbfs.ui.utils.GuiUtils;
-import jwbfs.ui.utils.PlatformUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
