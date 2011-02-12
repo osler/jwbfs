@@ -17,10 +17,12 @@ import jwbfs.ui.utils.CoverUtils;
 import jwbfs.ui.views.WidgetCreator;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
@@ -46,7 +48,7 @@ public class SettingsView extends ViewPart implements PropertyChangeListener{
 		Composite composite = WidgetCreator.createComposite(parent);
 		TabFolder tabFolder = WidgetCreator.createTabFolder(composite);
 		
-//		Color folderColor = Display.getDefault().getSystemColor(SWT.COLOR_BLUE); 
+//		Color folderColor = Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND); 
 //		tabFolder.setBackground(folderColor); 
 		
 		createGeneralTab(tabFolder,Messages.settings_tab_general);
