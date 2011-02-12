@@ -34,6 +34,7 @@ public class SettingsView extends ViewPart implements PropertyChangeListener{
 	protected SettingsBean bean = null;
 	private Button cover3dDownloadButton;
 	private Button coverDiscDownloadButton;
+	private Combo txtLayoutCombo;
 	
 	public SettingsView() {
 		bean = (SettingsBean) getTabBean() ;
@@ -149,10 +150,15 @@ public class SettingsView extends ViewPart implements PropertyChangeListener{
 		combo =  WidgetCreator.createCombo(group, WBFSFileConstants.COPY_PARTITIONS_Text, (SettingsBean) getTabBean(), "copyPartitions");  
 	
 		group = WidgetCreator.createGroup(composite, Messages.settings_group_txt_file);
-		label = WidgetCreator.createLabel(group,"");  
-		WidgetCreator.createCheck(group, Messages.settings_txt_file_enable, getTabBean(), "enableTXT",1);  
+		WidgetCreator.createCheck(group, 
+				Messages.settings_txt_file_enable, 
+				getTabBean(), 
+				"enableTXT",
+				2,
+				GridData.BEGINNING,
+				GridData.BEGINNING);  
 		label = WidgetCreator.createLabel(group,Messages.settings_txt_file_layout);
-		combo =  WidgetCreator.createCombo(group, WBFSFileConstants.TXT_LAYOUT_Text, (SettingsBean) getTabBean(), "txtLayout");  
+		txtLayoutCombo =  WidgetCreator.createCombo(group, WBFSFileConstants.TXT_LAYOUT_Text, (SettingsBean) getTabBean(), "txtLayout");  
 
 		return tab;
 	}
@@ -182,6 +188,22 @@ public class SettingsView extends ViewPart implements PropertyChangeListener{
 		propertyChangeUpdateCoverType(evt);
 		
 		propertyChangeDownloadCover(evt);
+		
+		propertyChangeEnableTxtCreation(evt);
+	}
+
+	private void propertyChangeEnableTxtCreation(PropertyChangeEvent evt) {
+
+		String propertyName = evt.getPropertyName();
+		
+		if(propertyName.equals("enableTXT")){ 
+			
+			boolean enabled = ((Boolean)evt.getNewValue()).booleanValue();
+			
+			txtLayoutCombo.setEnabled(enabled);
+			
+		}
+	
 	}
 
 	private void propertyChangeDownloadCover(PropertyChangeEvent evt) {
