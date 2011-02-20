@@ -136,7 +136,15 @@
         		optional="false">
         	</commandParameter>
       </command>  
-     
+      <command
+            id="it.jwbfs.core.addDisk"
+            name="Add disk">
+             <commandParameter 
+        		id="diskID" 
+        		name="diskID" 
+        		optional="false">
+        	</commandParameter>
+      </command>     
    </extension>
    
    <extension
@@ -193,7 +201,17 @@
             class="jwbfs.ui.handlers.RefreshDiskHandler"
             commandId="it.jwbfs.core.refreshDiskView">
       </handler>      
-      
+      <handler
+            class="jwbfs.ui.handlers.AddDiskHandler"
+            commandId="it.jwbfs.core.addDisk">
+      </handler>         
    </extension>
-   
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Disks Perspective"
+            class="jwbfs.ui.perspectives.DisksPerspective"
+            id="jwbfs.ui.DisksPerspective">
+      </perspective>
+   </extension>
 </plugin>

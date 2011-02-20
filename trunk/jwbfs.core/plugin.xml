@@ -72,6 +72,15 @@
                		value="activeDiskID"> 
          		  </parameter> 
             </command>
+            <command
+                  commandId="it.jwbfs.core.addDisk"
+                  label="Add disk"
+                  style="push">
+                  <parameter 
+               		name="diskID" 
+               		value="it.jwbfs.ui.DiskView2"> 
+         		  </parameter> 
+            </command>
          </menu>
          <menu
                label="Games">
