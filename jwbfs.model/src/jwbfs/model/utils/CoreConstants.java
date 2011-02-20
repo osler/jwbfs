@@ -31,7 +31,12 @@ public class CoreConstants {
 		public static final String BUNDLE_MODEL = "jwbfs.model";
 		public static final String BUNDLE_UI = "jwbfs.ui";
 
-		public static final String PERSPECTIVE_DISKS 		= "jwbfs.ui.DisksPerspective";
+		public static final String PERSPECTIVE_DISKS_1 		= "jwbfs.ui.DisksPerspective";
+		public static final String PERSPECTIVE_DISKS_2 		= "jwbfs.ui.DisksPerspective2";
+		public static final String PERSPECTIVE_DISKS_3 		= "jwbfs.ui.DisksPerspective3";
+		public static final String PERSPECTIVE_DISKS_4 		= "jwbfs.ui.DisksPerspective4";
+		public static final String PERSPECTIVE_DISKS_5 		= "jwbfs.ui.DisksPerspective5";
+		public static final String PERSPECTIVE_DISKS_6 		= "jwbfs.ui.DisksPerspective6";
 		public static final String PERSPECTIVE_DEFAULT 		= "jwbfs.core.perspective";
 
 	
