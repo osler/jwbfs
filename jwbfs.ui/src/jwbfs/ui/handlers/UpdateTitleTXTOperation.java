@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoverConstants;
 import jwbfs.model.utils.PlatformUtils;
@@ -26,7 +26,7 @@ public class UpdateTitleTXTOperation implements IRunnableWithProgress {
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 
-		settingsBean = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
+		settingsBean = (SettingsBean) ModelStore.getSettingsBean();
 		
 		monitor.beginTask("Downloading Titles TXT file",
 				IProgressMonitor.UNKNOWN);

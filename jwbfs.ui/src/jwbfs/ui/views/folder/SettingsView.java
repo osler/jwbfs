@@ -4,7 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import jwbfs.i18n.Messages;
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.CoverSettings;
 import jwbfs.model.beans.ModelObject;
@@ -17,12 +17,10 @@ import jwbfs.ui.utils.CoverUtils;
 import jwbfs.ui.views.WidgetCreator;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
@@ -71,7 +69,7 @@ public class SettingsView extends ViewPart implements PropertyChangeListener{
 		
 		Group group = WidgetCreator.createGroup(composite, Messages.settings_region,3);
  
-		ModelObject coverModel = Model.getSettingsBean().getCoverSettings();
+		ModelObject coverModel = ModelStore.getSettingsBean().getCoverSettings();
 		
 		WidgetCreator.createCombo(group, 
 				CoverConstants.REGIONS, 
@@ -164,12 +162,12 @@ public class SettingsView extends ViewPart implements PropertyChangeListener{
 	}
 
 	private void addHandlerUpdateTXT(Button button) {
-		button.addSelectionListener(new UpdateTitlesTXTListener(CoreConstants.SETTINGSVIEW_ID));
+		button.addSelectionListener(new UpdateTitlesTXTListener(CoreConstants.VIEW_SETTINGS_ID));
 		
 	}
 
 	private SettingsBean getTabBean() {
-		return Model.getSettingsBean();
+		return ModelStore.getSettingsBean();
 	}
 
 	@Override

@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
+import jwbfs.model.beans.DiskBean;
 import jwbfs.model.beans.GameBean;
-import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.FileUtils;
 import jwbfs.model.utils.PlatformUtils;
@@ -22,19 +22,25 @@ import org.eclipse.ui.handlers.IHandlerService;
 
 public class UpdateGameListHandler extends AbstractHandler {
 	
-	private SettingsBean settingsBean;
+
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
-		settingsBean = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
-
-		Model.setGames(listGames(settingsBean.getDiskPath()));
-
-		Model.cleanExportGame();
-		Model.cleanSelectedGame();
 		
-		GuiUtils.getManagerTableViewer().refresh();
+		String diskID = event.getParameter("diskID");
+		
+		if(diskID.trim().equals("activeDiskID")){
+			diskID = GuiUtils.getActiveViewID();
+		}
+
+		DiskBean diskbean = (DiskBean) ModelStore.getDisk(diskID);
+
+		ModelStore.setGames(diskID,listGames(diskbean.getDiskPath()));
+
+		ModelStore.cleanExportGame();
+		ModelStore.cleanSelectedGame();
+		
+		GuiUtils.getManagerTableViewer(diskID).refresh();
 		GuiUtils.setDefaultCovers();
 
 		return null;
@@ -42,6 +48,10 @@ public class UpdateGameListHandler extends AbstractHandler {
 
 	public  List<GameBean> listGames(String folder) {
 		List<GameBean> game = new ArrayList<GameBean>();
+		
+		if(folder.trim().equals("")){
+			return game;
+		}
 		
 		FileUtils.checkAndCreateFolder(folder);
 		
@@ -75,7 +85,7 @@ public class UpdateGameListHandler extends AbstractHandler {
 			g.setFilePath(files[j].getAbsolutePath());
 			System.out.println(g.getFilePath());
 	
-			Model.setSelectedGame(g);
+			ModelStore.setSelectedGame(g);
 	
 			IHandlerService handlerService = PlatformUtils.getHandlerService();
 	

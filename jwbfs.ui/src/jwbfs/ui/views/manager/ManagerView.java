@@ -1,11 +1,10 @@
-package jwbfs.ui.views;
+package jwbfs.ui.views.manager;
 
 import java.util.Iterator;
 
 import jwbfs.i18n.Messages;
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
-import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.FileUtils;
 import jwbfs.model.utils.PlatformUtils;
@@ -15,15 +14,12 @@ import jwbfs.ui.listeners.mainView.DiskFolderSelectionListener;
 import jwbfs.ui.listeners.mainView.ExportButtonListener;
 import jwbfs.ui.listeners.mainView.UpdateGameListListener;
 import jwbfs.ui.utils.GuiUtils;
+import jwbfs.ui.views.WidgetCreator;
 import jwbfs.ui.views.table.GameCellModifiers;
 import jwbfs.ui.views.table.GameTitleCellEditor;
 import jwbfs.ui.views.table.ManagerViewContentProvider;
 import jwbfs.ui.views.table.ManagerViewLabelProvider;
 
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.NotEnabledException;
-import org.eclipse.core.commands.NotHandledException;
-import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -35,17 +31,16 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
 public class ManagerView extends ViewPart implements ISelectionChangedListener{
@@ -54,13 +49,17 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	private TableViewer tv;
 	private ProgressBar progressBar;
 
-	public ManagerView() {
+	protected String viewID = null;
 
+	public ManagerView() {
+	}
+	
+	public ManagerView(String viewID) {
+		this.viewID = viewID;
 	}
 
 	private void addHandlerFolder(Button button) {
-		//TODO FolderDialog for disk path
-		button.addSelectionListener(new DiskFolderSelectionListener(CoreConstants.MAINVIEW_ID));
+		button.addSelectionListener(new DiskFolderSelectionListener(viewID));
 	}
 
 
@@ -71,7 +70,7 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		parent = WidgetCreator.createComposite(parent);
 
 		Group group = WidgetCreator.createGroup(parent, Messages.view_disk_path, 4);
-		Text text =  WidgetCreator.createText(group, false, (SettingsBean) getSettingsBean(), "diskPath",3); //$NON-NLS-1$
+		WidgetCreator.createText(group, false, ModelStore.getDisk(viewID), "diskPath",3); //$NON-NLS-1$
 		Button button = WidgetCreator.createButton(group,Messages.view_disk_open);
 		addHandlerFolder(button);
 
@@ -92,10 +91,8 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 
 		table = WidgetCreator.createTable(tableComp, SWT.Selection | SWT.FULL_SELECTION, columnsNames, columnsSize);
 		tv = new TableViewer(table);
-		tv.setContentProvider(new ManagerViewContentProvider());
+		tv.setContentProvider(new ManagerViewContentProvider(viewID));
 		tv.setLabelProvider(  new ManagerViewLabelProvider());
-		
-		//TEST CELL MOD
 
 	    CellEditor[] editors = new CellEditor[4];
 	    editors[0] = new TextCellEditor(table);
@@ -113,33 +110,12 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	    
 		getSite().setSelectionProvider(tv);
 
-//		addTableEditor();
-
-
 		tv.addSelectionChangedListener(this);
-		
 		setProgressBar(WidgetCreator.createProgressBar(parent));
-
-
-	}
-
-
-
-	private void addTableEditor() {
-		final TableEditor editor = new TableEditor(table);
-		//The editor must have the same size as the cell and must
-		//not be any smaller than 50 pixels.
-		editor.horizontalAlignment = SWT.LEFT;
-		editor.grabHorizontal = true;
-		editor.minimumWidth = 50;
 		
-		table.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				
-				updateCellAndTxtFile(editor,e);
-			}
-		});
-
+		tv.setInput(ModelStore.getGames(viewID));
+		tv.refresh();
+		
 	}
 
 	protected void updateCellAndTxtFile(final TableEditor editor, SelectionEvent e) {
@@ -170,7 +146,7 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 				editor.getItem().setText(EDITABLECOLUMN, newText);
 				
 				if(!oldText.equals(newText)){
-					FileUtils.updateGameTxtFile(item.getText(),text.getText());
+					FileUtils.updateGameTxtFile(item.getText(),text.getText(),GuiUtils.getActiveViewID());
 				}
 			}
 		});
@@ -183,12 +159,12 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	}
 
 	private void addHandlerUpdate(Button button) {
-		button.addSelectionListener(new UpdateGameListListener(CoreConstants.MAINVIEW_ID));
+		button.addSelectionListener(new UpdateGameListListener(viewID));
 
 	}
 	
 	private void deleteAction(Button button) {
-		button.addSelectionListener(new DeleteButtonListener(CoreConstants.MAINVIEW_ID));
+		button.addSelectionListener(new DeleteButtonListener(viewID));
 
 	}
 
@@ -197,38 +173,28 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 
 		ISelection selection = tv.getSelection();
 		IStructuredSelection sel = (IStructuredSelection) selection;
-
-		for (Iterator<GameBean> iterator = sel.iterator(); iterator.hasNext();) {
+		
+		Iterator<GameBean> iterator = sel.iterator();
+		while (iterator.hasNext()) {
 			GameBean selectedGame = iterator.next();
-			Model.setSelectedGame(selectedGame);
+			ModelStore.setSelectedGame(selectedGame);
 
-			try {
-				PlatformUtils.getHandlerService(CoreConstants.MAINVIEW_ID).executeCommand(CoreConstants.COMMAND_COVER_UPDATE_ID, null);
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			} catch (NotDefinedException e) {
-				e.printStackTrace();
-			} catch (NotEnabledException e) {
-				e.printStackTrace();
-			} catch (NotHandledException e) {
-				e.printStackTrace();
-			}
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					
+					GuiUtils.executeCommand(
+							viewID, 
+							CoreConstants.COMMAND_COVER_UPDATE_ID, 
+							null);
+				}
+			});	
 		}
-		//		GuiUtils.getManagerTableViewer().refresh();
-
-	}
-
-	private SettingsBean getSettingsBean() {
-		return (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
-	}
-
-	private GameBean getProcessBean() {
-		return (GameBean) Model.getBeans().get(GameBean.INDEX);
 	}
 
 	public TableViewer getTv() {
@@ -240,16 +206,11 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	}
 
 	private void exportAction(Button button) {
-
-		button.addSelectionListener(new ExportButtonListener(CoreConstants.MAINVIEW_ID));
-
-
+		button.addSelectionListener(new ExportButtonListener(viewID));
 	}
 
 	public void addAction(Button button){
-
-		button.addSelectionListener(new AddButtonListener(CoreConstants.MAINVIEW_ID));
-
+		button.addSelectionListener(new AddButtonListener(viewID));
 	}
 
 	public void setProgressBar(ProgressBar progressBar) {

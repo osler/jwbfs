@@ -1,6 +1,6 @@
 package jwbfs.ui.listeners.mainView;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.PlatformUtils;
@@ -28,7 +28,7 @@ public class ExportButtonListener extends SelectionAdapter {
 		
 		try {
 			
-			GameBean gameSelected = Model.getSelectedGame();
+			GameBean gameSelected = ModelStore.getSelectedGame();
 
 			if(gameSelected.getFilePath() == null 
 					|| gameSelected.getFilePath().equals("")){

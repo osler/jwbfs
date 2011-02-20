@@ -47,6 +47,55 @@
          </property>
       </product>
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="fileMenu"
+               label="File">
+            <command
+                  commandId="it.jwbfs.core.exit"
+                  label="Exit"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="Disks">
+            <command
+                  commandId="it.jwbfs.core.refreshDiskView"
+                  label="Refresh Active Disk"
+                  style="push">
+                  <parameter 
+               		name="diskID" 
+               		value="activeDiskID"> 
+         		  </parameter> 
+            </command>
+         </menu>
+         <menu
+               label="Games">
+            <command
+                  commandId="it.jwbfs.core.updateGameList"
+                  label="Update Games List"
+                  style="push">
+            </command>
+            <command
+                  commandId="it.jwbfs.core.updateTitles"
+                  label="Update Titles DB"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="Covers">
+            <command
+                  commandId="it.jwbfs.core.updateCoverForced"
+                  label="Update Selected Cover"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
    
    <!--extension point="org.eclipse.ui.splashHandlers">
       <splashHandler

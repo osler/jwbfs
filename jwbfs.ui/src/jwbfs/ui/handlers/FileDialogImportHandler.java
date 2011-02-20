@@ -1,6 +1,6 @@
 package jwbfs.ui.handlers;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -18,7 +18,7 @@ public class FileDialogImportHandler extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		GameBean bean = (GameBean) Model.getSelectedGame();
+		GameBean bean = (GameBean) ModelStore.getSelectedGame();
 		if(bean != null){
 
 		FileDialog d = new FileDialog(new Shell()) ;

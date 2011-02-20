@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.FileUtils;
 import jwbfs.model.utils.PlatformUtils;
@@ -36,7 +36,7 @@ public class CheckDiscHandler extends AbstractHandler {
 		
 		GameBean bean = null;
 
-		bean = Model.getSelectedGame();
+		bean = ModelStore.getSelectedGame();
 
 		boolean ok = true;
 		if(bean.isWbfsToIso()){

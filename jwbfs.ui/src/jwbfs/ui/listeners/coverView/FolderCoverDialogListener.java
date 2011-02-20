@@ -1,6 +1,6 @@
 package jwbfs.ui.listeners.coverView;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CoverPaths;
 
 import org.eclipse.swt.events.SelectionAdapter;
@@ -27,7 +27,7 @@ public class FolderCoverDialogListener extends SelectionAdapter {
 
 		System.out.println("Launching Cover Folder Selection Dialog");
 
-		CoverPaths bean = Model.getSettingsBean().getCoverSettings().getCoverPaths();
+		CoverPaths bean = ModelStore.getSettingsBean().getCoverSettings().getCoverPaths();
 		if(bean != null){
 			
 		String oldValue = "";

@@ -1,6 +1,6 @@
 package jwbfs.ui.listeners.mainView;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.PlatformUtils;
@@ -27,7 +27,7 @@ public class DeleteButtonListener extends SelectionAdapter {
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 	
-		GameBean selectedGame =  Model.getSelectedGame();
+		GameBean selectedGame =  ModelStore.getSelectedGame();
 		
 		if(selectedGame.getId() == null || selectedGame.getId().equals("")){
 			GuiUtils.showInfo("Select a Game", SWT.ERROR);

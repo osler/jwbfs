@@ -2,9 +2,10 @@ package jwbfs.ui.views;
 
 
 import jwbfs.i18n.Messages;
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.CoverConstants;
 import jwbfs.ui.listeners.coverView.UpdateCoverListener;
 import jwbfs.ui.utils.GuiUtils;
@@ -18,7 +19,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class CoverView extends ViewPart {
 
-	public static final String ID = "CoverView"; //$NON-NLS-1$
+
 	protected GameBean processBean = null;
 	protected SettingsBean settingsBean = null;
 	protected Button cover ;
@@ -34,11 +35,11 @@ public class CoverView extends ViewPart {
 	}
 
 	private SettingsBean getSettingsBean() {
-		return (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
+		return (SettingsBean) ModelStore.getSettingsBean();
 	}
 
 	private GameBean getProcessBean() {
-		return (GameBean) Model.getBeans().get(GameBean.INDEX);
+		return (GameBean) ModelStore.getSelectedGame();
 	}
 
 	@Override
@@ -70,21 +71,15 @@ public class CoverView extends ViewPart {
 		addHandlerUpdate(cover3d);
 		addHandlerUpdate(disk);
 		progressBar = WidgetCreator.createProgressBar(parent);
-		
-		
+	
 	}
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-
 	}
 
 	private void addHandlerUpdate(Button button) {
-		
-		button.addSelectionListener(new UpdateCoverListener(ID,processBean));
-	
-		
+		button.addSelectionListener(new UpdateCoverListener(CoreConstants.VIEW_COVER_ID,processBean));	
 	}
 
 	public ProgressBar getProgressBar() {

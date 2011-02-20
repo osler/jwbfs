@@ -1,6 +1,6 @@
 package jwbfs.ui.handlers;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -18,7 +18,7 @@ public class FileDialogExportHandler extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
-		GameBean bean = Model.getExportGameBean();
+		GameBean bean = ModelStore.getExportGameBean();
 		bean.clean();
 
 		if(bean != null){

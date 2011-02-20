@@ -7,10 +7,11 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.CoverConstants;
 import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.utils.GuiUtils;
@@ -30,16 +31,16 @@ public class UpdateCoverHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		boolean offlineMode = Model.getSettingsBean().getSystemSettings().isOfflineMode();
+		boolean offlineMode = ModelStore.getSettingsBean().getSystemSettings().isOfflineMode();
 
-		GameBean processBean = Model.getSelectedGame();
+		GameBean processBean = ModelStore.getSelectedGame();
 		if(processBean == null || processBean.isEmpty()){
 			return false;
 		}
-		SettingsBean settingsBean =  Model.getSettingsBean();
+		SettingsBean settingsBean =  ModelStore.getSettingsBean();
 		CoverPaths coverPaths = settingsBean.getCoverSettings().getCoverPaths();
 		
-		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar();
+		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getProgressBar();
 		progressBar.setMaximum(getProgress());
 		progressBar.setSelection(0);
 
@@ -158,8 +159,8 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 	private void downloadCoverDisc(String coverPath) {
 		
-		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar();
-		SettingsBean settingsBean =  Model.getSettingsBean();
+		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getProgressBar();
+		SettingsBean settingsBean =  ModelStore.getSettingsBean();
 		
 		GuiUtils.setCover(CoverConstants.NODISC,CoverConstants.COVER_DISC);
 		if(settingsBean.getCoverSettings().isAutomaticCoverDownload() || !updateCover)
@@ -189,9 +190,9 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 	private void downloadCover3D(String coverPath) {
 		
-		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar();
+		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getProgressBar();
 		
-		SettingsBean settingsBean =  Model.getSettingsBean();
+		SettingsBean settingsBean =  ModelStore.getSettingsBean();
 		
 		GuiUtils.setCover(CoverConstants.NOIMAGE3D,CoverConstants.COVER_3D);
 		if(settingsBean.getCoverSettings().isAutomaticCoverDownload() || !updateCover)
@@ -214,9 +215,9 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 	private void downloadCover2D(String coverPath) {
 		
-		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoverView.ID)).getProgressBar();
+		ProgressBar progressBar = ((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getProgressBar();
 		
-		SettingsBean settingsBean =  Model.getSettingsBean();
+		SettingsBean settingsBean =  ModelStore.getSettingsBean();
 		
 		GuiUtils.setCover(CoverConstants.NOIMAGE,CoverConstants.COVER_2D);
 		if(settingsBean.getCoverSettings().isAutomaticCoverDownload() || updateCover){
@@ -247,7 +248,7 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 	private int getProgress() {
 
-		SettingsBean settingsBean =  Model.getSettingsBean();
+		SettingsBean settingsBean =  ModelStore.getSettingsBean();
 
 		int tot = 1;
 
@@ -263,8 +264,8 @@ public class UpdateCoverHandler extends AbstractHandler {
 
 	private void processCover(String url,String coverPath) {
 
-		GameBean processBean = Model.getSelectedGame();
-		SettingsBean settingsBean =  Model.getSettingsBean();
+		GameBean processBean = ModelStore.getSelectedGame();
+		SettingsBean settingsBean =  ModelStore.getSettingsBean();
 		
 		try {			
 			String region = settingsBean.getRegion();

@@ -8,23 +8,54 @@
          point="org.eclipse.ui.views">
       <view
             class="jwbfs.ui.views.CoverView"
-            id="CoverView"
+            id="it.jwbfs.ui.CoverView"
             name="Cover"
             restorable="true">
       </view>
       <view
             class="jwbfs.ui.views.folder.SettingsView"
-            id="SettingsView"
+            id="it.jwbfs.ui.SettingsView"
             name="Settings"
             restorable="true">
       </view>
 
       <view
-            class="jwbfs.ui.views.ManagerView"
-            id="ManagerView"
-            name="Disk Manager"
+            class="jwbfs.ui.views.manager.ManagerView0"
+            id="it.jwbfs.ui.DiskView0"
+            name="Disk Manager 0"
             restorable="true">
       </view>
+      <view
+            class="jwbfs.ui.views.manager.ManagerView1"
+            id="it.jwbfs.ui.DiskView1"
+            name="Disk Manager 1"
+            restorable="true">
+      </view>
+      <view
+            class="jwbfs.ui.views.manager.ManagerView2"
+            id="it.jwbfs.ui.DiskView2"
+            name="Disk Manager 2"
+            restorable="true">
+      </view>
+       <view
+            class="jwbfs.ui.views.manager.ManagerView3"
+            id="it.jwbfs.ui.DiskView3"
+            name="Disk Manager 3"
+            restorable="true">
+      </view>
+      <view
+            class="jwbfs.ui.views.manager.ManagerView4"
+            id="it.jwbfs.ui.DiskView4"
+            name="Disk Manager 4"
+            restorable="true">
+      </view>
+      <view
+            class="jwbfs.ui.views.manager.ManagerView5"
+            id="it.jwbfs.ui.DiskView5"
+            name="Disk Manager 5"
+            restorable="true">
+      </view>
+      
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -34,100 +65,134 @@
       </category>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="toWbfs"
+            id="it.jwbfs.core.toWbfs"
             name="Iso To wbfs">
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="toIso"
+            id="it.jwbfs.core.toIso"
             name="Wbfs To Iso">
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="checkDisk"
+            id="it.jwbfs.core.checkDisk"
             name="Check Disk">
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="fileDialog"
+            id="it.jwbfs.core.fileDialog"
             name="File Dialog">
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="fileDialogExport"
+            id="it.jwbfs.core.fileDialogExport"
             name="File Dialog Export">
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="folderDialog"
+            id="it.jwbfs.core.folderDialog"
             name="Folder Dialog">
       </command>
             <command
             categoryId="jwbfs.ui.commands.category.convert"
-            id="folderCoverDialog"
+            id="it.jwbfs.core.folderCoverDialog"
             name="Folder Cover Dialog">
       </command>
       <command
-            id="updateCover"
-            name="updateCover">
+            id="it.jwbfs.core.updateCover"
+            name="Update Cover">
       </command>
       <command
-            id="updateGameList"
-            name="updateGameList">
+            id="it.jwbfs.core.updateCoverForced"
+            name="update Cover Forced">
       </command>
       <command
-            id="updateTitles"
-            name="updateTitles">
+            id="it.jwbfs.core.updateGameList"
+            name="Update Game List">
+             <commandParameter 
+        		id="diskID" 
+        		name="diskID" 
+        		optional="false">
+        	</commandParameter>
       </command>
-            <command
-            id="deleteFile"
-            name="deleteFile">
+      <command
+            id="it.jwbfs.core.updateTitles"
+            name="Update Titles TXT">
       </command>
-      
-  
+      <command
+            id="it.jwbfs.core.deleteFile"
+            name="Delete File">
+      </command>
+      <command
+            id="it.jwbfs.core.exit"
+            name="Exit">
+      </command>  
+      <command
+            id="it.jwbfs.core.refreshDiskView"
+            name="Refresh Current Disk">
+             <commandParameter 
+        		id="diskID" 
+        		name="diskID" 
+        		optional="false">
+        	</commandParameter>
+      </command>  
+     
    </extension>
+   
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="jwbfs.ui.handlers.ToWBFSConvertHandler"
-            commandId="toWbfs">
+            commandId="it.jwbfs.core.toWbfs">
       </handler>
       <handler
             class="jwbfs.ui.handlers.ToISOConvertHandler"
-            commandId="toIso">
+            commandId="it.jwbfs.core.toIso">
       </handler>
       <handler
             class="jwbfs.ui.handlers.CheckDiscHandler"
-            commandId="checkDisk">
+            commandId="it.jwbfs.core.checkDisk">
       </handler>
       <handler
             class="jwbfs.ui.handlers.FileDialogImportHandler"
-            commandId="fileDialog">
+            commandId="it.jwbfs.core.fileDialog">
       </handler>
       <handler
             class="jwbfs.ui.handlers.FileDialogExportHandler"
-            commandId="fileDialogExport">
+            commandId="it.jwbfs.core.fileDialogExport">
       </handler>
       <handler
             class="jwbfs.ui.handlers.FolderDiskDialogHandler"
-            commandId="folderDialog">
+            commandId="it.jwbfs.core.folderDialog">
       </handler>
       <handler
             class="jwbfs.ui.handlers.UpdateCoverHandler"
-            commandId="updateCover">
+            commandId="it.jwbfs.core.updateCover">
+      </handler>
+      <handler
+            class="jwbfs.ui.handlers.UpdateCoverForcedHandler"
+            commandId="it.jwbfs.core.updateCoverForced">
       </handler>
       <handler
             class="jwbfs.ui.handlers.UpdateGameListHandler"
-            commandId="updateGameList">
+            commandId="it.jwbfs.core.updateGameList">
       </handler>
       <handler
             class="jwbfs.ui.handlers.UpdateTitlesTXTHandler"
-            commandId="updateTitles">
+            commandId="it.jwbfs.core.updateTitles">
       </handler>
-            <handler
+       <handler
             class="jwbfs.ui.handlers.DeleteFileHandler"
-            commandId="deleteFile">
+            commandId="it.jwbfs.core.deleteFile">
       </handler>
+      <handler
+            class="jwbfs.ui.handlers.ExitHandler"
+            commandId="it.jwbfs.core.exit">
+      </handler>
+      <handler
+            class="jwbfs.ui.handlers.RefreshDiskHandler"
+            commandId="it.jwbfs.core.refreshDiskView">
+      </handler>      
       
    </extension>
    
