@@ -15,7 +15,8 @@ public class ModelStore {
 	
 	private static SettingsBean settingsBean = new SettingsBean();
 	
-
+	private static int numDisk = 2;
+	
 	private static LinkedHashMap<String,DiskBean> disks = new LinkedHashMap<String, DiskBean>();
 	
 	
@@ -96,5 +97,13 @@ public class ModelStore {
 
 	public static List<GameBean> getGames(String diskKey) {
 		return getDisk(diskKey).getGames();
+	}
+
+	public static void setNumDisk(int numDisk) {
+		ModelStore.numDisk = numDisk;
+	}
+
+	public static int getNumDisk() {
+		return numDisk;
 	}
 }
