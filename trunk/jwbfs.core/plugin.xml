@@ -74,13 +74,58 @@
             </command>
             <command
                   commandId="it.jwbfs.core.addDisk"
-                  label="Add disk"
+                  label="One Disk"
                   style="push">
                   <parameter 
-               		name="diskID" 
-               		value="it.jwbfs.ui.DiskView2"> 
+               		name="numDisks" 
+               		value="1"> 
          		  </parameter> 
             </command>
+             <command
+                  commandId="it.jwbfs.core.addDisk"
+                  label="Two Disks"
+                  style="push">
+                  <parameter 
+               		name="numDisks" 
+               		value="2"> 
+         		  </parameter> 
+            </command> 
+            <command
+                  commandId="it.jwbfs.core.addDisk"
+                  label="Three Disks"
+                  style="push">
+                  <parameter 
+               		name="numDisks" 
+               		value="3"> 
+         		  </parameter> 
+            </command>
+            <command
+                  commandId="it.jwbfs.core.addDisk"
+                  label="Four Disks"
+                  style="push">
+                  <parameter 
+               		name="numDisks" 
+               		value="4"> 
+         		  </parameter> 
+            </command>
+            <command
+                  commandId="it.jwbfs.core.addDisk"
+                  label="Five Disks"
+                  style="push">
+                  <parameter 
+               		name="numDisks" 
+               		value="5"> 
+         		  </parameter> 
+            </command>
+            <command
+                  commandId="it.jwbfs.core.addDisk"
+                  label="Six Disks"
+                  style="push">
+                  <parameter 
+               		name="numDisks" 
+               		value="6"> 
+         		  </parameter> 
+            </command>                                                                    
          </menu>
          <menu
                label="Games">
