@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.PlatformUtils;
@@ -24,7 +24,7 @@ import org.eclipse.swt.SWT;
 
 public class ToWBFSConvertOperation implements IRunnableWithProgress {
 
-	GameBean bean = (GameBean) Model.getSelectedGame();
+	GameBean bean = (GameBean) ModelStore.getSelectedGame();
 
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
@@ -40,7 +40,9 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 			monitor.worked(5);
 			
 			String filePath = bean.getFilePath();
-			String fileOutPath =  Model.getSettingsBean().getFolderPath();
+			
+			String activeViewID = GuiUtils.getActiveViewID();
+			String fileOutPath = ModelStore.getDiskPath(activeViewID);
 			
 			if(filePath.toLowerCase().endsWith(".wbfs")){
 				try {
@@ -54,7 +56,7 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 
 			 if(fileOutPath == null || fileOutPath.equals("none") || fileOutPath.equals("") ){
 //				 fileOutPath = file.getAbsolutePath().replace(file.getName(), "");
-				 fileOutPath = Model.getSettingsBean().getDiskPath();
+				 fileOutPath = ModelStore.getDiskPath(activeViewID);
 			 }
 			
 			  try {
@@ -66,13 +68,19 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 				  
 				  //processa iso
 				  String[]  processo = getProcessParameter(bin,path,fileOutPath);
-				  System.out.println(processo);
+				  
+				  String processoLogString = "";
+				  for(int i=0;i<processo.length;i++){
+					  processoLogString = processoLogString+ " " +processo[i];
+				  }
+				  System.out.println(processoLogString);
+				  
 				  Process p = Runtime.getRuntime().exec(processo);
 				  checkProcessMessages(p,monitor);
 
 			      monitor.done();
 
-			      GuiUtils.showInfo(bean.getTitle()+" Added to:\n"+bean.getFilePath(), SWT.NONE, true);
+			      GuiUtils.showInfo(bean.getTitle()+" Added to:\n"+fileOutPath, SWT.NONE, true);
 			      
 			    } catch (IOException e) {
 				  	  monitor.done();
@@ -135,7 +143,7 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 		
 			String[] par = new String[8];
 		
-			SettingsBean tab = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
+			SettingsBean tab = (SettingsBean) ModelStore.getSettingsBean();
 			
 			par[0] = bin; 
 			

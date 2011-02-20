@@ -9,20 +9,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.controls.ConfigUtils;
-import jwbfs.ui.utils.CoverUtils;
 import jwbfs.ui.utils.GuiUtils;
 
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.NotEnabledException;
-import org.eclipse.core.commands.NotHandledException;
-import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
@@ -63,7 +60,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		int x = Integer.parseInt(System.getProperty("window.x"));
 		int y = Integer.parseInt(System.getProperty("window.y"));
 		configurer.setInitialSize(new Point(x, y));
-		configurer.setShowMenuBar(false);
+		configurer.setShowMenuBar(true);
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
 		configurer.setTitle("jwbfs - a wbfs_file wrapper");
@@ -79,30 +76,21 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 		updateApp();
 
-		try {
+		Set<String> disksViewsID = ModelStore.getDisks().keySet();
+		Iterator<String> it = disksViewsID.iterator();
+		while (it.hasNext()) {
+			String diskViewID = (String) it.next();
 			
-			if(Model.getSettingsBean().getDiskPath().trim().equals("")
-					|| !new File(Model.getSettingsBean().getDiskPath()).exists()){
-				PlatformUtils.getHandlerService(CoreConstants.MAINVIEW_ID).executeCommand(CoreConstants.COMMAND_FOLDER_DISK_DIALOG_ID, null);		
-			}else{				
-				CoverUtils.setCoversPathFromDiskPath();	
+			//TODO make a field in DISK "enabled"
+			if(ModelStore.getDisk(diskViewID).getDiskPath().trim().equals("")){ 
+				continue;
 			}
-			PlatformUtils.getHandlerService(CoreConstants.MAINVIEW_ID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
-			
-			GuiUtils.getManagerTableViewer().setInput(Model.getGames());
-			
 
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} catch (NotDefinedException e) {
-			e.printStackTrace();
-		} catch (NotEnabledException e) {
-			e.printStackTrace();
-		} catch (NotHandledException e) {
-			e.printStackTrace();
+			LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+			parametri.put("diskID",diskViewID);
+			GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_REFRESH_DISK_VIEW_ID,parametri,null);
 		}
-
-
+		
 
 	}
 
@@ -366,7 +354,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 							//Salva il LOCALSITE
 							ls.save();
 
-							GuiUtils.showInfo("Aggiornamento effettuato:\n"
+							GuiUtils.showInfo("Changelog:\n"
 									+"installati:\n"
 									+getFeatureList(featureInstalled)+"\n"
 									+"rimossi:\n"

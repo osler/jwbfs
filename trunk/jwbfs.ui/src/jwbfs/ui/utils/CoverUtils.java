@@ -1,15 +1,14 @@
 package jwbfs.ui.utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
-import org.eclipse.swt.SWT;
-
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoverConstants;
 import jwbfs.model.utils.FileUtils;
+
+import org.eclipse.swt.SWT;
 
 public class CoverUtils {
 
@@ -71,9 +70,11 @@ public class CoverUtils {
 	public static void setCoversPathFromDiskPath(){
 
 		  
-		SettingsBean bean = Model.getSettingsBean();
+		SettingsBean bean = ModelStore.getSettingsBean();
 		
-		String diskPath = new File(bean.getDiskPath()).getParent();
+		String diskModel = ModelStore.getDiskPath(GuiUtils.getActiveViewID());
+		
+		String diskPath = new File(diskModel).getParent();
 
 		String coverPath = diskPath+File.separatorChar
 		  +CoverConstants.getFolderName();

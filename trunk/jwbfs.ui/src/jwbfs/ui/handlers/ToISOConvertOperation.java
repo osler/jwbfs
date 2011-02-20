@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.PlatformUtils;
@@ -25,8 +25,8 @@ import org.eclipse.swt.SWT;
 public class ToISOConvertOperation implements IRunnableWithProgress {
 
 	
-	GameBean exportBean =  Model.getExportGameBean();
-	GameBean gameToExport =  Model.getSelectedGame();
+	GameBean exportBean =  ModelStore.getExportGameBean();
+	GameBean gameToExport =  ModelStore.getSelectedGame();
 	
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
@@ -127,7 +127,7 @@ public class ToISOConvertOperation implements IRunnableWithProgress {
 		
 			String[] par = new String[8];
 		
-			SettingsBean tab = (SettingsBean) Model.getBeans().get(SettingsBean.INDEX);
+			SettingsBean tab = (SettingsBean) ModelStore.getSettingsBean();
 			
 			par[0] = bin; 
 			

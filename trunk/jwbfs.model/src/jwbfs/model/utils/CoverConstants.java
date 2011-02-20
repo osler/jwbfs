@@ -2,7 +2,7 @@ package jwbfs.model.utils;
 
 import java.io.File;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CoverSettings;
 
 public class CoverConstants {
@@ -66,7 +66,7 @@ http://wiitdb.com/titles.txt?LANG=XX
 	
 	public static String getFolderName(){
 
-		CoverSettings settings = Model.getSettingsBean().getCoverSettings();
+		CoverSettings settings = ModelStore.getSettingsBean().getCoverSettings();
 		
 		if(settings.isCoverTypeUSBLoaderGX()){
 			return IMAGE_FOLDER_NAME_GX;
@@ -83,7 +83,7 @@ http://wiitdb.com/titles.txt?LANG=XX
 	
 	public static String getImage2D(){
 
-		CoverSettings settings = Model.getSettingsBean().getCoverSettings();
+		CoverSettings settings = ModelStore.getSettingsBean().getCoverSettings();
 		
 		if(settings.isCoverTypeUSBLoaderGX()){
 			return IMAGE_2D_NAME_GX;
@@ -100,7 +100,7 @@ http://wiitdb.com/titles.txt?LANG=XX
 	
 	public static String getImage3D(){
 
-		CoverSettings settings = Model.getSettingsBean().getCoverSettings();
+		CoverSettings settings = ModelStore.getSettingsBean().getCoverSettings();
 		
 		if(settings.isCoverTypeUSBLoaderGX()){
 			return IMAGE_3D_NAME_GX;
@@ -117,7 +117,7 @@ http://wiitdb.com/titles.txt?LANG=XX
 	
 	public static String getImageDisc(){
 
-		CoverSettings settings = Model.getSettingsBean().getCoverSettings();
+		CoverSettings settings = ModelStore.getSettingsBean().getCoverSettings();
 		
 		if(settings.isCoverTypeUSBLoaderGX()){
 			return IMAGE_DISC_NAME_GX;
@@ -134,7 +134,7 @@ http://wiitdb.com/titles.txt?LANG=XX
 	
 	public static String getImageFullCover(){
 
-		CoverSettings settings = Model.getSettingsBean().getCoverSettings();
+		CoverSettings settings = ModelStore.getSettingsBean().getCoverSettings();
 		
 		if(settings.isCoverTypeUSBLoaderGX()){
 			return IMAGE_FULL_GX;

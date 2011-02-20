@@ -1,6 +1,6 @@
 package jwbfs.ui.handlers;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.ui.views.dialogs.DialogSelectDisk;
 
@@ -17,7 +17,7 @@ public class FolderDiskDialogHandler extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		SettingsBean bean =  Model.getSettingsBean();
+		SettingsBean bean =  ModelStore.getSettingsBean();
 		if(bean != null){
 
 			DialogSelectDisk sel = new DialogSelectDisk(new Shell());

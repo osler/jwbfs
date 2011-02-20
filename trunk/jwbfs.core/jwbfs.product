@@ -3,7 +3,9 @@
 
 <product name="JWBFS" uid="jwbfs.products" id="jwbfs.core.product" application="jwbfs.core.application" useFeatures="true" includeLaunchers="true">
 
+
    <configIni use="default">
+      <linux></linux>
    </configIni>
 
    <launcherArgs>
@@ -25,6 +27,7 @@
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>

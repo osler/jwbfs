@@ -33,7 +33,7 @@ public class CoverSettings extends ModelObject{
 			coverTypeUSBLoaderWIIFLOW = false;
 		}else if(coverType.equals(CoverPaths.WIIFLOW)){
 			coverTypeUSBLoaderWIIFLOW = true;
-			coverTypeUSBLoaderGX = true;
+			coverTypeUSBLoaderGX = false;
 			coverTypeUSBLoaderCFG = false;
 		}
 		

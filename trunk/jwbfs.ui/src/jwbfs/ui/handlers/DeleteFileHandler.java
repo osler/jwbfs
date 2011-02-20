@@ -2,7 +2,7 @@ package jwbfs.ui.handlers;
 
 import java.io.File;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.utils.GuiUtils;
@@ -19,7 +19,7 @@ public class DeleteFileHandler extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		GameBean bean = (GameBean) Model.getSelectedGame();
+		GameBean bean = (GameBean) ModelStore.getSelectedGame();
 		if(bean != null){
 
 			boolean res = GuiUtils.showConfirmDialog("Delete '"+bean.getTitle()+"' ?");

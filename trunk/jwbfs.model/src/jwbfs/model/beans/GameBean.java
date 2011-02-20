@@ -1,7 +1,6 @@
 package jwbfs.model.beans;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 
 
@@ -89,11 +88,6 @@ public class GameBean extends ModelObject  {
 				this.filePath = filePath);
 	}
 
-	
-
-	protected ModelObject getBean() {
-		return (ModelObject) ((LinkedHashMap<String, Object>)getModel()).get(GameBean.INDEX);
-	}
 
 	public boolean isIsoToWbfs() {
 		return isoToWbfs || filePath.endsWith(".iso") || filePath.endsWith(".ISO");

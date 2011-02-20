@@ -1,6 +1,5 @@
 package jwbfs.model.beans;
 
-import java.util.LinkedHashMap;
 
 public class SettingsBean extends ModelObject {
 	
@@ -15,18 +14,13 @@ public class SettingsBean extends ModelObject {
 	//WIITDB SETTINGS
 	private String region;
 	
-
-	
-	//MANAGER SETTINGS
-	private String diskPath;
-	
 	private CoverSettings coverSettings; 
 	private SystemSettings systemSettings; 
-	
-	private String folderPath;
+
 	
 	public SettingsBean(){
 		this.addPropertyChangeListener(this);
+		
 		coverSettings = new CoverSettings();
 		
 		splitSize = System.getProperty("settings.split.size");
@@ -37,26 +31,7 @@ public class SettingsBean extends ModelObject {
 		//WIITDB SETTINGS
 		region = System.getProperty("cover.region");
 
-		//MANAGER
-		diskPath =  System.getProperty("wbfs.disk.path");
-
 	}
-	
-	public String getFolderPath() {
-		//TODO
-//		if(isManagerMode()){
-			return diskPath;
-//		}
-//		return folderPath;
-	}
-
-	public void setFolderPath(String folderPath) {
-
-			propertyChangeSupport.firePropertyChange("folderPath", this.folderPath,
-					this.folderPath = folderPath);
-		
-	}
-	
 
 	public void setRegion(String region) {
 		propertyChangeSupport.firePropertyChange("region", this.region,
@@ -65,10 +40,6 @@ public class SettingsBean extends ModelObject {
 
 	public String getRegion() {
 		return region;
-	}
-	
-	protected ModelObject getBean() {
-		return (ModelObject) ((LinkedHashMap<String, Object>)getModel()).get(SettingsBean.INDEX);
 	}
 
 	public String getSplitSize() {
@@ -100,17 +71,6 @@ public class SettingsBean extends ModelObject {
 				this.txtLayout = txtLayout);	
 	}
 
-	public void setDiskPath(String diskPath) {
-		propertyChangeSupport.firePropertyChange("diskPath", this.diskPath,
-		this.diskPath = diskPath);
-	}
-
-
-
-	public String getDiskPath() {
-		return diskPath;
-	}
-
 	public void setCoverSettings(CoverSettings coverSettings) {
 		this.coverSettings = coverSettings;
 	}
@@ -132,7 +92,5 @@ public class SettingsBean extends ModelObject {
 		}
 		return systemSettings;
 	}
-	
-
 
 }

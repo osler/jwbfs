@@ -8,9 +8,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.CoverSettings;
 import jwbfs.model.beans.SettingsBean;
@@ -43,7 +44,11 @@ public class ConfigUtils {
 //			String key[]  =  {"wbfs.bin","window.x","window.y"};
 			for(int x = 0; x < keys.length; x++){
 				if(keys[x] != null){
-					System.setProperty(keys[x], props.getProperty(keys[x]));
+					String property = props.getProperty(keys[x]);
+					if(property == null){
+						property = "";
+					}
+					System.setProperty(keys[x], property);
 				}
 			}	
 
@@ -62,9 +67,19 @@ public class ConfigUtils {
 		BufferedReader br = new BufferedReader(in);
 		keys = new String[numLines];	
 
-		for(int x = 0; x<numLines; x++){
+		ArrayList<String> propsLines = new ArrayList<String>();
+		//Good lines
+		for(int x = 0; x<numLines; x++){			
 			String line = br.readLine();
-			keys[x] = (line.substring(0,line.indexOf("="))).trim();  
+			if(line.indexOf("=")>-1){
+				propsLines.add((line.substring(0,line.indexOf("="))).trim());
+			}
+			
+		}
+		
+		for(int x = 0; x<propsLines.size(); x++){			
+			String line = propsLines.get(x);			
+			keys[x] = line.trim();	
 		}
 		
 		} catch (FileNotFoundException e) {
@@ -134,13 +149,29 @@ public class ConfigUtils {
 	}
 
 	private static String mapConfig(String line) {
-		SettingsBean bean = Model.getSettingsBean();
+		SettingsBean bean = ModelStore.getSettingsBean();
 		
 		String subLine = (line.substring(0,line.indexOf("="))).trim() + " = ";
 		
-		if(line.contains("wbfs.disk.path")){
-			return subLine +  PlatformUtils.convertPath(bean.getDiskPath());//TODO convertire
+		if(line.contains("wbfs.disk.path0")){
+			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_0_ID));
 		}
+		if(line.contains("wbfs.disk.path1")){
+			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_1_ID));
+		}
+		if(line.contains("wbfs.disk.path2")){
+			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_2_ID));
+		}
+		if(line.contains("wbfs.disk.path3")){
+			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_3_ID));
+		}
+		if(line.contains("wbfs.disk.path4")){
+			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_4_ID));
+		}
+		if(line.contains("wbfs.disk.path5")){
+			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_5_ID));
+		}
+
 		if(line.contains("wbfs.txt.layout")){
 			return subLine + bean.getTxtLayout();
 		}
@@ -180,7 +211,7 @@ public class ConfigUtils {
 
 	private static String decodeCoverType() {
 		String type = null;
-		CoverSettings bean = Model.getSettingsBean().getCoverSettings();
+		CoverSettings bean = ModelStore.getSettingsBean().getCoverSettings();
 		if(bean.isCoverTypeUSBLoaderCFG()){
 			type = CoverPaths.CFG;
 		}else if(bean.isCoverTypeUSBLoaderGX()){

@@ -3,9 +3,16 @@ package jwbfs.model.utils;
 
 import java.io.File;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 
 
@@ -175,6 +182,21 @@ public class PlatformUtils {
 
 		return null;
 	}
+	
+	public static ICommandService getCommandService() {
+		try {
+			ICommandService handlerService = (ICommandService) 
+											PlatformUI.getWorkbench()
+											.getService(ICommandService.class);
+
+			return handlerService;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	public static String getGB(long bytes) {
 		double gb = Double.valueOf(bytes)/1073741824;	
@@ -194,4 +216,6 @@ public class PlatformUtils {
 		long kb = bytes/1024;
 		return String.valueOf(kb);
 	}
+
+
 }

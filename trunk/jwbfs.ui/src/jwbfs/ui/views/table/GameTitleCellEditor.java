@@ -77,7 +77,7 @@ public class GameTitleCellEditor extends DialogCellEditor {
         	result =selected.getTitle();
         	
 			if(!oldText.trim().equals(result.trim())){
-				FileUtils.updateGameTxtFile(selected.getId(),result.trim());
+				FileUtils.updateGameTxtFile(selected.getId(),result.trim(),GuiUtils.getActiveViewID());
 			}
         	
         }

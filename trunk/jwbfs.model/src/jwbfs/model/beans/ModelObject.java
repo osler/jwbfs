@@ -3,12 +3,8 @@ package jwbfs.model.beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.LinkedHashMap;
 
-import jwbfs.model.IContainsModel;
-import jwbfs.model.Model;
-
-public abstract class ModelObject implements PropertyChangeListener,IContainsModel {
+public abstract class ModelObject implements PropertyChangeListener {
 	
 	public static final String  INDEX = "modelObject";
 	
@@ -34,10 +30,5 @@ public abstract class ModelObject implements PropertyChangeListener,IContainsMod
 		System.out.println(evt.getPropertyName() + " changed to "+evt.getNewValue());
 	}
 
-	@Override
-	public LinkedHashMap<String, Object> getModel() {
-		return Model.getBeans();
-		
-	}
 
 }

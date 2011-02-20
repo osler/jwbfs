@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -191,7 +191,7 @@ public class FileUtils {
 	public static boolean createTempFile() {
 
 		try {
-			FileOutputStream out = new FileOutputStream(Model.getSelectedGame().getFolderPath()+"tmp.size");
+			FileOutputStream out = new FileOutputStream(ModelStore.getSelectedGame().getFolderPath()+"tmp.size");
 
 	        RandomAccessFile f = new RandomAccessFile("t", "rw");
 	        f.setLength(WBFSFileConstants.SPLITSIZE_kb_Values[2]);
@@ -217,15 +217,15 @@ public class FileUtils {
 			return false;
 		}
 		
-		new File(Model.getSelectedGame().getFolderPath()+"tmp.size").delete();
+		new File(ModelStore.getSelectedGame().getFolderPath()+"tmp.size").delete();
 		return true;
 	}
 
-	public static void updateGameTxtFile(String gameID, String gameName) {
+	public static void updateGameTxtFile(String gameID, String gameName, String diskID) {
 
 
 		try {
-			List<GameBean> games = Model.getGames();
+			List<GameBean> games = ModelStore.getGames(diskID);
 			String txtFile = null;
 			for (Iterator<GameBean> iterator = games.iterator(); iterator.hasNext();) {
 				GameBean gameBean = (GameBean) iterator.next();

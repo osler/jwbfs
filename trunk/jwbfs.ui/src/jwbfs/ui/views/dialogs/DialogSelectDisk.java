@@ -3,7 +3,7 @@ package jwbfs.ui.views.dialogs;
 import java.io.File;
 import java.util.ArrayList;
 
-import jwbfs.model.Model;
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CoverSettings;
 import jwbfs.model.utils.DiskContants;
 import jwbfs.model.utils.FileUtils;
@@ -37,15 +37,18 @@ public class DialogSelectDisk extends Dialog{
 
 
 	private boolean check() {
-		CoverSettings coverSettings = Model.getSettingsBean().getCoverSettings();
-		String testSubFolder = Model.getSettingsBean().getDiskPath()+File.separatorChar+DiskContants.WBFS_GAMES_FOLDER;
+		
+		String diskPath = ModelStore.getDiskPath(GuiUtils.getActiveViewID());
+		
+		CoverSettings coverSettings = ModelStore.getSettingsBean().getCoverSettings();
+		String testSubFolder = diskPath+File.separatorChar+DiskContants.WBFS_GAMES_FOLDER;
 		
 		boolean creatingFolders = false;
 		
 		//folder doesn't exists
-		if(!Model.getSettingsBean().getDiskPath().endsWith(DiskContants.WBFS_GAMES_FOLDER)
+		if(!diskPath.endsWith(DiskContants.WBFS_GAMES_FOLDER)
 				&& !new File(testSubFolder).exists()){
-			FileUtils.createRootFolderStructures(Model.getSettingsBean().getDiskPath());
+			FileUtils.createRootFolderStructures(diskPath);
 			creatingFolders = true;
 		}
 		//exists a subfolder with wbfs name
@@ -60,7 +63,10 @@ public class DialogSelectDisk extends Dialog{
 			}
 			
 			if(creatingFolders){
-				Model.getSettingsBean().setDiskPath(testSubFolder);
+				
+				String activeDisk = GuiUtils.getActiveViewID();
+				
+				ModelStore.setDiskPath(activeDisk,testSubFolder);
 			}
 		}
 		
@@ -103,17 +109,21 @@ public class DialogSelectDisk extends Dialog{
 	}
 
 	private void createDiskGroup(final Composite mainComposite) {
+		
+		String activeViewID = GuiUtils.getActiveViewID();
+		String diskPath = ModelStore.getDiskPath(activeViewID);
+		
 		Group usbLoaderType = WidgetCreator.createGroup(mainComposite, "USB Loader covers path");
 
 		WidgetCreator.createLabel(usbLoaderType, "Select a Disk");
 		WidgetCreator.createLabel(usbLoaderType, "");
 		
-		combo = WidgetCreator.createCombo(usbLoaderType, new String[]{""}, Model.getSettingsBean(), "diskPath");
+		combo = WidgetCreator.createCombo(usbLoaderType, new String[]{""}, ModelStore.getDisk(activeViewID), "diskPath");
 		Button reload = WidgetCreator.createButton(usbLoaderType, "reload");
 		
 
 		customDisks =new ArrayList<File>();
-		customDisks.add(new File(Model.getSettingsBean().getDiskPath()));
+		customDisks.add(new File(diskPath));
 		initDisksAvalaible();
 		fillComboValues();
 
@@ -176,13 +186,13 @@ public class DialogSelectDisk extends Dialog{
 				.createGroup(mainComposite, "USB Loader covers path",3);
 
 		WidgetCreator.createRadio(usbLoaderType, "USBLoaderGX", 
-				Model.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderGX");
+				ModelStore.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderGX");
 		
 		WidgetCreator.createRadio(usbLoaderType, "Configurable USB Loader", 
-				Model.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderCFG");
+				ModelStore.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderCFG");
 		
 		WidgetCreator.createRadio(usbLoaderType, "Wiiflow", 
-				Model.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderWIIFLOW");
+				ModelStore.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderWIIFLOW");
 		
 	}
 
