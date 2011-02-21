@@ -1,5 +1,6 @@
 package jwbfs.core;
 
+import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -11,10 +12,13 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         super(configurer);
     }
 
-    protected void makeActions(IWorkbenchWindow window) {
+    protected void makeActions(IWorkbenchWindow window) {      
     }
 
     protected void fillMenuBar(IMenuManager menuBar) {
     }
-    
+
+    protected void fillCoolBar(ICoolBarManager coolBar) {
+        
+    }
 }
