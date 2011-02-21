@@ -30,8 +30,8 @@ public class ManagerViewLabelProvider implements ITableLabelProvider {
 	static {
 		String iconPath = "icons/"; 
 		
-		Image imgU = new Image(GuiUtils.getDisplay(),PlatformUtils.getRoot()+ iconPath + UNCHECKED_IMAGE + ".gif");
-		Image imgC = new Image(GuiUtils.getDisplay(),PlatformUtils.getRoot()+ iconPath + CHECKED_IMAGE + ".gif");
+		Image imgU = new Image(GuiUtils.getDisplay(),PlatformUtils.getRoot()+ iconPath + UNCHECKED_IMAGE + ".png");
+		Image imgC = new Image(GuiUtils.getDisplay(),PlatformUtils.getRoot()+ iconPath + CHECKED_IMAGE + ".png");
 		
 		imageRegistry.put(CHECKED_IMAGE, ImageDescriptor.createFromImage(imgC)
 			);

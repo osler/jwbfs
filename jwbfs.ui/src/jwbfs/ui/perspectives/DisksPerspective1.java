@@ -16,6 +16,7 @@ public class DisksPerspective1 implements IPerspectiveFactory {
 		layout.setFixed(true);
 		
 		diskFolder = layout.createFolder("folder", 0, 0.6f, editorArea);
+		
 				
 		addDisksTabs();
 

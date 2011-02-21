@@ -8,12 +8,14 @@
          point="org.eclipse.ui.views">
       <view
             class="jwbfs.ui.views.CoverView"
+            icon="icons/image-x-generic.png"
             id="it.jwbfs.ui.CoverView"
             name="Cover"
             restorable="true">
       </view>
       <view
             class="jwbfs.ui.views.folder.SettingsView"
+            icon="icons/preferences-desktop.png"
             id="it.jwbfs.ui.SettingsView"
             name="Settings"
             restorable="true">
@@ -21,36 +23,42 @@
 
       <view
             class="jwbfs.ui.views.manager.ManagerView1"
+            icon="icons/drive-removable-media-usb.png"
             id="it.jwbfs.ui.DiskView1"
             name="Disk 1"
             restorable="true">
       </view>
       <view
             class="jwbfs.ui.views.manager.ManagerView2"
+            icon="icons/drive-removable-media-usb.png"
             id="it.jwbfs.ui.DiskView2"
             name="Disk 2"
             restorable="true">
       </view>
        <view
             class="jwbfs.ui.views.manager.ManagerView3"
+            icon="icons/drive-removable-media-usb.png"
             id="it.jwbfs.ui.DiskView3"
             name="Disk 3"
             restorable="true">
       </view>
       <view
             class="jwbfs.ui.views.manager.ManagerView4"
+            icon="icons/drive-removable-media-usb.png"
             id="it.jwbfs.ui.DiskView4"
             name="Disk 4"
             restorable="true">
       </view>
       <view
             class="jwbfs.ui.views.manager.ManagerView5"
+            icon="icons/drive-removable-media-usb.png"
             id="it.jwbfs.ui.DiskView5"
             name="Disk 5"
             restorable="true">
       </view>
       <view
             class="jwbfs.ui.views.manager.ManagerView6"
+            icon="icons/drive-removable-media-usb.png"
             id="it.jwbfs.ui.DiskView6"
             name="Disk 6"
             restorable="true">
@@ -97,6 +105,10 @@
             id="it.jwbfs.core.folderCoverDialog"
             name="Folder Cover Dialog">
       </command>
+     <command
+            id="it.jwbfs.core.settings.save"
+            name="Save Settings">
+      </command>      
       <command
             id="it.jwbfs.core.updateCover"
             name="Update Cover">
@@ -105,6 +117,18 @@
             id="it.jwbfs.core.updateCoverForced"
             name="update Cover Forced">
       </command>
+      <command
+            id="it.jwbfs.core.game.add"
+            name="Add game">
+      </command>
+      <command
+            id="it.jwbfs.core.game.export"
+            name="Export game">
+      </command>
+      <command
+            id="it.jwbfs.core.game.delete"
+            name="Delete game">
+      </command>                 
       <command
             id="it.jwbfs.core.updateGameList"
             name="Update Game List">
@@ -166,6 +190,10 @@
    
    <extension
          point="org.eclipse.ui.handlers">
+      <handler
+            class="jwbfs.ui.handlers.SaveSettingsHandler"
+            commandId="it.jwbfs.core.settings.save">
+      </handler>
       <handler
             class="jwbfs.ui.handlers.ToWBFSConvertHandler"
             commandId="it.jwbfs.core.toWbfs">
@@ -229,7 +257,19 @@
       <handler
             class="jwbfs.ui.handlers.CopyGamesHandler"
             commandId="it.jwbfs.core.copyGames">
-      </handler>            
+      </handler>
+      <handler
+            class="jwbfs.ui.handlers.AddGameHandler"
+            commandId="it.jwbfs.core.game.add">
+      </handler>  
+      <handler
+            class="jwbfs.ui.handlers.ExportGameHandler"
+            commandId="it.jwbfs.core.game.export">
+      </handler>  
+      <handler
+            class="jwbfs.ui.handlers.DeleteGameHandler"
+            commandId="it.jwbfs.core.game.delete">
+      </handler>                                  
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
@@ -264,4 +304,20 @@
             id="jwbfs.ui.DisksPerspective6">
       </perspective>
    </extension>
+   <!--extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="it.jwbfs.action.disk"
+            targetID="it.jwbfs.ui.DiskView1">
+         <action
+               class="jwbfs.ui.actions.AddGameAction"
+               icon="icons/document-new.png"
+               id="it.jwbfs.action.add.game"
+               label="Add game"
+               state="false"
+               style="push"
+               tooltip="Add a game to active disk">
+         </action>
+      </viewContribution>
+   </extension-->
 </plugin>

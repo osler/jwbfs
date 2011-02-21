@@ -63,7 +63,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		int y = Integer.parseInt(System.getProperty("window.y"));
 		configurer.setInitialSize(new Point(x, y));
 		configurer.setShowMenuBar(true);
-		configurer.setShowCoolBar(false);
+//		configurer.setShowCoolBar(true);
+//		configurer.setShowPerspectiveBar(true);
 		configurer.setShowStatusLine(false);
 		configurer.setTitle("jwbfs - a wbfs_file wrapper");
 	}

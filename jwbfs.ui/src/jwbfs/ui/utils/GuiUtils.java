@@ -22,6 +22,7 @@ import org.eclipse.core.commands.Parameterization;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -36,6 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class GuiUtils {
 
@@ -422,5 +424,9 @@ public class GuiUtils {
 		case 6:diskID = CoreConstants.PERSPECTIVE_DISKS_6;break;
 		}
 		return diskID;
+	}
+	
+	public static ImageDescriptor getImageDescriptor(String pluginID, String path) {
+		return AbstractUIPlugin.imageDescriptorFromPlugin(pluginID, path);
 	}
 }

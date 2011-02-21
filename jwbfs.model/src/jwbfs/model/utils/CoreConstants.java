@@ -29,6 +29,10 @@ public class CoreConstants {
 		public static final String COMMAND_EXIT 					= "it.jwbfs.core.exit";
 		public static final String COMMAND_DISKS_PERSPECTIVE		= "it.jwbfs.core.changeDisksPerspective";
 		
+		public static final String COMMAND_ADD_GAME_ID	   = "it.jwbfs.core.game.add";
+		public static final String COMMAND_EXPORT_GAME_ID	   = "it.jwbfs.core.game.export";
+		public static final String COMMAND_DELETE_GAME_ID	   = "it.jwbfs.core.game.delete";
+
 		
 		public static final String BUNDLE_CORE = "jwbfs.core";
 		public static final String BUNDLE_MODEL = "jwbfs.model";
@@ -48,8 +52,5 @@ public class CoreConstants {
 		public static final String CONTEXT_DISK_4 = "jwbfs.context.disk.4";
 		public static final String CONTEXT_DISK_5 = "jwbfs.context.disk.5";
 		public static final String CONTEXT_DISK_6 = "jwbfs.context.disk.6";
-
-		
-
 	
 }

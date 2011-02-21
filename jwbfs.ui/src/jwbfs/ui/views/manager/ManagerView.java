@@ -74,15 +74,15 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		Button button = WidgetCreator.createButton(group,Messages.view_disk_open);
 		addHandlerFolder(button);
 		
-		group = WidgetCreator.createGroup(parent, Messages.view_actions, 4);
-		button = WidgetCreator.createButton(group,Messages.view_add);
-		addAction(button);
-		button = WidgetCreator.createButton(group,Messages.view_export);
-		exportAction(button);
-		button = WidgetCreator.createButton(group,Messages.view_delete);
-		deleteAction(button);
-		button = WidgetCreator.createButton(group,Messages.view_gamelist_update);
-		addHandlerUpdate(button);
+//		group = WidgetCreator.createGroup(parent, Messages.view_actions, 4);
+//		button = WidgetCreator.createButton(group,Messages.view_add);
+//		addAction(button);
+//		button = WidgetCreator.createButton(group,Messages.view_export);
+//		exportAction(button);
+//		button = WidgetCreator.createButton(group,Messages.view_delete);
+//		deleteAction(button);
+//		button = WidgetCreator.createButton(group,Messages.view_gamelist_update);
+//		addHandlerUpdate(button);
 
 		Composite tableComp = WidgetCreator.createComposite(parent);				
 		String[] columnsNames = {
@@ -90,7 +90,7 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 				Messages.view_gamelist_column_id,
 				Messages.view_gamelist_column_name, /*"Region",*/
 				Messages.view_gamelist_column_size };
-		int[] columnsSize = {5, 15, 60, 10};
+		int[] columnsSize = {3, 15, 60, 10};
 
 		table = WidgetCreator.createTable(tableComp, SWT.Selection | SWT.FULL_SELECTION, columnsNames, columnsSize);
 		tv = new TableViewer(table);
