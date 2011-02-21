@@ -20,42 +20,41 @@
       </view>
 
       <view
-            class="jwbfs.ui.views.manager.ManagerView0"
-            id="it.jwbfs.ui.DiskView0"
-            name="Disk Manager 0"
-            restorable="true">
-      </view>
-      <view
             class="jwbfs.ui.views.manager.ManagerView1"
             id="it.jwbfs.ui.DiskView1"
-            name="Disk Manager 1"
+            name="Disk 1"
             restorable="true">
       </view>
       <view
             class="jwbfs.ui.views.manager.ManagerView2"
             id="it.jwbfs.ui.DiskView2"
-            name="Disk Manager 2"
+            name="Disk 2"
             restorable="true">
       </view>
        <view
             class="jwbfs.ui.views.manager.ManagerView3"
             id="it.jwbfs.ui.DiskView3"
-            name="Disk Manager 3"
+            name="Disk 3"
             restorable="true">
       </view>
       <view
             class="jwbfs.ui.views.manager.ManagerView4"
             id="it.jwbfs.ui.DiskView4"
-            name="Disk Manager 4"
+            name="Disk 4"
             restorable="true">
       </view>
       <view
             class="jwbfs.ui.views.manager.ManagerView5"
             id="it.jwbfs.ui.DiskView5"
-            name="Disk Manager 5"
+            name="Disk 5"
             restorable="true">
       </view>
-      
+      <view
+            class="jwbfs.ui.views.manager.ManagerView6"
+            id="it.jwbfs.ui.DiskView6"
+            name="Disk 6"
+            restorable="true">
+      </view>      
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -128,23 +127,41 @@
             name="Exit">
       </command>  
       <command
-            id="it.jwbfs.core.refreshDiskView"
-            name="Refresh Current Disk">
+            id="it.jwbfs.core.refreshFirstDisk"
+            name="Refresh First Disk">
              <commandParameter 
         		id="diskID" 
         		name="diskID" 
         		optional="false">
         	</commandParameter>
-      </command>  
+      </command> 
       <command
-            id="it.jwbfs.core.addDisk"
-            name="Add disks">
+            id="it.jwbfs.core.refreshAllDisks"
+            name="Refresh all disks">
+      </command>       
+      <command
+            id="it.jwbfs.core.changeDisksPerspective"
+            name="Change disks perspective">
              <commandParameter 
         		id="numDisks" 
         		name="numDisks" 
         		optional="false">
         	</commandParameter>
-      </command>     
+      </command> 
+      <command
+            id="it.jwbfs.core.copyGames"
+            name="Copy Games">
+             <commandParameter 
+        		id="diskFrom" 
+        		name="diskFrom" 
+        		optional="false">
+        	</commandParameter>
+             <commandParameter 
+        		id="diskTo" 
+        		name="diskTo" 
+        		optional="false">
+        	</commandParameter>
+      </command>      
    </extension>
    
    <extension
@@ -198,13 +215,21 @@
             commandId="it.jwbfs.core.exit">
       </handler>
       <handler
-            class="jwbfs.ui.handlers.RefreshDiskHandler"
-            commandId="it.jwbfs.core.refreshDiskView">
-      </handler>      
+            class="jwbfs.ui.handlers.RefreshFirstDiskHandler"
+            commandId="it.jwbfs.core.refreshFirstDisk">
+      </handler>
       <handler
-            class="jwbfs.ui.handlers.AddDiskHandler"
-            commandId="it.jwbfs.core.addDisk">
-      </handler>         
+            class="jwbfs.ui.handlers.RefreshAllDisksHandler"
+            commandId="it.jwbfs.core.refreshAllDisks">
+      </handler>              
+      <handler
+            class="jwbfs.ui.handlers.SelectPerspectiveHandler"
+            commandId="it.jwbfs.core.changeDisksPerspective">
+      </handler>
+      <handler
+            class="jwbfs.ui.handlers.CopyGamesHandler"
+            commandId="it.jwbfs.core.copyGames">
+      </handler>            
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">

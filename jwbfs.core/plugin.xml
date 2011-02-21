@@ -64,16 +64,14 @@
          <menu
                label="Disks">
             <command
-                  commandId="it.jwbfs.core.refreshDiskView"
-                  label="Refresh Active Disk"
+                  commandId="it.jwbfs.core.refreshAllDisks"
+                  label="Refresh All Disks"
                   style="push">
-                  <parameter 
-               		name="diskID" 
-               		value="activeDiskID"> 
-         		  </parameter> 
             </command>
-            <command
-                  commandId="it.jwbfs.core.addDisk"
+            <menu
+                  label="Disks views">
+                              <command
+                  commandId="it.jwbfs.core.changeDisksPerspective"
                   label="One Disk"
                   style="push">
                   <parameter 
@@ -82,7 +80,7 @@
          		  </parameter> 
             </command>
              <command
-                  commandId="it.jwbfs.core.addDisk"
+                  commandId="it.jwbfs.core.changeDisksPerspective"
                   label="Two Disks"
                   style="push">
                   <parameter 
@@ -91,7 +89,7 @@
          		  </parameter> 
             </command> 
             <command
-                  commandId="it.jwbfs.core.addDisk"
+                  commandId="it.jwbfs.core.changeDisksPerspective"
                   label="Three Disks"
                   style="push">
                   <parameter 
@@ -100,7 +98,7 @@
          		  </parameter> 
             </command>
             <command
-                  commandId="it.jwbfs.core.addDisk"
+                  commandId="it.jwbfs.core.changeDisksPerspective"
                   label="Four Disks"
                   style="push">
                   <parameter 
@@ -109,7 +107,7 @@
          		  </parameter> 
             </command>
             <command
-                  commandId="it.jwbfs.core.addDisk"
+                  commandId="it.jwbfs.core.changeDisksPerspective"
                   label="Five Disks"
                   style="push">
                   <parameter 
@@ -118,14 +116,15 @@
          		  </parameter> 
             </command>
             <command
-                  commandId="it.jwbfs.core.addDisk"
+                  commandId="it.jwbfs.core.changeDisksPerspective"
                   label="Six Disks"
                   style="push">
                   <parameter 
                		name="numDisks" 
                		value="6"> 
          		  </parameter> 
-            </command>                                                                    
+            </command>
+            </menu>                                                                    
          </menu>
          <menu
                label="Games">
@@ -133,13 +132,192 @@
                   commandId="it.jwbfs.core.updateGameList"
                   label="Update Games List"
                   style="push">
+                  <parameter 
+               		name="diskID" 
+               		value="activeDiskID"> 
+         		  </parameter>                   
             </command>
             <command
                   commandId="it.jwbfs.core.updateTitles"
                   label="Update Titles DB"
                   style="push">
             </command>
+            <menu
+                  label="Copy Selected">
+<!--DISK1-->
+               <command
+                     commandId="it.jwbfs.core.copyGames"
+                     label="To Disk 1"
+                     style="push">
+                  <parameter
+                        name="diskFrom"
+                        value="activeID">
+                  </parameter>
+                  <parameter
+                        name="diskTo"
+                        value="it.jwbfs.ui.DiskView1">
+                  </parameter>
+                  <visibleWhen>
+   						<with variable="activeContexts">
+             					<iterate operator="or">
+             					<or>
+             					 	<equals value="jwbfs.context.disk.2"/>
+             					 	<equals value="jwbfs.context.disk.3"/>
+             					 	<equals value="jwbfs.context.disk.4"/>
+             					 	<equals value="jwbfs.context.disk.5"/>
+             					 	<equals value="jwbfs.context.disk.6"/>
+                			    </or>
+           						</iterate>      	           						      					           							          						
+           				</with>
+				</visibleWhen>
+               </command>                  
+<!--DISK2-->
+               <command
+                     commandId="it.jwbfs.core.copyGames"
+                     label="To Disk 2"
+                     style="push">
+                  <parameter
+                        name="diskFrom"
+                        value="activeID">
+                  </parameter>
+                  <parameter
+                        name="diskTo"
+                        value="it.jwbfs.ui.DiskView2">
+                  </parameter>
+                  <visibleWhen>
+   						<with variable="activeContexts">
+             					<iterate operator="or">
+             					<or>
+             					 	<equals value="jwbfs.context.disk.2"/>
+             					 	<equals value="jwbfs.context.disk.3"/>
+             					 	<equals value="jwbfs.context.disk.4"/>
+             					 	<equals value="jwbfs.context.disk.5"/>
+             					 	<equals value="jwbfs.context.disk.6"/>
+                			    </or>
+           						</iterate>      	           						      					           							          						
+           				</with>
+				</visibleWhen>
+               </command>
+<!--DISK3-->
+               <command
+                     commandId="it.jwbfs.core.copyGames"
+                     label="To Disk 3"
+                     style="push">
+                  <parameter
+                        name="diskFrom"
+                        value="activeID">
+                  </parameter>
+                  <parameter
+                        name="diskTo"
+                        value="it.jwbfs.ui.DiskView3">
+                  </parameter>
+                  <visibleWhen>
+   						<with variable="activeContexts">
+             					<iterate operator="or">
+             					<or>
+             					 	<equals value="jwbfs.context.disk.3"/>
+             					 	<equals value="jwbfs.context.disk.4"/>
+             					 	<equals value="jwbfs.context.disk.5"/>
+             					 	<equals value="jwbfs.context.disk.6"/>
+                			    </or>
+           						</iterate>      	           						      					           							          						
+           				</with>
+				</visibleWhen>
+               </command>
+
+
+
+
+
+
+
+<!--DISK4-->
+               <command
+                     commandId="it.jwbfs.core.copyGames"
+                     label="To Disk 4"
+                     style="push">
+                  <parameter
+                        name="diskFrom"
+                        value="activeID">
+                  </parameter>
+                  <parameter
+                        name="diskTo"
+                        value="it.jwbfs.ui.DiskView4">
+                  </parameter>
+                  <visibleWhen>
+   						<with variable="activeContexts">
+             					<iterate operator="or">
+             					<or>
+             					 	<equals value="jwbfs.context.disk.4"/>
+             					 	<equals value="jwbfs.context.disk.5"/>
+             					 	<equals value="jwbfs.context.disk.6"/>
+                			    </or>
+           						</iterate>      	           						      					           							          						
+           				</with>
+				</visibleWhen>
+               </command>                  
+<!--DISK5-->
+               <command
+                     commandId="it.jwbfs.core.copyGames"
+                     label="To Disk 5"
+                     style="push">
+                  <parameter
+                        name="diskFrom"
+                        value="activeID">
+                  </parameter>
+                  <parameter
+                        name="diskTo"
+                        value="it.jwbfs.ui.DiskView2">
+                  </parameter>
+                  <visibleWhen>
+   						<with variable="activeContexts">
+             					<iterate operator="or">
+             					<or>
+             					 	<equals value="jwbfs.context.disk.5"/>
+             					 	<equals value="jwbfs.context.disk.6"/>
+                			    </or>
+           						</iterate>      	           						      					           							          						
+           				</with>
+				</visibleWhen>
+               </command>
+<!--DISK6-->
+               <command
+                     commandId="it.jwbfs.core.copyGames"
+                     label="To Disk 6"
+                     style="push">
+                  <parameter
+                        name="diskFrom"
+                        value="activeID">
+                  </parameter>
+                  <parameter
+                        name="diskTo"
+                        value="it.jwbfs.ui.DiskView6">
+                  </parameter>
+                  <visibleWhen>
+   						<with variable="activeContexts">
+             					<iterate operator="or">
+             					<or>
+             					 	<equals value="jwbfs.context.disk.6"/>
+                			    </or>
+           						</iterate>      	           						      					           							          						
+           				</with>
+				</visibleWhen>
+               </command>
+
+
+<!-- menu generic visible when: if only 1 disk no copy commands-->               
+               <visibleWhen>
+               		<not>
+   						<with variable="activeContexts">
+             					<iterate operator="or">
+             					 	<equals value="jwbfs.context.disk.1"/>
+           						</iterate>      	           						      					           							          						
+           				</with>
+           			</not>
+				</visibleWhen>
+            </menu>
          </menu>
+         
          <menu
                label="Covers">
             <command
@@ -149,6 +327,33 @@
             </command>
          </menu>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            id="jwbfs.context.disk.1"
+            name="1 disk">
+      </context>
+      <context
+            id="jwbfs.context.disk.2"
+            name="2 disk">
+      </context>
+      <context
+            id="jwbfs.context.disk.3"
+            name="3 disk">
+      </context>
+      <context
+            id="jwbfs.context.disk.4"
+            name="4 disk">
+      </context>
+      <context
+            id="jwbfs.context.disk.5"
+            name="5 disk">
+      </context>   
+      <context
+            id="jwbfs.context.disk.6"
+            name="6 disk">
+      </context>                           
    </extension>
    
    <!--extension point="org.eclipse.ui.splashHandlers">

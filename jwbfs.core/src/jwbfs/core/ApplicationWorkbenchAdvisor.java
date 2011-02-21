@@ -13,6 +13,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
     }
 
 	public String getInitialWindowPerspectiveId() {
-		return CoreConstants.PERSPECTIVE_DISKS_2;
+		return CoreConstants.PERSPECTIVE_DISKS_1;
 	}
 }

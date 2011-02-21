@@ -1,8 +1,9 @@
 package jwbfs.ui.listeners.mainView;
 
+import java.util.LinkedHashMap;
+
 import jwbfs.model.ModelStore;
 import jwbfs.model.utils.CoreConstants;
-import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.swt.SWT;
@@ -24,7 +25,9 @@ public class UpdateGameListListener extends SelectionAdapter {
 		
 		try {
 		
-		PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
+		LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+		parametri.put("diskID",viewID);
+		GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);	
 
 		ModelStore.getExportGameBean().clean();
 

@@ -2,7 +2,6 @@ package jwbfs.ui.views.table;
 
 import jwbfs.i18n.Messages;
 import jwbfs.model.beans.GameBean;
-import jwbfs.ui.utils.GameUtils;
 
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.TableViewer;
@@ -18,7 +17,9 @@ public class GameCellModifiers implements ICellModifier {
 
 	public boolean canModify(Object element, String property) {
 
-
+		if (property.equals(Messages.view_gamelist_column_selection)){
+			return true;
+		}
 		if (property.equals(Messages.view_gamelist_column_name)){
 			return true;
 		}
@@ -37,13 +38,16 @@ public class GameCellModifiers implements ICellModifier {
 
 		switch (columnIndex) {
 		case 0 : // ID
+			result = new Boolean(p.isSelected());
+			break;
+		case 1 : // ID
 		result = p.getId();
 		break;
-		case 1 : // TITOLO
+		case 2 : // TITOLO
 //		result = GameUtils.indexOfGameName(p.getTitle(),p.getGameAlternativeTitlesAsArray());
 		result = p.getTitle();
 		break;
-		case 2 : // SIZE
+		case 3 : // SIZE
 			result = p.getScrubGb();
 			break;
 		}
@@ -69,7 +73,9 @@ public class GameCellModifiers implements ICellModifier {
 		if (element instanceof Item) element = ((Item) element).getData();
 
 		GameBean p = (GameBean) element;
-		if (property.equals(Messages.view_gamelist_column_id))
+		if (property.equals(Messages.view_gamelist_column_selection))
+			p.setSelected((Boolean) value);
+		else if (property.equals(Messages.view_gamelist_column_id))
 			p.setId((String) value);
 		else if (property.equals(Messages.view_gamelist_column_name)){
 //			String title = GameUtils.decodeGameName((Integer) value,p.getGameAlternativeTitlesAsArray());

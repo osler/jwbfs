@@ -1,6 +1,5 @@
 package jwbfs.ui.perspectives;
 
-import jwbfs.model.ModelStore;
 import jwbfs.model.utils.CoreConstants;
 
 import org.eclipse.ui.IFolderLayout;
@@ -17,8 +16,6 @@ public class DisksPerspective1 implements IPerspectiveFactory {
 		layout.setFixed(true);
 		
 		diskFolder = layout.createFolder("folder", 0, 0.6f, editorArea);
-
-		new ModelStore();
 				
 		addDisksTabs();
 
@@ -29,7 +26,7 @@ public class DisksPerspective1 implements IPerspectiveFactory {
 	}
 
 	protected void addDisksTabs() {
-		diskFolder.addView(CoreConstants.VIEW_DISK_0_ID);	
+		diskFolder.addView(CoreConstants.VIEW_DISK_1_ID);	
 	}
 
 	protected void addOthersTabs() {

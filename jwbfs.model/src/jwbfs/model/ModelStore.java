@@ -15,19 +15,17 @@ public class ModelStore {
 	
 	private static SettingsBean settingsBean = new SettingsBean();
 	
-	private static int numDisk = 2;
+	private static int numDisk;
 	
 	private static LinkedHashMap<String,DiskBean> disks = new LinkedHashMap<String, DiskBean>();
 	
 	
 	public ModelStore(){
-			
+		numDisk = System.getProperty("wbfs.disks").trim().equals("")?1:Integer.parseInt(System.getProperty("wbfs.disks"));
 		initDisks();
 	}
 	
 	private void initDisks() {
-		disks.put(CoreConstants.VIEW_DISK_0_ID,
-				new DiskBean(System.getProperty("wbfs.disk.path0")));
 		disks.put(CoreConstants.VIEW_DISK_1_ID,
 				new DiskBean(System.getProperty("wbfs.disk.path1")));
 		disks.put(CoreConstants.VIEW_DISK_2_ID,
@@ -38,7 +36,8 @@ public class ModelStore {
 				new DiskBean(System.getProperty("wbfs.disk.path4")));
 		disks.put(CoreConstants.VIEW_DISK_5_ID,
 				new DiskBean(System.getProperty("wbfs.disk.path5")));
-		
+		disks.put(CoreConstants.VIEW_DISK_6_ID,
+				new DiskBean(System.getProperty("wbfs.disk.path6")));
 	}
 	
 
