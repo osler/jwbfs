@@ -7,6 +7,6 @@ public class DisksPerspective4 extends DisksPerspective3 {
 
 	protected void addDisksTabs() {	
 		super.addDisksTabs();
-		diskFolder.addView(CoreConstants.VIEW_DISK_3_ID);
+		diskFolder.addView(CoreConstants.VIEW_DISK_4_ID);
 	}
 }

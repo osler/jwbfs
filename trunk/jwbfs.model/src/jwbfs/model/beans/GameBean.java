@@ -172,4 +172,12 @@ public class GameBean extends ModelObject  {
 		
 	}
 
+	boolean selected = false;
+	public boolean isSelected() {
+		return selected;
+	}
+	public void setSelected(boolean b){
+		this.selected = b;
+	}
+
 }

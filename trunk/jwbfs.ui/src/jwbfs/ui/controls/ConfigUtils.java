@@ -153,9 +153,6 @@ public class ConfigUtils {
 		
 		String subLine = (line.substring(0,line.indexOf("="))).trim() + " = ";
 		
-		if(line.contains("wbfs.disk.path0")){
-			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_0_ID));
-		}
 		if(line.contains("wbfs.disk.path1")){
 			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_1_ID));
 		}
@@ -170,6 +167,12 @@ public class ConfigUtils {
 		}
 		if(line.contains("wbfs.disk.path5")){
 			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_5_ID));
+		}
+		if(line.contains("wbfs.disk.path6")){
+			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_6_ID));
+		}
+		if(line.contains("wbfs.disks")){
+			return subLine +  ModelStore.getNumDisk();
 		}
 
 		if(line.contains("wbfs.txt.layout")){

@@ -54,8 +54,10 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	public void preWindowOpen() {
+		
 		ConfigUtils.initConfigFile();
-
+		new ModelStore(); //init model
+		
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		int x = Integer.parseInt(System.getProperty("window.x"));
 		int y = Integer.parseInt(System.getProperty("window.y"));
@@ -78,17 +80,31 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 		Set<String> disksViewsID = ModelStore.getDisks().keySet();
 		Iterator<String> it = disksViewsID.iterator();
+		int counter = 0;
+		int numDisks = ModelStore.getNumDisk();
+		//switch to correct perspective based on num disks
+		LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+		parametri.put("numDisks",String.valueOf(numDisks));
+		GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_DISKS_PERSPECTIVE,parametri,null);
+		
+		//refresh games list for every disks
 		while (it.hasNext()) {
-			String diskViewID = (String) it.next();
-			
-			//TODO make a field in DISK "enabled"
-			if(ModelStore.getDisk(diskViewID).getDiskPath().trim().equals("")){ 
-				continue;
-			}
 
-			LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
-			parametri.put("diskID",diskViewID);
-			GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_REFRESH_DISK_VIEW_ID,parametri,null);
+				String diskViewID = (String) it.next();
+			if(numDisks > counter){
+				if(ModelStore.getDisk(diskViewID).getDiskPath().trim().equals("")){ 
+					continue;
+				}
+
+				parametri = new LinkedHashMap<String,String>();
+				parametri.put("diskID",diskViewID);
+				if(counter == 0){
+					GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_REFRESH_FIRST_DISK_ID,parametri,null);
+				}else{
+					GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);
+				}
+			}
+			counter++;
 		}
 		
 

@@ -7,7 +7,6 @@ import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.FileUtils;
-import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.listeners.mainView.AddButtonListener;
 import jwbfs.ui.listeners.mainView.DeleteButtonListener;
 import jwbfs.ui.listeners.mainView.DiskFolderSelectionListener;
@@ -21,6 +20,7 @@ import jwbfs.ui.views.table.ManagerViewContentProvider;
 import jwbfs.ui.views.table.ManagerViewLabelProvider;
 
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -73,7 +73,7 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		WidgetCreator.createText(group, false, ModelStore.getDisk(viewID), "diskPath",3); //$NON-NLS-1$
 		Button button = WidgetCreator.createButton(group,Messages.view_disk_open);
 		addHandlerFolder(button);
-
+		
 		group = WidgetCreator.createGroup(parent, Messages.view_actions, 4);
 		button = WidgetCreator.createButton(group,Messages.view_add);
 		addAction(button);
@@ -86,22 +86,27 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 
 		Composite tableComp = WidgetCreator.createComposite(parent);				
 		String[] columnsNames = {
-				Messages.view_gamelist_column_id, Messages.view_gamelist_column_name, /*"Region",*/Messages.view_gamelist_column_size };
-		int[] columnsSize = {15, 60, /*15,*/ 10};
+				Messages.view_gamelist_column_selection,
+				Messages.view_gamelist_column_id,
+				Messages.view_gamelist_column_name, /*"Region",*/
+				Messages.view_gamelist_column_size };
+		int[] columnsSize = {5, 15, 60, 10};
 
 		table = WidgetCreator.createTable(tableComp, SWT.Selection | SWT.FULL_SELECTION, columnsNames, columnsSize);
 		tv = new TableViewer(table);
 		tv.setContentProvider(new ManagerViewContentProvider(viewID));
 		tv.setLabelProvider(  new ManagerViewLabelProvider());
-
+		
 	    CellEditor[] editors = new CellEditor[4];
-	    editors[0] = new TextCellEditor(table);
-	    editors[1] = new GameTitleCellEditor(table, SWT.READ_ONLY);
+	    editors[0] = new CheckboxCellEditor(table);
+	    editors[1] = new TextCellEditor(table);
+	    editors[2] = new GameTitleCellEditor(table, SWT.READ_ONLY);
 	    editors[3] =new TextCellEditor(table);
 
 	    tv.setCellModifier(new GameCellModifiers(tv));
 	    tv.setCellEditors(editors);
 	    String[] props = new String[] {
+	    		Messages.view_gamelist_column_selection,
 	    		Messages.view_gamelist_column_id,
 	    		Messages.view_gamelist_column_name,
 	    		Messages.view_gamelist_column_size};

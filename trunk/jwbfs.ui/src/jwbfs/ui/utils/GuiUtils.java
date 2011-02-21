@@ -9,6 +9,7 @@ import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.CoverConstants;
 import jwbfs.model.utils.PlatformUtils;
+import jwbfs.ui.ContextActivator;
 import jwbfs.ui.views.CoverView;
 import jwbfs.ui.views.manager.ManagerView;
 
@@ -327,7 +328,12 @@ public class GuiUtils {
 		);
 
 
-		return PlatformUtils.getHandlerService().executeCommand(parmCommand, event);
+		Boolean ret = (Boolean) PlatformUtils.getHandlerService().executeCommand(parmCommand, event);
+		if(ret){
+			ContextActivator.reloadContext();
+		}
+		
+		return ret;
 		
 		} catch (NotDefinedException e) {
 			e.printStackTrace();
@@ -347,8 +353,12 @@ public class GuiUtils {
 		
 		try{
 
-			return PlatformUtils.getHandlerService(viewID).executeCommand(commandID, event);
-
+			Boolean ret = (Boolean) PlatformUtils.getHandlerService(viewID).executeCommand(commandID, event);
+			if(ret){
+				ContextActivator.reloadContext();
+			}
+			
+			return ret;
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		} catch (NotDefinedException e) {
@@ -386,5 +396,31 @@ public class GuiUtils {
 		}
 		
 		return null;
+	}
+
+	public static String decodeDiskID(int i) {
+		String diskID = "";
+		switch (i) {
+		case 1:diskID = CoreConstants.VIEW_DISK_1_ID;break;
+		case 2:diskID = CoreConstants.VIEW_DISK_2_ID;break;
+		case 3:diskID = CoreConstants.VIEW_DISK_3_ID;break;
+		case 4:diskID = CoreConstants.VIEW_DISK_4_ID;break;
+		case 5:diskID = CoreConstants.VIEW_DISK_5_ID;break;
+		case 6:diskID = CoreConstants.VIEW_DISK_6_ID;break;
+		}
+		return diskID;
+	}
+	
+	public static String decodePerspectiveID(int numDisks) {
+		String diskID = "";
+		switch (numDisks) {
+		case 1:diskID = CoreConstants.PERSPECTIVE_DISKS_1;break;
+		case 2:diskID = CoreConstants.PERSPECTIVE_DISKS_2;break;
+		case 3:diskID = CoreConstants.PERSPECTIVE_DISKS_3;break;
+		case 4:diskID = CoreConstants.PERSPECTIVE_DISKS_4;break;
+		case 5:diskID = CoreConstants.PERSPECTIVE_DISKS_5;break;
+		case 6:diskID = CoreConstants.PERSPECTIVE_DISKS_6;break;
+		}
+		return diskID;
 	}
 }

@@ -21,11 +21,8 @@ public class Perspective implements IPerspectiveFactory {
 //		layout.addStandaloneView(MainView.ID,  false, IPageLayout.LEFT, 0.5f, editorArea);
 //		layout.addStandaloneView(CoverView.ID,  false, IPageLayout.RIGHT, 0.5f, editorArea);
 		
-		new ModelStore();
-		
-		diskFolder.addView(CoreConstants.VIEW_DISK_0_ID);
-		
 		diskFolder.addView(CoreConstants.VIEW_DISK_1_ID);
+		diskFolder.addView(CoreConstants.VIEW_DISK_2_ID);
 		
 //		folder.addView(CoreConstants.VIEW_DISK_1_ID);
 		diskFolder.addView(CoreConstants.VIEW_SETTINGS_ID);

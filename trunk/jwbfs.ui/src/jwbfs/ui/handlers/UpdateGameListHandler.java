@@ -43,7 +43,7 @@ public class UpdateGameListHandler extends AbstractHandler {
 		GuiUtils.getManagerTableViewer(diskID).refresh();
 		GuiUtils.setDefaultCovers();
 
-		return null;
+		return true;
 	}
 
 	public  List<GameBean> listGames(String folder) {

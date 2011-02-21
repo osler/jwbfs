@@ -36,6 +36,7 @@ public class Messages extends NLS {
 	public static String view_export;
 	public static String view_gamelist_column_id;
 	public static String view_gamelist_column_name;
+	public static String view_gamelist_column_selection;
 	public static String view_gamelist_column_size;
 	public static String view_gamelist_update;
 	public static String view_table_rename_tooltip;

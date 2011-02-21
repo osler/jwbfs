@@ -16,7 +16,7 @@ public class UpdateCoverForcedHandler extends AbstractHandler {
 		ModelStore.getSettingsBean().getCoverSettings().setUpdateCover(true);
 		
 		Boolean ret = (Boolean) GuiUtils.executeCommand(
-				CoreConstants.VIEW_DISK_0_ID, 
+				GuiUtils.getActiveViewID(), 
 				CoreConstants.COMMAND_COVER_UPDATE_ID,
 				null,
 				true);
