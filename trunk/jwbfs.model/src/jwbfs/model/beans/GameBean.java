@@ -18,6 +18,7 @@ public class GameBean extends ModelObject  {
 	private String scrubGb = "";
 	private String region = "";
 	private long scrubSize = 0;
+
 	private ArrayList<String> gameAlternativeTitles;
 	
 	public String toString(){
@@ -180,4 +181,11 @@ public class GameBean extends ModelObject  {
 		this.selected = b;
 	}
 
+	@Override
+	public boolean equals(Object obj) {		
+		if(!(obj instanceof GameBean)){
+			return false;
+		}
+		return this.id.trim().equals(((GameBean)obj).getId());
+	}
 }

@@ -34,6 +34,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IPerspectiveDescriptor;
+import org.eclipse.ui.IPerspectiveRegistry;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -254,7 +256,13 @@ public class GuiUtils {
 	}
 
 	public static String getActiveViewID() {
-
+//		IPerspectiveDescriptor[] perspectives = PlatformUI.getWorkbench()
+//		.getActiveWorkbenchWindow().getActivePage().getSortedPerspectives();
+		
+		ViewPart view = getView(CoreConstants.VIEW_DISK_1_ID);
+		IPerspectiveDescriptor perspective = view.getSite().getPage().getPerspective();
+		
+		
 		String diskSelected = null;
 		try{
 			diskSelected = PlatformUI.getWorkbench()

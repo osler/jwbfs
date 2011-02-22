@@ -9,13 +9,17 @@ import org.eclipse.swt.widgets.Shell;
 
 public class FileExistDialog extends Dialog {
 
-	private String text;
+	protected String text;
 
 	public FileExistDialog(String line, Shell parentShell) {
 		super(parentShell);
 		String message =  "Do you want to delete the file?";
 		text = line+"\n"+message;
 	
+	}
+
+	public FileExistDialog(Shell shell) {
+		super(shell);
 	}
 
 	@Override

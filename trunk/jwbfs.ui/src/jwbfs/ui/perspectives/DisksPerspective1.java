@@ -8,37 +8,45 @@ import org.eclipse.ui.IPerspectiveFactory;
 
 public class DisksPerspective1 implements IPerspectiveFactory {
 
-	protected IFolderLayout diskFolder =  null;
+	protected IFolderLayout leftFolder =  null;
+	protected IFolderLayout rightFolder;
+	private IFolderLayout centralFolder;
 	
 	public void createInitialLayout(IPageLayout layout) {
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(false);
-		layout.setFixed(true);
+		layout.setFixed(false);
 		
-		diskFolder = layout.createFolder("folder", 0, 0.6f, editorArea);
+		leftFolder = layout.createFolder("folderLeft", 0, 0.6f, editorArea);
+//		centralFolder = layout.createFolder("folderCentral", 0, 0.6f, editorArea);
+		rightFolder = layout.createFolder("folderRight", 0, 0.6f, editorArea);
 		
-				
 		addDisksTabs();
-
 		addOthersTabs();
 
-		layout.addStandaloneView(CoreConstants.VIEW_COVER_ID,  false, IPageLayout.RIGHT, 0.5f, editorArea);
-		
+//		layout.addStandaloneView(CoreConstants.VIEW_COVER_ID,  false, IPageLayout.RIGHT, 0.5f, editorArea);
 	}
 
 	protected void addDisksTabs() {
-		diskFolder.addView(CoreConstants.VIEW_DISK_1_ID);	
+		leftFolder.addView(CoreConstants.VIEW_DISK_1_ID);
+		leftFolder.addPlaceholder(CoreConstants.VIEW_DISK_2_ID);
+		leftFolder.addPlaceholder(CoreConstants.VIEW_DISK_3_ID);
+		leftFolder.addPlaceholder(CoreConstants.VIEW_DISK_4_ID);
+		leftFolder.addPlaceholder(CoreConstants.VIEW_DISK_5_ID);
+		leftFolder.addPlaceholder(CoreConstants.VIEW_DISK_6_ID);
+		
 	}
 
 	protected void addOthersTabs() {
-		diskFolder.addView(CoreConstants.VIEW_SETTINGS_ID);
+		rightFolder.addView(CoreConstants.VIEW_SETTINGS_ID);
+		rightFolder.addView(CoreConstants.VIEW_COVER_ID);
 	}
 	
 	public IFolderLayout getDiskFolder() {
-		return diskFolder;
+		return leftFolder;
 	}
 
 	public void setDiskFolder(IFolderLayout diskFolder) {
-		this.diskFolder = diskFolder;
+		this.leftFolder = diskFolder;
 	}
 }

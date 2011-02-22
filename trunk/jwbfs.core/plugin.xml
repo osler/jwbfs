@@ -146,7 +146,7 @@
                   label="%menu.games.copy.selected">
 <!--DISK1-->
                <command
-                     commandId="it.jwbfs.core.copyGames"
+                     commandId="it.jwbfs.core.games.paste"
                      label="%command.games.copy.to.1"
                      style="push">
                   <parameter
@@ -180,7 +180,7 @@
                </command>                  
 <!--DISK2-->
                <command
-                     commandId="it.jwbfs.core.copyGames"
+                     commandId="it.jwbfs.core.games.paste"
                      label="%command.games.copy.to.2"
                      style="push">
                   <parameter
@@ -214,7 +214,7 @@
                </command>
 <!--DISK3-->
                <command
-                     commandId="it.jwbfs.core.copyGames"
+                     commandId="it.jwbfs.core.games.paste"
                      label="%command.games.copy.to.3"
                      style="push">
                   <parameter
@@ -248,7 +248,7 @@
 
 <!--DISK4-->
                <command
-                     commandId="it.jwbfs.core.copyGames"
+                     commandId="it.jwbfs.core.games.paste"
                      label="%command.games.copy.to.4"
                      style="push">
                   <parameter
@@ -280,7 +280,7 @@
                </command>                  
 <!--DISK5-->
                <command
-                     commandId="it.jwbfs.core.copyGames"
+                     commandId="it.jwbfs.core.games.paste"
                      label="%command.games.copy.to.5"
                      style="push">
                   <parameter
@@ -311,7 +311,7 @@
                </command>
 <!--DISK6-->
                <command
-                     commandId="it.jwbfs.core.copyGames"
+                     commandId="it.jwbfs.core.games.paste"
                      label="%command.games.copy.to.6"
                      style="push">
                   <parameter
@@ -375,9 +375,14 @@
                   style="push">
              <visibleWhen>
                        	<with variable="activePartId">
-           					<not>
-           					 	<equals value="it.jwbfs.ui.SettingsView"/>
-           					</not>   	           						      					           							          						
+                       		<and>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.SettingsView"/>
+           						</not>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.CoverView"/>
+           						</not>
+           					</and>   	           						      					           							          						
            				</with>
             </visibleWhen>                  
             </command>
@@ -388,11 +393,16 @@
                   style="push">
              <visibleWhen>
                        	<with variable="activePartId">
-           					<not>
-           					 	<equals value="it.jwbfs.ui.SettingsView"/>
-           					</not>   	           						      					           							          						
+                       		<and>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.SettingsView"/>
+           						</not>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.CoverView"/>
+           						</not>
+           					</and>   	           						      					           							          						
            				</with>
-            </visibleWhen>
+            </visibleWhen>  
             </command>
             <command
                   commandId="it.jwbfs.core.game.add"
@@ -401,11 +411,16 @@
                   style="push">
              <visibleWhen>
                        	<with variable="activePartId">
-           					<not>
-           					 	<equals value="it.jwbfs.ui.SettingsView"/>
-           					</not>   	           						      					           							          						
+                       		<and>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.SettingsView"/>
+           						</not>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.CoverView"/>
+           						</not>
+           					</and>   	           						      					           							          						
            				</with>
-            </visibleWhen>                  
+            </visibleWhen>  
             </command>
             <command
                   commandId="it.jwbfs.core.updateGameList"
@@ -418,18 +433,23 @@
                </parameter>
              <visibleWhen>
                        	<with variable="activePartId">
-           					<not>
-           					 	<equals value="it.jwbfs.ui.SettingsView"/>
-           					</not>   	           						      					           							          						
+                       		<and>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.SettingsView"/>
+           						</not>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.CoverView"/>
+           						</not>
+           					</and>   	           						      					           							          						
            				</with>
-            </visibleWhen>
+            </visibleWhen>  
             </command>
             <separator
                   name="jwbfs.core.disk.utils.separator1"
                   visible="true">
             </separator>
             <command
-                  commandId="it.jwbfs.core.copyGames"
+                  commandId="it.jwbfs.core.games.cut"
                   icon="icons/bar/edit-cut.png"
                   label="Cut Selected"
                   style="push">
@@ -439,21 +459,23 @@
                   </parameter>
                   <parameter
                         name="diskTo"
-                        value="it.jwbfs.ui.DiskView1">
+                        value="">
                   </parameter>
-               <visibleWhen>
-                  <with
-                        variable="activePartId">
-                     <not>
-                        <equals
-                              value="it.jwbfs.ui.SettingsView">
-                        </equals>
-                     </not>
-                  </with>
-               </visibleWhen>
+             <visibleWhen>
+                       	<with variable="activePartId">
+                       		<and>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.SettingsView"/>
+           						</not>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.CoverView"/>
+           						</not>
+           					</and>   	           						      					           							          						
+           				</with>
+            </visibleWhen>  
             </command>
             <command
-                  commandId="it.jwbfs.core.copyGames"
+                  commandId="it.jwbfs.core.games.copy"
                   icon="icons/bar/edit-copy.png"
                   label="Copy Selected"
                   style="push">
@@ -463,42 +485,64 @@
                </parameter>
                <parameter
                      name="diskTo"
-                     value="it.jwbfs.ui.DiskView1">
+                     value="">
                </parameter>
-               <visibleWhen>
-                  <with
-                        variable="activePartId">
-                     <not>
-                        <equals
-                              value="it.jwbfs.ui.SettingsView">
-                        </equals>
-                     </not>
-                  </with>
-               </visibleWhen>
+             <visibleWhen>
+                       	<with variable="activePartId">
+                       		<and>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.SettingsView"/>
+           						</not>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.CoverView"/>
+           						</not>
+           					</and>   	           						      					           							          						
+           				</with>
+            </visibleWhen>  
             </command>
             <command
-                  commandId="it.jwbfs.core.copyGames"
+                  commandId="it.jwbfs.core.games.paste"
                   icon="icons/bar/edit-paste.png"
                   label="Paste Selected"
                   style="push">
                <parameter
                      name="diskFrom"
-                     value="activeID">
+                     value="">
                </parameter>
                <parameter
                      name="diskTo"
-                     value="it.jwbfs.ui.DiskView1">
+                     value="activeID">
                </parameter>
-               <visibleWhen>
-                  <with
-                        variable="activePartId">
-                     <not>
-                        <equals
-                              value="it.jwbfs.ui.SettingsView">
-                        </equals>
-                     </not>
-                  </with>
-               </visibleWhen>
+             <visibleWhen>
+                       	<with variable="activePartId">
+                       		<and>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.SettingsView"/>
+           						</not>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.CoverView"/>
+           						</not>
+           					</and>   	           						      					           							          						
+           				</with>
+            </visibleWhen>  
+            </command>
+            <command
+                  commandId="it.jwbfs.core.game.add"
+                  icon="icons/bar/list-add.png"
+                  label="Add game"
+                  style="push">
+             <visibleWhen>
+                       	<with variable="activePartId">
+                       		<and>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.SettingsView"/>
+           						</not>
+           						<not>
+           					 		<equals value="it.jwbfs.ui.CoverView"/>
+           						</not>
+           					</and>   	           						      					           							          						
+           				</with>
+            </visibleWhen>  
             </command>
          </toolbar>
       </menuContribution>
@@ -523,6 +567,85 @@
             </command>
          </toolbar>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="it.jwbfs.core.toolbar.views">
+            <command
+                  commandId="referenceToMenuId.dropdown"
+                  icon="icons/bar/tab-new.png"
+                  label="Open tab"
+                  mode="FORCE_TEXT"
+                  style="push"
+                  tooltip="Add disks, settings and cover views">
+            </command>
+         </toolbar>
+      </menuContribution>
+      <!--menuContribution
+            allPopups="false"
+            locationURI="menu:referenceToMenuId.dropdown">
+         <command
+               commandId="it.jwbfs.core.changeDisksPerspective"
+               icon="icons/bar/tab-new.png"
+               label="Show disk 1"
+               style="push">
+            <parameter
+                  name="diskID"
+                  value="1">
+            </parameter>
+         </command>
+         <command
+               commandId="it.jwbfs.core.changeDisksPerspective"
+               icon="icons/bar/tab-new.png"
+               label="Show disk 2"
+               style="push">
+            <parameter
+                  name="diskID"
+                  value="2">
+            </parameter>
+         </command>
+         <command
+               commandId="it.jwbfs.core.changeDisksPerspective"
+               icon="icons/bar/tab-new.png"
+               label="Show disk 3"
+               style="push">
+            <parameter
+                  name="diskID"
+                  value="3">
+            </parameter>
+         </command>
+         <command
+               commandId="it.jwbfs.core.changeDisksPerspective"
+               icon="icons/bar/tab-new.png"
+               label="Show disk 4"
+               style="push">
+            <parameter
+                  name="diskID"
+                  value="4">
+            </parameter>
+         </command>
+         <command
+               commandId="it.jwbfs.core.changeDisksPerspective"
+               icon="icons/bar/tab-new.png"
+               label="Show disk 5"
+               style="push">
+            <parameter
+                  name="diskID"
+                  value="5">
+            </parameter>
+         </command>
+         <command
+               commandId="it.jwbfs.core.changeDisksPerspective"
+               icon="icons/bar/tab-new.png"
+               label="Show disk 6"
+               style="push">
+            <parameter
+                  name="diskID"
+                  value="6">
+            </parameter>
+         </command>
+      </menuContribution-->
    </extension>
    <extension
          point="org.eclipse.ui.contexts">
@@ -550,6 +673,14 @@
             id="jwbfs.context.disk.6"
             name="%context.disks.num.6">
       </context>                           
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.eclipse.ui.handlers.ShowViewHandler"
+            id="referenceToMenuId.dropdown"
+            name="referenceToMenuId.dropdown">
+      </command>
    </extension>
    
    <!--extension point="org.eclipse.ui.splashHandlers">
