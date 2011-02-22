@@ -27,9 +27,9 @@ public class UpdateGameListHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
-		String diskID = event.getParameter("diskID");
+		String diskID = event.getParameter("diskID").trim();
 		
-		if(diskID.trim().equals("activeDiskID")){
+		if(diskID == null || diskID.equals("") ||diskID.equals("activeDiskID")){
 			diskID = GuiUtils.getActiveViewID();
 		}
 

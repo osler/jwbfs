@@ -3,6 +3,7 @@ package jwbfs.model;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import jwbfs.model.beans.CopyBean;
 import jwbfs.model.beans.DiskBean;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.beans.SettingsBean;
@@ -104,5 +105,18 @@ public class ModelStore {
 
 	public static int getNumDisk() {
 		return numDisk;
+	}
+
+	protected static CopyBean copyBean;
+
+	public static void setCopyBean(CopyBean copyBean) {
+		ModelStore.copyBean =copyBean; 
+	}
+	
+	public static CopyBean getCopyBean() {
+		if(copyBean == null){
+			copyBean = new CopyBean();
+		}
+		return copyBean;
 	}
 }

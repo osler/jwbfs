@@ -173,7 +173,21 @@
         	</commandParameter>
       </command> 
       <command
-            id="it.jwbfs.core.copyGames"
+            id="it.jwbfs.core.games.cut"
+            name="Cut Games">
+             <commandParameter 
+        		id="diskFrom" 
+        		name="diskFrom" 
+        		optional="false">
+        	</commandParameter>
+             <commandParameter 
+        		id="diskTo" 
+        		name="diskTo" 
+        		optional="false">
+        	</commandParameter>
+      </command>   
+     <command
+            id="it.jwbfs.core.games.copy"
             name="Copy Games">
              <commandParameter 
         		id="diskFrom" 
@@ -185,7 +199,21 @@
         		name="diskTo" 
         		optional="false">
         	</commandParameter>
-      </command>      
+      </command>   
+     <command
+            id="it.jwbfs.core.games.paste"
+            name="Paste Games">
+             <commandParameter 
+        		id="diskFrom" 
+        		name="diskFrom" 
+        		optional="false">
+        	</commandParameter>
+             <commandParameter 
+        		id="diskTo" 
+        		name="diskTo" 
+        		optional="false">
+        	</commandParameter>
+      </command>                  
    </extension>
    
    <extension
@@ -251,12 +279,8 @@
             commandId="it.jwbfs.core.refreshAllDisks">
       </handler>              
       <handler
-            class="jwbfs.ui.handlers.SelectPerspectiveHandler"
+            class="jwbfs.ui.handlers.OpenViewHandler"
             commandId="it.jwbfs.core.changeDisksPerspective">
-      </handler>
-      <handler
-            class="jwbfs.ui.handlers.CopyGamesHandler"
-            commandId="it.jwbfs.core.copyGames">
       </handler>
       <handler
             class="jwbfs.ui.handlers.AddGameHandler"
@@ -269,7 +293,19 @@
       <handler
             class="jwbfs.ui.handlers.DeleteGameHandler"
             commandId="it.jwbfs.core.game.delete">
-      </handler>                                  
+      </handler>  
+      <handler
+            class="jwbfs.ui.handlers.copy.CutGamesHandler"
+            commandId="it.jwbfs.core.games.cut">
+      </handler>
+      <handler
+            class="jwbfs.ui.handlers.copy.CopyGamesHandler"
+            commandId="it.jwbfs.core.games.copy">
+      </handler>
+      <handler
+            class="jwbfs.ui.handlers.copy.PasteGamesHandler"
+            commandId="it.jwbfs.core.games.paste">
+      </handler>                                                  
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
