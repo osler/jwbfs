@@ -1,5 +1,6 @@
 package jwbfs.model.beans;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -82,6 +83,10 @@ public class GameBean extends ModelObject  {
 
 	public String getFilePath() {
 		return filePath;
+	}
+	
+	public String getFileName() {
+		return new File(filePath).getName();
 	}
 
 	public void setFilePath(String filePath) {

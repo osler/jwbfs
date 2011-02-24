@@ -405,7 +405,7 @@
             </visibleWhen>  
             </command>
             <command
-                  commandId="it.jwbfs.core.game.add"
+                  commandId="it.jwbfs.core.game.delete"
                   icon="icons/bar/list-remove.png"
                   label="Delete game"
                   style="push">

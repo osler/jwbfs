@@ -18,9 +18,13 @@ public class RefreshAllDisksHandler extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		int numDisks = ModelStore.getNumDisk();
+		int numDisks = 6;
 		for(int i=0;i<numDisks;i++){
 			String diskID = GuiUtils.decodeDiskID(i);
+			
+			if(ModelStore.getDisk(diskID).getDiskPath().trim().equals("")){
+				continue;
+			}
 			
 			LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
 			parametri.put("diskID",diskID);

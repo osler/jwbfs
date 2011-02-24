@@ -1,7 +1,10 @@
 package jwbfs.ui.listeners.mainView;
 
+import java.util.LinkedHashMap;
+
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.PlatformUtils;
+import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -24,7 +27,11 @@ public class DiskFolderSelectionListener extends SelectionAdapter {
 		System.out.println("Launching Folder Selection Dialog");
 		try {
 			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_FOLDER_DISK_DIALOG_ID, null);
-			PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
+			
+			LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+			parametri.put("diskID",viewID);
+			GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);
+			
 			
 		} catch (ExecutionException e1) {
 
