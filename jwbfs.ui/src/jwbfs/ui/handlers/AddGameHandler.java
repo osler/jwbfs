@@ -1,5 +1,7 @@
 package jwbfs.ui.handlers;
 
+import java.util.LinkedHashMap;
+
 import jwbfs.model.ModelStore;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.exceptions.NotValidDiscException;
@@ -44,7 +46,11 @@ public class AddGameHandler extends AbstractHandler {
 				if(!ok){
 					return false;
 				}
-				ok = (Boolean) 	GuiUtils.executeCommand(viewId, CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
+				
+				LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+				parametri.put("diskID",viewId);
+				ok = (Boolean) 		GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);
+				
 				if(!ok){
 					return false;
 				}

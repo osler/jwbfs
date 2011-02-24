@@ -410,6 +410,7 @@ public class GuiUtils {
 
 	public static String decodeDiskID(int i) {
 		String diskID = "";
+		i = i+1;
 		switch (i) {
 		case 1:diskID = CoreConstants.VIEW_DISK_1_ID;break;
 		case 2:diskID = CoreConstants.VIEW_DISK_2_ID;break;

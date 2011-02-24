@@ -1,5 +1,7 @@
 package jwbfs.ui.handlers;
 
+import java.util.LinkedHashMap;
+
 import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
@@ -28,7 +30,12 @@ public class DeleteGameHandler extends AbstractHandler {
 		}
 		
 		GuiUtils.executeCommand(viewId, CoreConstants.COMMAND_FILE_DELETE_DIALOG_ID, null);
-		GuiUtils.executeCommand(viewId, CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
+
+		LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+		parametri.put("diskID",viewId);
+		GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);
+		
+
 		GuiUtils.setDefaultCovers();
 
 		return true;

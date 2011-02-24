@@ -67,6 +67,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 //		configurer.setShowPerspectiveBar(true);
 		configurer.setShowStatusLine(false);
 		configurer.setTitle("jwbfs - a wbfs_file wrapper");
+		
+		configurer.setShowProgressIndicator(true);
 	}
 
 	@Override

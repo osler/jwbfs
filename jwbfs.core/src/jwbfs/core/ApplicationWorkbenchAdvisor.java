@@ -27,5 +27,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	PlatformUI.getPreferenceStore().setValue(IWorkbenchPreferenceConstants.SHOW_TRADITIONAL_STYLE_TABS, false);
 	PlatformUI.getPreferenceStore().setValue(IWorkbenchPreferenceConstants.VIEW_TAB_POSITION, SWT.BOTTOM); 
 
+	configurer.setSaveAndRestore(true);
 	} 
 }

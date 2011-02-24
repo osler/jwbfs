@@ -1,5 +1,7 @@
 package jwbfs.ui.listeners.mainView;
 
+import java.util.LinkedHashMap;
+
 import jwbfs.model.ModelStore;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.PlatformUtils;
@@ -47,7 +49,11 @@ public class AddButtonListener extends SelectionAdapter {
 					PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_COVER_UPDATE_ID, null);
 					if(ModelStore.getSelectedGame().isIsoToWbfs()){
 						PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_TOWBFS_ID, null);
-						PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID, null);
+					
+						LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+						parametri.put("diskID",viewID);
+						ok = (Boolean) 		GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);
+						
 						GuiUtils.setDefaultCovers();
 					}
 
