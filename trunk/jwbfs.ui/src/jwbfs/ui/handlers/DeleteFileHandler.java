@@ -24,31 +24,12 @@ public class DeleteFileHandler extends AbstractHandler {
 
 			boolean res = GuiUtils.showConfirmDialog("Delete '"+bean.getTitle()+"' ?");
 
-			if(res){
-				File fileWbfs = new File(bean.getFilePath());
-				File fileTxt = new File(FileUtils.getTxtFile(fileWbfs));
-				File folder = new File(bean.getFilePath().replace(fileWbfs.getName(), ""));
+		
 				
-				if(fileWbfs.exists()){
-					System.out.println("Deleting "+fileWbfs.getAbsolutePath());
-					fileWbfs.delete();
-					System.out.println("Deleted!");
-				}
-				if(fileTxt.exists()){
-					System.out.println("Deleting "+fileTxt.getAbsolutePath());
-					fileTxt.delete();
-					System.out.println("Deleted!");
-				}
-				if(folder.exists() && folder.isDirectory() && folder.getAbsolutePath().contains(bean.getId())){
-					System.out.println("Deleting Folder"+folder.getAbsolutePath());
-					folder.delete();
-					System.out.println("Deleted!");
-				}
-				
-				return true;
-			}
-
+				return res;
 		}
+
+		
 
 		return false;
 	}

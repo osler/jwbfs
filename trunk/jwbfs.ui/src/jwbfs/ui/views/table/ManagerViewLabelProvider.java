@@ -1,5 +1,7 @@
 package jwbfs.ui.views.table;
 
+import java.io.File;
+
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.utils.GuiUtils;
@@ -28,7 +30,7 @@ public class ManagerViewLabelProvider implements ITableLabelProvider {
 	 * and automatically disposes of them the SWT Display is disposed.
 	 */ 
 	static {
-		String iconPath = "icons/"; 
+		String iconPath = "icons"+File.separatorChar; 
 		
 		Image imgU = new Image(GuiUtils.getDisplay(),PlatformUtils.getRoot()+ iconPath + UNCHECKED_IMAGE + ".png");
 		Image imgC = new Image(GuiUtils.getDisplay(),PlatformUtils.getRoot()+ iconPath + CHECKED_IMAGE + ".png");

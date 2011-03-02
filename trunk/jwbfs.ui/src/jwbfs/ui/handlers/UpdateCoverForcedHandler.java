@@ -1,6 +1,7 @@
 package jwbfs.ui.handlers;
 
 import jwbfs.model.ModelStore;
+import jwbfs.model.beans.DiskBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.utils.GuiUtils;
 
@@ -13,7 +14,9 @@ public class UpdateCoverForcedHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
-		ModelStore.getSettingsBean().getCoverSettings().setUpdateCover(true);
+		DiskBean diskBean =  ModelStore.getDisk(GuiUtils.getActiveViewID());
+	
+		diskBean.getCoverSettings().setUpdateCover(true);
 		
 		Boolean ret = (Boolean) GuiUtils.executeCommand(
 				GuiUtils.getActiveViewID(), 

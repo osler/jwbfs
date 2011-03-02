@@ -11,6 +11,7 @@ import jwbfs.ui.utils.GuiUtils;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.viewers.TableViewer;
 
 public class RefreshFirstDiskHandler extends AbstractHandler {
 
@@ -34,7 +35,7 @@ public class RefreshFirstDiskHandler extends AbstractHandler {
 					CoreConstants.COMMAND_FOLDER_DISK_DIALOG_ID, 
 					null);
 		}else{				
-			CoverUtils.setCoversPathFromDiskPath();	
+			CoverUtils.setCoversPathFromDiskPath(diskID);	
 		}
 
 
@@ -42,9 +43,13 @@ public class RefreshFirstDiskHandler extends AbstractHandler {
 		parametri.put("diskID",diskID);
 		GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);
 		
-		GuiUtils.getManagerTableViewer(diskID).setInput(ModelStore.getGames(diskID));
-		
-		GuiUtils.getManagerTableViewer(diskID).refresh();
+		try{
+			TableViewer table = GuiUtils.getManagerTableViewer(diskID);
+			table.setInput(ModelStore.getGames(diskID));
+			table.refresh();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 }

@@ -1,5 +1,6 @@
 package jwbfs.model;
 
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -18,6 +19,10 @@ public class ModelStore {
 	
 	private static int numDisk;
 	
+	public static void setDisks(LinkedHashMap<String, DiskBean> disks) {
+		ModelStore.disks = disks;
+	}
+
 	private static LinkedHashMap<String,DiskBean> disks = new LinkedHashMap<String, DiskBean>();
 	
 	
@@ -28,26 +33,32 @@ public class ModelStore {
 	
 	private void initDisks() {
 		disks.put(CoreConstants.VIEW_DISK_1_ID,
-				new DiskBean(System.getProperty("wbfs.disk.path1")));
+				new DiskBean(CoreConstants.VIEW_DISK_1_ID,
+						"configs"+File.separatorChar+"disk1.ini"));
 		disks.put(CoreConstants.VIEW_DISK_2_ID,
-				new DiskBean(System.getProperty("wbfs.disk.path2")));
+				new DiskBean(CoreConstants.VIEW_DISK_2_ID,
+						"configs"+File.separatorChar+"disk2.ini"));
 		disks.put(CoreConstants.VIEW_DISK_3_ID,
-				new DiskBean(System.getProperty("wbfs.disk.path3")));
+				new DiskBean(CoreConstants.VIEW_DISK_3_ID,
+						"configs"+File.separatorChar+"disk3.ini"));
 		disks.put(CoreConstants.VIEW_DISK_4_ID,
-				new DiskBean(System.getProperty("wbfs.disk.path4")));
+				new DiskBean(CoreConstants.VIEW_DISK_4_ID,
+						"configs"+File.separatorChar+"disk4.ini"));
 		disks.put(CoreConstants.VIEW_DISK_5_ID,
-				new DiskBean(System.getProperty("wbfs.disk.path5")));
+				new DiskBean(CoreConstants.VIEW_DISK_5_ID,
+						"configs"+File.separatorChar+"disk5.ini"));
 		disks.put(CoreConstants.VIEW_DISK_6_ID,
-				new DiskBean(System.getProperty("wbfs.disk.path6")));
+				new DiskBean(CoreConstants.VIEW_DISK_6_ID,
+						"configs"+File.separatorChar+"disk6.ini"));
 	}
 	
 
-	public static void setSelectedGame(GameBean selectedGame) {
+	public static synchronized void setSelectedGame(GameBean selectedGame) {
 		ModelStore.selectedGame = selectedGame;
 	}
 
 
-	public static GameBean getSelectedGame() {
+	public static synchronized GameBean getSelectedGame() {
 		return selectedGame;
 	}
 	
@@ -74,8 +85,8 @@ public class ModelStore {
 	public static LinkedHashMap<String, DiskBean> getDisks() {
 		return disks;
 	}
-	public static DiskBean getDisk(String diskKey) {
-		return disks.get(diskKey);
+	public static DiskBean getDisk(String diskID) {
+		return disks.get(diskID);
 	}
 
 	public static void setDisk(String diskKey, DiskBean disk) {
@@ -118,5 +129,16 @@ public class ModelStore {
 			copyBean = new CopyBean();
 		}
 		return copyBean;
+	}
+
+	
+	private static String activeDiskID;
+	
+	public static String getActiveDiskID() {
+		// TODO Auto-generated method stub
+		return activeDiskID;
+	}
+	public static void setActiveDiskID(String diskID) {
+		ModelStore.activeDiskID = diskID;
 	}
 }

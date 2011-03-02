@@ -4,7 +4,6 @@ import java.io.File;
 
 import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CoverPaths;
-import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoverConstants;
 import jwbfs.model.utils.FileUtils;
 
@@ -12,10 +11,10 @@ import org.eclipse.swt.SWT;
 
 public class CoverUtils {
 
-	public static String get2DPath(String coverPath) {
+	public static String get2DPath(String coverPath, String diskID) {
 
 		//reset the coverPath to temp if the loader don't support this kind of cover
-		String subPath = CoverConstants.getImage2D();
+		String subPath = CoverConstants.getImage2D(diskID);
 		if(subPath == null){
 			coverPath = System.getProperty("java.io.tmpdir");
 		}
@@ -29,16 +28,16 @@ public class CoverUtils {
 
 	}
 	
-	public static String get3DPath(String coverPath) {
+	public static String get3DPath(String coverPath, String diskID) {
 
 		//reset the coverPath to temp if the loader don't support this kind of cover
-		String subPath = CoverConstants.getImage3D();
+		String subPath = CoverConstants.getImage3D(diskID);
 		if(subPath == null){
 			coverPath = System.getProperty("java.io.tmpdir");
 		}
 		
 		coverPath = coverPath+File.separatorChar
-					+CoverConstants.getImage3D();
+					+CoverConstants.getImage3D(diskID);
 		
 		FileUtils.checkAndCreateFolder(coverPath);
 
@@ -46,16 +45,16 @@ public class CoverUtils {
 
 	}
 	
-	public static String getDISCSPath(String coverPath) {
+	public static String getDISCSPath(String coverPath, String diskID) {
 
 		//reset the coverPath to temp if the loader don't support this kind of cover
-		String subPath = CoverConstants.getImageDisc();
+		String subPath = CoverConstants.getImageDisc(diskID);
 		if(subPath == null){
 			coverPath = System.getProperty("java.io.tmpdir");
 		}
 		
 		coverPath = coverPath+File.separatorChar
-					+CoverConstants.getImageDisc();
+					+CoverConstants.getImageDisc(diskID);
 		
 		FileUtils.checkAndCreateFolder(coverPath);
 
@@ -67,43 +66,39 @@ public class CoverUtils {
 	 * Create all the image folder and sub folder from the wbfs disk path actually used.
 	 */
 	
-	public static void setCoversPathFromDiskPath(){
+	public static void setCoversPathFromDiskPath(String diskID){
 
-		  
-		SettingsBean bean = ModelStore.getSettingsBean();
-		
-		String diskModel = ModelStore.getDiskPath(GuiUtils.getActiveViewID());
+		String diskModel = ModelStore.getDiskPath(diskID);
 		
 		String diskPath = new File(diskModel).getParent();
 
 		String coverPath = diskPath+File.separatorChar
-		  +CoverConstants.getFolderName();
+		  +CoverConstants.getFolderName(diskID);
 		
-		CoverPaths coverPaths = bean.getCoverSettings().getCoverPaths();
+		CoverPaths coverPaths = ModelStore.getDisk(diskID).getCoverSettings().getCoverPaths();
 		
 
-		if(!coverPathExist(diskPath)){
+		if(!coverPathExist(diskPath,diskID)){
 			GuiUtils.showInfo("No cover folder found. I will create it.\n"+
 					"("+coverPath+")", SWT.ERROR);
 			
-			coverPath = FileUtils.createCoverFolder(diskPath);	
+			coverPath = FileUtils.createCoverFolder(diskPath,diskID);	
 			
 		}
 		
-		
-		String coverPath2d = CoverUtils.get2DPath(coverPath);
-		String coverPath3d = CoverUtils.get3DPath(coverPath);
-		String coverPathDisc = CoverUtils.getDISCSPath(coverPath);
+		String coverPath2d = CoverUtils.get2DPath(coverPath,diskID);
+		String coverPath3d = CoverUtils.get3DPath(coverPath,diskID);
+		String coverPathDisc = CoverUtils.getDISCSPath(coverPath,diskID);
 		
 		coverPaths.setCover2d(coverPath2d);
 		coverPaths.setCover3d(coverPath3d);
 		coverPaths.setCoverDisc(coverPathDisc);
 	}
 
-	public static boolean coverPathExist(String diskPath) {
+	public static boolean coverPathExist(String diskPath,String diskID) {
 
 		String coverPath = diskPath+File.separatorChar
-						  +CoverConstants.getFolderName();
+						  +CoverConstants.getFolderName(diskID);
 		
 		File dirImg = new File(coverPath);
 		

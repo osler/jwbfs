@@ -1,8 +1,9 @@
 package jwbfs.ui.listeners.coverView;
 
+import java.util.LinkedHashMap;
+
 import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
-import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.exceptions.FileNotSelectedException;
@@ -45,10 +46,13 @@ public class UpdateCoverListener extends SelectionAdapter {
 
 					}
 
-
-					((SettingsBean)ModelStore.getSettingsBean()).getCoverSettings().setUpdateCover(true);
-					PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_COVER_UPDATE_ID, null);
-
+					String diskID = GuiUtils.getActiveViewID();
+					ModelStore.getDisk(diskID).getCoverSettings().setUpdateCover(true);
+	
+					LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+					parametri.put("diskID",diskID);
+					GuiUtils.executeParametrizedCommand(
+							CoreConstants.COMMAND_COVER_UPDATE_ID, parametri, null);
 
 
 				} catch (NotValidDiscException e1) {

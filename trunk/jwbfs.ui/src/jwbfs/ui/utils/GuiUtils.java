@@ -3,8 +3,10 @@ package jwbfs.ui.utils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Set;
 
+import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.CoverConstants;
@@ -34,8 +36,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IPerspectiveDescriptor;
-import org.eclipse.ui.IPerspectiveRegistry;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -53,7 +53,7 @@ public class GuiUtils {
 			view = (ViewPart) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ID);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			view = (ViewPart) PlatformUI.getWorkbench().getWorkbenchWindows()[0].getActivePage().findView(ID);
 		}
 		return view;
 	}
@@ -68,7 +68,7 @@ public class GuiUtils {
 		msg.open();
 
 	}
-	
+
 	public static void showError(final String message, boolean async){
 		if(async){
 			Display.getDefault().asyncExec(								
@@ -83,7 +83,7 @@ public class GuiUtils {
 		}
 
 	}
-	
+
 	public static void showInfo(final String message, final String text, final int style,boolean async) {
 
 		if(async){
@@ -107,10 +107,10 @@ public class GuiUtils {
 
 	}
 
-	public static TableViewer getManagerTableViewer(String viewID) {
+	public static TableViewer getManagerTableViewer(String viewID) throws Exception{
 		return 	((ManagerView)GuiUtils.getView(viewID)).getTv();
 	}
-	
+
 	public static boolean showConfirmDialog(String message) {
 		boolean ret =  MessageDialog.openConfirm(new Shell(), "Confirm", message);
 
@@ -118,7 +118,7 @@ public class GuiUtils {
 	}
 
 	private static boolean confirm = false;
-	
+
 	public static boolean showConfirmDialog(final String message,boolean async) {
 		if(async){
 			Display.getDefault().asyncExec(								
@@ -127,55 +127,77 @@ public class GuiUtils {
 							confirm = showConfirmDialog(message);				
 						}
 					});
-			
-					return confirm;
+
+			return confirm;
 		}
-	
+
 		return showConfirmDialog(message);
 	}
 
-	public static void setCover(String coverPath, String coverCode) {
-		try{
+	public static void setCover(final String coverPath, final String coverCode) {
 
-			if(coverCode.equals(CoverConstants.COVER_2D)){
-				setCover(coverPath);
-			}
-			if(coverCode.equals(CoverConstants.COVER_3D)){
-				setCover3d(coverPath);
-			}
-			if(coverCode.equals(CoverConstants.COVER_DISC)){
-				setCoverDisc(coverPath);
-			}
-			//		if(coverCode.equals(CoverConstants.COVER_FULLBOX)){
-			//			setCover(coverPath);
-			//		}
+		Display.getDefault().asyncExec(								
+				new Runnable(){
+					public void run() {
 
-		}catch (SWTException e) {
-			setDefaultCovers();
-		}
-	}
-	
-	private static void setCover(String coverPath) {
+						try{
 
-		System.out.println("Setting cover:");
-		System.out.println(coverPath);
-		Image img = new Image(GuiUtils.getDisplay(),coverPath);
-		((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getCover().setImage(img);
+							if(coverCode.equals(CoverConstants.COVER_2D)){
+								setCover(coverPath);
+							}
+							if(coverCode.equals(CoverConstants.COVER_3D)){
+								setCover3d(coverPath);
+							}
+							if(coverCode.equals(CoverConstants.COVER_DISC)){
+								setCoverDisc(coverPath);
+							}
+							//		if(coverCode.equals(CoverConstants.COVER_FULLBOX)){
+							//			setCover(coverPath);
+							//		}
 
-
+						}catch (SWTException e) {
+							setDefaultCovers();
+						}
+					}
+				});
 	}
 
-	private static void setCover3d(String coverPath) {
+	private static void setCover(final String coverPath) {
+		
 
-		System.out.println("Setting cover3d:");
-		System.out.println(coverPath);
-		Image img = new Image(GuiUtils.getDisplay(),coverPath);
-		((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getCover3d().setImage(img);
+				System.out.println("Setting cover:");
+				System.out.println(coverPath);
+				final Image img = new Image(GuiUtils.getDisplay(),coverPath);
 
+				Display.getDefault().asyncExec(								
+						new Runnable(){
+							public void run() {
+								((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getCover().setImage(img);								
+							}
+						}
+				);	
+				
 
+	}
+
+	private static void setCover3d(final String coverPath) {
+		
+				System.out.println("Setting cover3d:");
+				System.out.println(coverPath);
+				final Image img = new Image(GuiUtils.getDisplay(),coverPath);
+				
+				Display.getDefault().asyncExec(								
+						new Runnable(){
+							public void run() {
+								((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getCover3d().setImage(img);								
+							}
+						}
+				);	
+				
 	}
 
 	private static void setCoverDisc(String coverPath) {
+
 		Image img = null;
 		try{
 			System.out.println("Setting cover disc:");
@@ -193,8 +215,17 @@ public class GuiUtils {
 
 			img =  new Image(GuiUtils.getDisplay(),coverPath);
 		}
-		((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getDisk().setImage(img);
+		final Image img2 = img;
 
+
+				Display.getDefault().asyncExec(								
+						new Runnable(){
+							public void run() {
+								((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getDisk().setImage(img2);								
+							}
+						}
+				);	
+		
 	}
 
 	public static void setDefaultCovers() {
@@ -226,7 +257,7 @@ public class GuiUtils {
 
 	}
 
-	public static GameBean getGameSelectedFromTableView() {
+	public static GameBean getGameSelectedFromTableView() throws Exception {
 
 		TableViewer tv = GuiUtils.getManagerTableViewer(getActiveViewID());
 
@@ -237,9 +268,9 @@ public class GuiUtils {
 
 		return selectedGame;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static ArrayList<GameBean>getGameSelectedMultipleFromTableView() {
+	public static ArrayList<GameBean>getGameSelectedMultipleFromTableView() throws Exception {
 
 		TableViewer tv = GuiUtils.getManagerTableViewer(getActiveViewID());
 
@@ -256,25 +287,32 @@ public class GuiUtils {
 	}
 
 	public static String getActiveViewID() {
-//		IPerspectiveDescriptor[] perspectives = PlatformUI.getWorkbench()
-//		.getActiveWorkbenchWindow().getActivePage().getSortedPerspectives();
-		
-		ViewPart view = getView(CoreConstants.VIEW_DISK_1_ID);
-		IPerspectiveDescriptor perspective = view.getSite().getPage().getPerspective();
-		
-		
-		String diskSelected = null;
+
+		String diskSelected = ModelStore.getActiveDiskID();
 		try{
 			diskSelected = PlatformUI.getWorkbench()
-								.getActiveWorkbenchWindow()
-								.getActivePage().getActivePart().getSite().getId();
+			.getActiveWorkbenchWindow()
+			.getActivePage().getActivePart().getSite().getId();
+			
 		}catch(Exception e){
+			try{
 			//if a dialog is open
 			diskSelected = PlatformUI.getWorkbench()
-									.getWorkbenchWindows()[0]
+			.getWorkbenchWindows()[0]
 			                       .getActivePage()
 			                       .getActivePart()
 			                       .getSite().getId();
+			}catch(Exception e2){
+				diskSelected = ModelStore.getActiveDiskID();			if(diskSelected.equals(CoreConstants.VIEW_COVER_ID)
+						|| diskSelected.equals(CoreConstants.VIEW_SETTINGS_ID)){
+					diskSelected = ModelStore.getActiveDiskID();
+				}
+			}
+		}
+
+		if(diskSelected.equals(CoreConstants.VIEW_COVER_ID)
+				|| diskSelected.equals(CoreConstants.VIEW_SETTINGS_ID)){
+			diskSelected = ModelStore.getActiveDiskID();
 		}
 		
 		return diskSelected;
@@ -290,7 +328,7 @@ public class GuiUtils {
 	 */
 	public static Object executeCommand(
 			final String commandID, final LinkedHashMap<String,String> parameters, final Event event, boolean async) {
-		
+
 		if(async){
 			Display.getDefault().asyncExec(								
 					new Runnable(){
@@ -299,14 +337,14 @@ public class GuiUtils {
 						}
 					}
 			);
-			
+
 		}else {
 			return executeParametrizedCommand(commandID, parameters, event);
 		}
-		
+
 		return null;
 	}
-	
+
 	public static Object executeParametrizedCommand(
 			String commandID,
 			LinkedHashMap<String,String> parametri, Event event) {
@@ -318,33 +356,40 @@ public class GuiUtils {
 
 		Set<String> keys = parametri.keySet();
 		try {
-		for(int x = 0; x<parametri.size();x++){
+			for(int x = 0; x<parametri.size();x++){
 
-			String key = (String) keys.toArray()[x];
+				String key = (String) keys.toArray()[x];
 
-			IParameter iPar;
+				IParameter iPar;
 
 				iPar = partRetrieve.getParameter(key);
 
-			String valore = (String) parametri.get(key);
+				String valore = (String) parametri.get(key);
 
-			parametrizationArray[x] = new Parameterization(iPar, valore);
+				parametrizationArray[x] = new Parameterization(iPar, valore);
 
-		}
+			}
 
-		ParameterizedCommand 
-		parmCommand = new ParameterizedCommand(
-				partRetrieve, parametrizationArray
-		);
+			ParameterizedCommand 
+			parmCommand = new ParameterizedCommand(
+					partRetrieve, parametrizationArray
+			);
 
 
-		Boolean ret = (Boolean) PlatformUtils.getHandlerService().executeCommand(parmCommand, event);
-		if(ret){
-			ContextActivator.reloadContext();
-		}
-		
-		return ret;
-		
+			Boolean ret = (Boolean) PlatformUtils.getHandlerService().executeCommand(parmCommand, event);
+			if(ret){
+				Display.getDefault().asyncExec(								
+						new Runnable(){
+							public void run() {
+								ContextActivator.reloadContext();
+							}
+						}
+				);
+
+			}
+
+			return ret;
+
 		} catch (NotDefinedException e) {
 			e.printStackTrace();
 		}catch (ExecutionException e) {
@@ -354,20 +399,20 @@ public class GuiUtils {
 		} catch (NotHandledException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
 	public static Object executeCommand(String viewID,
 			String commandID, Event event) {
-		
+
 		try{
 
 			Boolean ret = (Boolean) PlatformUtils.getHandlerService(viewID).executeCommand(commandID, event);
 			if(ret){
 				ContextActivator.reloadContext();
 			}
-			
+
 			return ret;
 		} catch (ExecutionException e) {
 			e.printStackTrace();
@@ -380,7 +425,7 @@ public class GuiUtils {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * If async return always NULL.
 	 * @param viewID
@@ -391,20 +436,20 @@ public class GuiUtils {
 	 */
 	public static Object executeCommand(final String viewID,
 			final String commandID, final Event event, boolean async) {
-		
+
 		if(async){
 			Display.getDefault().asyncExec(								
 					new Runnable(){
 						public void run() {
-							 executeCommand(viewID, commandID, event);
+							executeCommand(viewID, commandID, event);
 						}
 					}
 			);
-			
+
 		}else {
 			return executeCommand(viewID, commandID, event);
 		}
-		
+
 		return null;
 	}
 
@@ -421,7 +466,7 @@ public class GuiUtils {
 		}
 		return diskID;
 	}
-	
+
 	public static String decodePerspectiveID(int numDisks) {
 		String diskID = "";
 		switch (numDisks) {
@@ -434,8 +479,30 @@ public class GuiUtils {
 		}
 		return diskID;
 	}
-	
+
 	public static ImageDescriptor getImageDescriptor(String pluginID, String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(pluginID, path);
+	}
+
+	public static ArrayList<GameBean> getSelectedGames(String diskFrom) throws Exception {
+
+		List<GameBean> gamesFrom= ModelStore.getDisk(diskFrom).getGames();
+		ArrayList<GameBean> gamesTo = new ArrayList<GameBean>();
+
+		for(int i=0;i<gamesFrom.size();i++){
+			GameBean g = gamesFrom.get(i);
+			if(g.isSelected()){
+				gamesTo.add(g);
+			}
+		}
+
+		if(gamesTo.size() == 0){
+			GameBean game = GuiUtils.getGameSelectedFromTableView();
+			if(game!=null){
+				gamesTo.add(game);
+			}
+		}
+
+		return gamesTo;
 	}
 }

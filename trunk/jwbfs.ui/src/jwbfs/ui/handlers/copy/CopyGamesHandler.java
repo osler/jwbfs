@@ -1,7 +1,6 @@
 package jwbfs.ui.handlers.copy;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CopyBean;
@@ -26,7 +25,13 @@ public class CopyGamesHandler extends AbstractHandler {
 			diskFrom = GuiUtils.getActiveViewID();
 		}
 		
-		ArrayList<GameBean> gamesTo = getSelectedGames(diskFrom);
+		ArrayList<GameBean> gamesTo = new ArrayList<GameBean>();
+		try {
+			gamesTo = GuiUtils.getSelectedGames(diskFrom);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 		
 		if(gamesTo.size() == 0){
 			GuiUtils.showError("Select at least a game");
@@ -47,25 +52,5 @@ public class CopyGamesHandler extends AbstractHandler {
 		ModelStore.setCopyBean(copyBean);
 	}
 
-	protected ArrayList<GameBean> getSelectedGames(String diskFrom) {
-		
-		List<GameBean> gamesFrom= ModelStore.getDisk(diskFrom).getGames();
-		ArrayList<GameBean> gamesTo = new ArrayList<GameBean>();
-		
-		for(int i=0;i<gamesFrom.size();i++){
-			GameBean g = gamesFrom.get(i);
-			if(g.isSelected()){
-				gamesTo.add(g);
-			}
-		}
-		
-		if(gamesTo.size() == 0){
-			GameBean game = GuiUtils.getGameSelectedFromTableView();
-			if(game!=null){
-				gamesTo.add(game);
-			}
-		}
-		
-		return gamesTo;
-	}
+
 }

@@ -27,7 +27,7 @@ public class FolderCoverDialogListener extends SelectionAdapter {
 
 		System.out.println("Launching Cover Folder Selection Dialog");
 
-		CoverPaths bean = ModelStore.getSettingsBean().getCoverSettings().getCoverPaths();
+		CoverPaths bean = ModelStore.getDisk(viewID).getCoverSettings().getCoverPaths();
 		if(bean != null){
 			
 		String oldValue = "";

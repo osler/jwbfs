@@ -3,14 +3,8 @@ package jwbfs.model.utils;
 
 import java.io.File;
 
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.NotEnabledException;
-import org.eclipse.core.commands.NotHandledException;
-import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -134,16 +128,26 @@ public class PlatformUtils {
 	}
 
 	public static File getWbfsINI(){
-		String ini = getFile(CoreConstants.wbfsINI);
+		String ini = getFile("configs"+File.separatorChar+CoreConstants.wbfsINI);
+		System.out.println(ini);
+		return new File(ini);
+	}
+	
+	public static File getFileINI(String fileName){
+		
+//		String fileName = Decode.decodeFileName(diskID);
+		
+		String ini = getFile(fileName);
 		System.out.println(ini);
 		return new File(ini);
 	}
 
+
 	public static String getRoot () {
 		String path = null;
 		try {
-			path = getFile(CoreConstants.wbfsINI);
-			path = path.replaceAll(CoreConstants.wbfsINI, "");
+			path = getFile("icons");
+			path = path.replaceAll("icons", "");
 
 		} catch (Exception e) {
 			e.printStackTrace ();

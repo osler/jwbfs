@@ -1,4 +1,4 @@
-package jwbfs.ui.controls;
+package jwbfs.model.utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,30 +15,35 @@ import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.CoverSettings;
 import jwbfs.model.beans.SettingsBean;
-import jwbfs.model.utils.CoreConstants;
-import jwbfs.model.utils.PlatformUtils;
 
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 public class ConfigUtils {
 	
-	
 	public static void initConfigFile(){
+		initConfigFile("configs"+File.separatorChar+CoreConstants.wbfsINI);
+		initConfigFile("configs"+File.separatorChar+"disk1.ini");
+		initConfigFile("configs"+File.separatorChar+"disk2.ini");
+		initConfigFile("configs"+File.separatorChar+"disk3.ini");
+		initConfigFile("configs"+File.separatorChar+"disk4.ini");
+		initConfigFile("configs"+File.separatorChar+"disk5.ini");
+		initConfigFile("configs"+File.separatorChar+"disk6.ini");
 		
-		
-		String nomeFileProps = CoreConstants.wbfsINI;
+	}
+	
+	public static void initConfigFile(String nomeFileProps){
 
 		try {
 
 			Properties props = new Properties();
 			
 			Bundle bundle = Platform.getBundle(CoreConstants.BUNDLE_CORE);		
-			InputStream is = bundle.getEntry("/" + nomeFileProps).openStream();
+			InputStream is = bundle.getEntry(nomeFileProps).openStream();
 			props.load(is);
 
 
-			String[] keys = getFileProperty(PlatformUtils.getWbfsINI());	
+			String[] keys = getFileProperty(PlatformUtils.getFileINI(nomeFileProps));	
 
 			
 //			String key[]  =  {"wbfs.bin","window.x","window.y"};
@@ -152,25 +157,7 @@ public class ConfigUtils {
 		SettingsBean bean = ModelStore.getSettingsBean();
 		
 		String subLine = (line.substring(0,line.indexOf("="))).trim() + " = ";
-		
-		if(line.contains("wbfs.disk.path1")){
-			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_1_ID));
-		}
-		if(line.contains("wbfs.disk.path2")){
-			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_2_ID));
-		}
-		if(line.contains("wbfs.disk.path3")){
-			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_3_ID));
-		}
-		if(line.contains("wbfs.disk.path4")){
-			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_4_ID));
-		}
-		if(line.contains("wbfs.disk.path5")){
-			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_5_ID));
-		}
-		if(line.contains("wbfs.disk.path6")){
-			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_6_ID));
-		}
+	
 		if(line.contains("wbfs.disks")){
 			return subLine +  ModelStore.getNumDisk();
 		}
@@ -184,23 +171,6 @@ public class ConfigUtils {
 		if(line.contains("cover.region")){
 			return subLine + bean.getRegion();
 		}
-		if(line.contains("cover.path.type")){
-			String type = decodeCoverType();
-		return subLine + type;
-		}
-
-//		if(line.contains("cover.path.2d")){
-//			return subLine + bean.getCoverSettings().getCoverPaths().getCover2d();
-//		}
-//		if(line.contains("cover.path.3d")){
-//			return subLine + bean.getCoverSettings().getCoverPaths().getCover3d();
-//		}
-//		if(line.contains("cover.path.disc")){
-//			return subLine + bean.getCoverSettings().getCoverPaths().getCoverDisc();
-//		}
-//		if(line.contains("cover.path.full")){
-//			return subLine + bean.getCoverSettings().getCoverPaths().getCoverFull();
-//		}
 
 		if(line.contains("settings.split.size")){
 			return subLine +  bean.getSplitSize();
@@ -212,9 +182,12 @@ public class ConfigUtils {
 		return line;
 	}
 
-	private static String decodeCoverType() {
-		String type = null;
-		CoverSettings bean = ModelStore.getSettingsBean().getCoverSettings();
+	private static String decodeCoverType(String diskID) {
+		String type = "";
+		if(ModelStore.getDiskPath(CoreConstants.VIEW_DISK_1_ID).trim().equals("")){
+			return type;
+		}
+		CoverSettings bean = ModelStore.getDisk(diskID).getCoverSettings();
 		if(bean.isCoverTypeUSBLoaderCFG()){
 			type = CoverPaths.CFG;
 		}else if(bean.isCoverTypeUSBLoaderGX()){
@@ -225,4 +198,87 @@ public class ConfigUtils {
 		return type;
 	}
 
+	public static void saveDiskConfigFile(String diskPath) {
+			try {
+	
+				File configFile = PlatformUtils.getFileINI(diskPath);
+	
+				int numLines = getNumLine(configFile);
+	
+				FileReader in = new FileReader(configFile);
+	
+				BufferedReader br = new BufferedReader(in);
+	
+				String outFile = "";
+	
+				for(int x = 0; x<numLines; x++){
+					String line = br.readLine();
+					if(line != null){
+						outFile = outFile + mapDiskConfig(line,diskPath)+"\n";
+					}
+	//				outFile = outFile + (line.substring(0,line.indexOf("="))).trim();  
+				}
+	
+				FileWriter out;
+				out = new FileWriter(configFile);
+				BufferedWriter bw = new BufferedWriter(out);
+	
+				bw.write(outFile);
+				bw.flush();
+				bw.close();
+	
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+
+	private static String mapDiskConfig(String line, String diskINIPath) {
+		String diskID = Decode.decodeViewNameFromDiskINI(diskINIPath);
+		
+		CoverSettings bean = ModelStore.getDisk(diskID).getCoverSettings();
+		
+		String subLine = (line.substring(0,line.indexOf("="))).trim() + " = ";
+		
+		if(line.contains("wbfs.disk.path")){
+			return subLine +  PlatformUtils.convertPath(ModelStore.getDiskPath(diskID));
+		}
+
+		if(line.contains("cover.path.type")){
+			String type = decodeCoverType(diskID);
+		return subLine + type;
+		}
+		
+		if(line.contains("cover.download.auto")){
+			return subLine + bean.isAutomaticCoverDownload();
+		}
+		if(line.contains("cover.download.3d")){
+			return subLine + bean.isCover3D();
+		}
+		if(line.contains("cover.download.disk")){
+			return subLine + bean.isCoverDiscs();
+		}
+		if(line.contains("cover.download.full")){
+			return subLine + bean.isCoverFullEnabled();
+		}
+	
+		return line;
+	}
+
+	public static String getProperty(String key, String fileProps){
+	String property = "";
+		try {
+			Properties props = new Properties();
+			Bundle bundle = Platform.getBundle(CoreConstants.BUNDLE_CORE);		
+			InputStream is = bundle.getEntry(fileProps).openStream();
+			props.load(is);
+
+			property = props.getProperty(key);
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return property;
+	}
 }

@@ -21,7 +21,7 @@ public class GameTitleCellEditor extends DialogCellEditor {
 	
     private boolean dialogOpen =false;
 	private Label defaultLabel;
-
+	
 	public GameTitleCellEditor(Table table, int readOnly) {
 		super(table, readOnly);
 	}
@@ -65,7 +65,12 @@ public class GameTitleCellEditor extends DialogCellEditor {
     
 	protected Object openDialogBox (final Control cellEditorWindow) {
     	
-    	GameBean selected = GuiUtils.getGameSelectedFromTableView();
+    	GameBean selected = new GameBean();
+		try {
+			selected = GuiUtils.getGameSelectedFromTableView();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     	
         final Dialog dialog = new GameEditDialog(new Shell(),selected);
         dialogOpen = true;

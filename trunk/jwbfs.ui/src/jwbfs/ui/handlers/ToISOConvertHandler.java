@@ -39,6 +39,6 @@ public class ToISOConvertHandler extends AbstractHandler {
 
 		}
 
-		return null;
+		return true;
 	}
 }

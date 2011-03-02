@@ -24,7 +24,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="jwbfs.core.application"
-            name="%product.name">
+            name="JWBFS">
          <property
                name="appName"
                value="JWBFS">
@@ -360,6 +360,10 @@
                   commandId="it.jwbfs.core.updateCoverForced"
                   label="%command.covers.update.selected"
                   style="push">
+               <parameter
+                     name="diskID"
+                     value="activeDiskID">
+               </parameter>
             </command>
          </menu>
       </menuContribution>
@@ -387,7 +391,7 @@
             </visibleWhen>                  
             </command>
             <command
-                  commandId="it.jwbfs.core.game.add"
+                  commandId="it.jwbfs.core.game.export"
                   icon="icons/bar/document-save.png"
                   label="Export game"
                   style="push">

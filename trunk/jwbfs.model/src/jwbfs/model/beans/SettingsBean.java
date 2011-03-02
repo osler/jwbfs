@@ -14,14 +14,12 @@ public class SettingsBean extends ModelObject {
 	//WIITDB SETTINGS
 	private String region;
 	
-	private CoverSettings coverSettings; 
 	private SystemSettings systemSettings; 
 
 	
 	public SettingsBean(){
 		this.addPropertyChangeListener(this);
 		
-		coverSettings = new CoverSettings();
 		
 		splitSize = System.getProperty("settings.split.size");
 		copyPartitions = System.getProperty("settings.split.partitions");
@@ -69,17 +67,6 @@ public class SettingsBean extends ModelObject {
 	public void setTxtLayout(String txtLayout) {
 		propertyChangeSupport.firePropertyChange("txtLayout", this.txtLayout,
 				this.txtLayout = txtLayout);	
-	}
-
-	public void setCoverSettings(CoverSettings coverSettings) {
-		this.coverSettings = coverSettings;
-	}
-
-	public CoverSettings getCoverSettings() {
-		if(coverSettings == null){
-			coverSettings = new CoverSettings();
-		}
-		return coverSettings;
 	}
 
 	public void setSystemSettings(SystemSettings systemSettings) {

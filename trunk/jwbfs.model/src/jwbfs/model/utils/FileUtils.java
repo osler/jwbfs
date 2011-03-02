@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -191,7 +190,7 @@ public class FileUtils {
 	public static boolean createTempFile() {
 
 		try {
-			FileOutputStream out = new FileOutputStream(ModelStore.getSelectedGame().getFolderPath()+"tmp.size");
+//			FileOutputStream out = new FileOutputStream(ModelStore.getSelectedGame().getFolderPath()+"tmp.size");
 
 	        RandomAccessFile f = new RandomAccessFile("t", "rw");
 	        f.setLength(WBFSFileConstants.SPLITSIZE_kb_Values[2]);
@@ -266,7 +265,7 @@ public class FileUtils {
 	}
 
 
-	public static void createRootFolderStructures(String diskPath) {
+	public static void createRootFolderStructures(String diskPath, String diskID) {
 		
 		String wbfsPath = diskPath+File.separatorChar+DiskContants.WBFS_GAMES_FOLDER;
 		File wbfsFile = new File(wbfsPath);
@@ -274,7 +273,7 @@ public class FileUtils {
 				&&  !wbfsFile.exists()){
 	
 		FileUtils.checkAndCreateFolder(wbfsPath,true);
-		createCoverFolder(diskPath);
+		createCoverFolder(diskPath, diskID);
 		}
 		
 	}
@@ -285,17 +284,17 @@ public class FileUtils {
 	 * @param diskPath
 	 * @return
 	 */
-	public static String createCoverFolder(String diskPath) {
+	public static String createCoverFolder(String diskPath, String diskID) {
 		
 		String coverPath = diskPath+File.separatorChar
-						  +CoverConstants.getFolderName();
+						  +CoverConstants.getFolderName(diskID);
 		
 		File dirImg = new File(coverPath);
 		if(!dirImg.exists()){
 				dirImg.mkdir();
 		}
 	
-		createCoverSubFolders(coverPath);
+		createCoverSubFolders(coverPath, diskID);
 	
 		return coverPath;
 		
@@ -307,12 +306,12 @@ public class FileUtils {
 	 * create the images subfolder (2D,3D,discs)
 	 * @param coverPath
 	 */
-	public static void createCoverSubFolders(String coverPath) {
+	public static void createCoverSubFolders(String coverPath, String diskID) {
 		
-		FileUtils.exist(coverPath,CoverConstants.getImage2D());
-		FileUtils.exist(coverPath,CoverConstants.getImage3D());
-		FileUtils.exist(coverPath,CoverConstants.getImageDisc());
-		FileUtils.exist(coverPath,CoverConstants.getImageFullCover());
+		FileUtils.exist(coverPath,CoverConstants.getImage2D(diskID));
+		FileUtils.exist(coverPath,CoverConstants.getImage3D(diskID));
+		FileUtils.exist(coverPath,CoverConstants.getImageDisc(diskID));
+		FileUtils.exist(coverPath,CoverConstants.getImageFullCover(diskID));
 	}
 		
 }

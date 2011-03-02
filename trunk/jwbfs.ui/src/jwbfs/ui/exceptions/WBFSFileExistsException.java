@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import jwbfs.ui.utils.GuiUtils;
 
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
@@ -17,17 +18,30 @@ public class WBFSFileExistsException extends WBFSException {
 	private String line;
 
 	public WBFSFileExistsException(String line,File file, IRunnableWithProgress operation) {
-		this.operation = operation;
+		this.file = file;
+		this.line = line;
+		
+		openFolderExistsDialog(operation);
+	}
+	
+	public WBFSFileExistsException(String line,File file) {
 		this.file = file;
 		this.line = line;
 		
 		openFolderExistsDialog();
 	}
 	
+	public WBFSFileExistsException(String line, File file,
+			Job operation) {
+		this.file = file;
+		this.line = line;
+		
+		openFolderExistsDialog();
+	}
+
 	boolean confirm = false;
-	private IRunnableWithProgress operation;
 	
-	public boolean openFolderExistsDialog() {
+	public boolean openFolderExistsDialog(final IRunnableWithProgress operation) {
 
 
 		Display.getDefault().asyncExec(								
@@ -46,7 +60,7 @@ public class WBFSFileExistsException extends WBFSException {
 
 							System.out.println("removing: "+file);
 							
-							retryLastCommand();
+							retryLastCommand(operation);
 						}
 
 					}
@@ -57,7 +71,24 @@ public class WBFSFileExistsException extends WBFSException {
 
 	}
 
-	protected void retryLastCommand() {
+	public boolean openFolderExistsDialog() {
+
+
+		Display.getDefault().asyncExec(								
+				new Runnable(){
+					public void run() {
+
+						String message =  "File exist, skipping.";
+						GuiUtils.showError(line+"\n"+message);
+
+					}
+				});
+		
+		return confirm;
+
+
+	}
+	protected void retryLastCommand(IRunnableWithProgress operation) {
 		if(operation == null){
 			return;
 		}
