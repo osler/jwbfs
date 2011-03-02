@@ -167,7 +167,7 @@ public class PasteGamesHandler extends AbstractHandler {
 			return false;
 		}
 
-		String folderName = pathFrom.replaceAll(ModelStore.getDisk(diskFrom).getDiskPath()+File.separatorChar,"");
+		String folderName = pathFrom.replace(ModelStore.getDisk(diskFrom).getDiskPath()+File.separatorChar,"");
 
 		final File newFolder = new File(pathTo+File.separatorChar+folderName);
 
