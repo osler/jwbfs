@@ -38,4 +38,17 @@ public class Decode {
 		return null;
 	}
 
+
+	public static String decodeContextFromView(String diskID) {
+		
+		if(diskID.trim().equals(CoreConstants.VIEW_DISK_1_ID))return CoreConstants.CONTEXT_DISK_1;
+		if(diskID.trim().equals(CoreConstants.VIEW_DISK_2_ID))return CoreConstants.CONTEXT_DISK_2;
+		if(diskID.trim().equals(CoreConstants.VIEW_DISK_3_ID))return CoreConstants.CONTEXT_DISK_3;
+		if(diskID.trim().equals(CoreConstants.VIEW_DISK_4_ID))return CoreConstants.CONTEXT_DISK_4;
+		if(diskID.trim().equals(CoreConstants.VIEW_DISK_5_ID))return CoreConstants.CONTEXT_DISK_5;
+		if(diskID.trim().equals(CoreConstants.VIEW_DISK_6_ID))return CoreConstants.CONTEXT_DISK_6;
+	
+		return null;
+	}
+
 }

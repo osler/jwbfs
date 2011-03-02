@@ -33,6 +33,10 @@ public class CoreConstants {
 		public static final String COMMAND_EXPORT_GAME_ID	   = "it.jwbfs.core.game.export";
 		public static final String COMMAND_DELETE_GAME_ID	   = "it.jwbfs.core.game.delete";
 
+		public static final String COMMAND_COPY_GAMES_ID	   = "it.jwbfs.core.games.copy";
+		public static final String COMMAND_COPY_PASTE_GAME_ID	   = "it.jwbfs.core.games.copy.paste";
+		public static final String COMMAND_CUT_GAMES_ID	  	   = "it.jwbfs.core.games.cut";
+		public static final String COMMAND_PASTE_GAMES_ID	   = "it.jwbfs.core.games.paste";
 		
 		public static final String BUNDLE_CORE = "jwbfs.core";
 		public static final String BUNDLE_MODEL = "jwbfs.model";

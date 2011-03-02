@@ -1,7 +1,5 @@
 package jwbfs.ui.handlers;
 
-import jwbfs.model.ModelStore;
-import jwbfs.ui.ContextActivator;
 import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -21,7 +19,7 @@ public class OpenViewHandler extends AbstractHandler {
 		
 		int numDisks = Integer.parseInt(event.getParameter("numDisks"));
 		
-		ModelStore.setNumDisk(numDisks);
+//		ModelStore.setNumDisk(numDisks);
 		
 //		String perspectiveID = GuiUtils.decodePerspectiveID(numDisks);
 //	
@@ -51,9 +49,6 @@ public class OpenViewHandler extends AbstractHandler {
 			e.printStackTrace();
 			
 		}
-		
-		
-		ContextActivator.reloadContext();
 		
 		return true;
 	}

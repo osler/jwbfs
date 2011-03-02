@@ -18,6 +18,7 @@ import jwbfs.model.utils.ConfigUtils;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.Decode;
 import jwbfs.model.utils.PlatformUtils;
+import jwbfs.ui.ContextActivator;
 import jwbfs.ui.utils.CoverUtils;
 import jwbfs.ui.utils.GuiUtils;
 
@@ -117,7 +118,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 			counter++;
 		}
 		
-
+		ContextActivator.reloadContext();
 	}
 
 	private void update(String updateServer) {
@@ -403,7 +404,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 					} catch (CoreException e) {
 
-						GuiUtils.showError("Non è disponibile il server per la verifica degli aggiornamenti.");
+						GuiUtils.showError("Errore nell'aggiornamento del software : \n"+e.getMessage());
 					}catch (Exception e) {
 
 						GuiUtils.showError("Errore nell'aggiornamento del software : \n"+e.getMessage());

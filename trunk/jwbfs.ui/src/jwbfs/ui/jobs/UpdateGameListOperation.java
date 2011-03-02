@@ -30,11 +30,14 @@ public class UpdateGameListOperation implements Runnable {
 		ModelStore.cleanExportGame();
 		ModelStore.cleanSelectedGame();
 		
-		try {
-			GuiUtils.getManagerTableViewer(diskID).refresh();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(GuiUtils.viewExist(diskID)){
+			try {
+				GuiUtils.getManagerTableViewer(diskID).refresh();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+
 		GuiUtils.setDefaultCovers();
 		
 	}

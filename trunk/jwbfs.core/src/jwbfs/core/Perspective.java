@@ -25,7 +25,6 @@ public class Perspective implements IPerspectiveFactory {
 		
 //		folder.addView(CoreConstants.VIEW_DISK_1_ID);
 		diskFolder.addView(CoreConstants.VIEW_SETTINGS_ID);
-	
 		
 		layout.addStandaloneView(CoreConstants.VIEW_COVER_ID,  false, IPageLayout.RIGHT, 0.5f, editorArea);
 		

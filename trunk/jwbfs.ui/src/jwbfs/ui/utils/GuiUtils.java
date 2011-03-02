@@ -11,7 +11,6 @@ import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.CoverConstants;
 import jwbfs.model.utils.PlatformUtils;
-import jwbfs.ui.ContextActivator;
 import jwbfs.ui.views.CoverView;
 import jwbfs.ui.views.manager.ManagerView;
 
@@ -58,6 +57,21 @@ public class GuiUtils {
 		return view;
 	}
 
+	public static boolean viewExist(String ID){
+		ViewPart view = null;
+		try{
+			view = (ViewPart) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ID);
+
+		} catch (Exception e) {
+			try{
+			view = (ViewPart) PlatformUI.getWorkbench().getWorkbenchWindows()[0].getActivePage().findView(ID);
+			}catch (Exception e2) {
+				return false;
+			}
+		}
+		return view != null;
+	}
+	
 	public static Device getDisplay() {
 		return PlatformUI.getWorkbench().getDisplay();
 	}
@@ -326,7 +340,7 @@ public class GuiUtils {
 	 * @param async
 	 * @return
 	 */
-	public static Object executeCommand(
+	public static Object executeParametrizedCommand(
 			final String commandID, final LinkedHashMap<String,String> parameters, final Event event, boolean async) {
 
 		if(async){
@@ -376,18 +390,24 @@ public class GuiUtils {
 			);
 
 
-			Boolean ret = (Boolean) PlatformUtils.getHandlerService().executeCommand(parmCommand, event);
-			if(ret){
-				Display.getDefault().asyncExec(								
-						new Runnable(){
-							public void run() {
-								ContextActivator.reloadContext();
-							}
-						}
-				);
-
-			}
-
+			Object ret = PlatformUtils.getHandlerService().executeCommand(parmCommand, event);
+//			boolean ok = false;
+//			if(ret instanceof Status){
+//				ok = ret.equals(Status.OK_STATUS);
+//			}else{
+//				ok = (Boolean) ok;
+//			}
+//			if(ok){
+//				Display.getDefault().asyncExec(								
+//						new Runnable(){
+//							public void run() {
+//								ContextActivator.reloadContext();
+//							}
+//						}
+//				);
+//
+//			}
+			
 			return ret;
 
 		} catch (NotDefinedException e) {
@@ -399,7 +419,6 @@ public class GuiUtils {
 		} catch (NotHandledException e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 
@@ -409,9 +428,6 @@ public class GuiUtils {
 		try{
 
 			Boolean ret = (Boolean) PlatformUtils.getHandlerService(viewID).executeCommand(commandID, event);
-			if(ret){
-				ContextActivator.reloadContext();
-			}
 
 			return ret;
 		} catch (ExecutionException e) {
@@ -455,7 +471,6 @@ public class GuiUtils {
 
 	public static String decodeDiskID(int i) {
 		String diskID = "";
-		i = i+1;
 		switch (i) {
 		case 1:diskID = CoreConstants.VIEW_DISK_1_ID;break;
 		case 2:diskID = CoreConstants.VIEW_DISK_2_ID;break;

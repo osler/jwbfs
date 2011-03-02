@@ -214,7 +214,21 @@
         		name="diskTo" 
         		optional="false">
         	</commandParameter>
-      </command>   
+      </command> 
+     <command
+            id="it.jwbfs.core.games.copy.paste"
+            name="Copy Games">
+             <commandParameter 
+        		id="diskFrom" 
+        		name="diskFrom" 
+        		optional="false">
+        	</commandParameter>
+             <commandParameter 
+        		id="diskTo" 
+        		name="diskTo" 
+        		optional="false">
+        	</commandParameter>
+      </command>    
      <command
             id="it.jwbfs.core.games.paste"
             name="Paste Games">
@@ -312,6 +326,10 @@
       <handler
             class="jwbfs.ui.handlers.copy.CutGamesHandler"
             commandId="it.jwbfs.core.games.cut">
+      </handler>
+      <handler
+            class="jwbfs.ui.handlers.copy.CopyPasteGamesHandler"
+            commandId="it.jwbfs.core.games.copy.paste">
       </handler>
       <handler
             class="jwbfs.ui.handlers.copy.CopyGamesHandler"
