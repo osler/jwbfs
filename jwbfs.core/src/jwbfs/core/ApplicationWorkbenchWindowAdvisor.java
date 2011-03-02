@@ -11,18 +11,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 
 import jwbfs.model.ModelStore;
+import jwbfs.model.utils.ConfigUtils;
 import jwbfs.model.utils.CoreConstants;
+import jwbfs.model.utils.Decode;
 import jwbfs.model.utils.PlatformUtils;
-import jwbfs.ui.controls.ConfigUtils;
+import jwbfs.ui.utils.CoverUtils;
 import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
@@ -41,8 +41,8 @@ import org.eclipse.update.core.SiteManager;
 import org.eclipse.update.operations.IInstallFeatureOperation;
 import org.eclipse.update.operations.IUninstallFeatureOperation;
 import org.eclipse.update.operations.OperationsManager;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
+@SuppressWarnings("deprecation")
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
@@ -74,6 +74,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	@Override
 	public void postWindowClose() {
 		ConfigUtils.saveConfigFile();
+		ConfigUtils.saveDiskConfigFile("configs"+File.separatorChar+Decode.decodeFileName(CoreConstants.VIEW_DISK_1_ID));
+		ConfigUtils.saveDiskConfigFile("configs"+File.separatorChar+Decode.decodeFileName(CoreConstants.VIEW_DISK_2_ID));
+		ConfigUtils.saveDiskConfigFile("configs"+File.separatorChar+Decode.decodeFileName(CoreConstants.VIEW_DISK_3_ID));
+		ConfigUtils.saveDiskConfigFile("configs"+File.separatorChar+Decode.decodeFileName(CoreConstants.VIEW_DISK_4_ID));
+		ConfigUtils.saveDiskConfigFile("configs"+File.separatorChar+Decode.decodeFileName(CoreConstants.VIEW_DISK_5_ID));
+		ConfigUtils.saveDiskConfigFile("configs"+File.separatorChar+Decode.decodeFileName(CoreConstants.VIEW_DISK_6_ID));
 	}
 
 	@Override
@@ -84,11 +90,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		Set<String> disksViewsID = ModelStore.getDisks().keySet();
 		Iterator<String> it = disksViewsID.iterator();
 		int counter = 0;
-		int numDisks = ModelStore.getNumDisk();
-		//switch to correct perspective based on num disks
-		LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
-		parametri.put("numDisks",String.valueOf(numDisks));
-		GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_DISKS_PERSPECTIVE,parametri,null);
+		int numDisks = ModelStore.getDisks().size();
+//		//switch to correct perspective based on num disks
+//		LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+//		parametri.put("numDisks",String.valueOf(numDisks));
+//		GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_DISKS_PERSPECTIVE,parametri,null);
 		
 		//refresh games list for every disks
 		while (it.hasNext()) {
@@ -99,13 +105,14 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 					continue;
 				}
 
-				parametri = new LinkedHashMap<String,String>();
+				LinkedHashMap<String,String>  parametri = new LinkedHashMap<String,String>();
 				parametri.put("diskID",diskViewID);
 				if(counter == 0){
 					GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_REFRESH_FIRST_DISK_ID,parametri,null);
 				}else{
 					GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);
 				}
+				CoverUtils.setCoversPathFromDiskPath(diskViewID);	
 			}
 			counter++;
 		}
@@ -127,7 +134,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 				
 
-				@SuppressWarnings({ "rawtypes", "deprecation" })
+				@SuppressWarnings({ "rawtypes" })
 				public void run(IProgressMonitor monitor) throws 
 
 				InvocationTargetException, InterruptedException {
@@ -470,35 +477,30 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		/*
 		 * caricamento delle proprieta' dal file ini
 		 */
-		String nomeFileProps = "wbfs.ini";
+//		String nomeFileProps = "wbfs.ini";
 		String updateServer  = null;
-		try {
 
-			Properties props = new Properties();
-
-			Bundle bundle = Platform.getBundle(CoreConstants.BUNDLE_CORE);
-
-			props.load(bundle.getEntry("/" + nomeFileProps).openStream());
+//			Properties props = new Properties();
+//
+//			Bundle bundle = Platform.getBundle(CoreConstants.BUNDLE_CORE);
+//
+//			props.load(bundle.getEntry("/" + nomeFileProps).openStream());
 
 
 			// flag per l'update
-			boolean flagUpdate = props.getProperty("wbfs.update").equals("true") && !isDevelopment();
+			boolean flagUpdate = System.getProperty("wbfs.update").equals("true") && !isDevelopment();
 
 			if (flagUpdate) {
 
 				//				if(GuiUtils.showConfirmDialog("Cercare aggiornamenti?")){
 
-				updateServer = props.getProperty("wbfs.update.server");
+				updateServer = System.getProperty("wbfs.update.server");
 
 				update(updateServer);
 				//				}
 
 			}
 
-		} catch (IOException e) {
-			GuiUtils.showError("Errore durante il caricamento del file \n" + nomeFileProps);
-			PlatformUI.getWorkbench().close();
-		}
 
 	}
 	private boolean isDevelopment() {

@@ -5,11 +5,14 @@ import java.beans.PropertyChangeListener;
 
 import jwbfs.i18n.Messages;
 import jwbfs.model.ModelStore;
+import jwbfs.model.beans.CoverPaths;
+import jwbfs.model.beans.CoverSettings;
 import jwbfs.model.beans.SettingsBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.CoverConstants;
 import jwbfs.model.utils.WBFSFileConstants;
 import jwbfs.ui.listeners.settings.UpdateTitlesTXTListener;
+import jwbfs.ui.utils.CoverUtils;
 import jwbfs.ui.views.WidgetCreator;
 
 import org.eclipse.swt.SWT;
@@ -23,16 +26,24 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.part.ViewPart;
 
-public class SettingsView extends ViewPart implements PropertyChangeListener{
+public class CoverSettingsView extends ViewPart implements PropertyChangeListener{
 	 
-	protected SettingsBean bean = null;
+	protected CoverSettings coverBean = null;
 	private Button cover3dDownloadButton;
 	private Button coverDiscDownloadButton;
 	private Combo txtLayoutCombo;
+	private String diskID;
 	
-	public SettingsView() {
-		bean = (SettingsBean) getTabBean() ;
-		bean.addPropertyChangeListener(this);
+	public CoverSettingsView() {
+		//TODO dinamic
+		diskID = CoreConstants.VIEW_DISK_1_ID;
+		coverBean = ModelStore.getDisk(diskID).getCoverSettings();
+		//TODO OO
+		
+		//TODO
+		coverBean.addPropertyChangeListener(this);
+//		bean.getSystemSettings().addPropertyChangeListener(this);
+//		bean.addPropertyChangeListener(this);
 	}
 
 	@Override
@@ -75,6 +86,56 @@ public class SettingsView extends ViewPart implements PropertyChangeListener{
 		Button button = WidgetCreator.createButton(group,Messages.settings_update);
 		addHandlerUpdateTXT(button);
 		
+
+		CoverPaths coverPaths = coverBean.getCoverPaths();
+		
+		group = WidgetCreator.createGroup(composite, Messages.settings_group_cover,2);
+		button = WidgetCreator.createCheck(group, 
+				Messages.settings_cover_enable, 
+				coverBean, 
+				"automaticCoverDownload",
+				2,
+				GridData.BEGINNING,
+				GridData.BEGINNING);  
+		WidgetCreator.createSeparator(group, 1, GridData.END, GridData.BEGINNING);
+		cover3dDownloadButton = WidgetCreator.createCheck(group, 
+				Messages.settings_cover_3d_download, 
+				coverBean, 
+				"cover3D",
+				1,
+				GridData.BEGINNING,
+				GridData.BEGINNING);  
+		WidgetCreator.createSeparator(group, 1, GridData.END, GridData.BEGINNING);
+		coverDiscDownloadButton = WidgetCreator.createCheck(group, 
+				Messages.settings_cover_disc_download, 
+				coverBean, 
+				"coverDiscs",
+				1,
+				GridData.BEGINNING,
+				GridData.BEGINNING);  
+
+
+		group = WidgetCreator.createGroup(composite, Messages.settings_group_cover_type,3);
+		WidgetCreator.createRadio(group, Messages.settings_usb_loader_gx, 
+				coverBean, "coverTypeUSBLoaderGX");  
+		
+		WidgetCreator.createRadio(group, Messages.settings_usb_loader_cfg, 
+				coverBean, "coverTypeUSBLoaderCFG");  
+		
+		WidgetCreator.createRadio(group, Messages.settings_usb_loader_wiiflow, 
+				coverBean, "coverTypeUSBLoaderWIIFLOW");  
+		
+		WidgetCreator.createLabel(group,Messages.settings_cover_save_path,3);
+		WidgetCreator.createLabel(group,Messages.settings_cover_2d);
+		
+		WidgetCreator.createText(group, false, coverPaths, "cover2d",2);  
+
+		WidgetCreator.createLabel(group,Messages.settings_cover_3d);
+		WidgetCreator.createText(group, false, coverPaths, "cover3d",2);  
+		
+		WidgetCreator.createLabel(group,Messages.settings_cover_disc);
+		WidgetCreator.createText(group, false, coverPaths, "coverDisc",2);  
+
 		return tab;
 	}
 	
@@ -129,6 +190,8 @@ public class SettingsView extends ViewPart implements PropertyChangeListener{
 		
 		System.out.println(propertyName + " changed from "+oldValue+" to "+newValue);  //$NON-NLS-2$
 		
+		propertyChangeUpdateCoverType(evt);
+		
 		propertyChangeDownloadCover(evt);
 		
 		propertyChangeEnableTxtCreation(evt);
@@ -163,6 +226,20 @@ public class SettingsView extends ViewPart implements PropertyChangeListener{
 	
 	}
 
+	private void propertyChangeUpdateCoverType(PropertyChangeEvent evt) {
+		String propertyName = evt.getPropertyName();
+		
+		if(propertyName.equals("coverTypeUSBLoaderGX") 
+				|| propertyName.equals("coverTypeUSBLoaderCFG") 
+				|| propertyName.equals("coverTypeUSBLoaderWIIFLOW")){ 
+			
+			if(coverBean.isCoverTypeAnySelected()){
+				CoverUtils.setCoversPathFromDiskPath(diskID);	
+			}
+			
+			
+		}
+	}
 
 			
 }

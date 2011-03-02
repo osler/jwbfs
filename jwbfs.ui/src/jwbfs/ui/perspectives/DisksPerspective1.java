@@ -10,7 +10,7 @@ public class DisksPerspective1 implements IPerspectiveFactory {
 
 	protected IFolderLayout leftFolder =  null;
 	protected IFolderLayout rightFolder;
-	private IFolderLayout centralFolder;
+//	private IFolderLayout centralFolder;
 	
 	public void createInitialLayout(IPageLayout layout) {
 		String editorArea = layout.getEditorArea();

@@ -1,7 +1,5 @@
 package jwbfs.ui.handlers;
 
-import java.lang.reflect.InvocationTargetException;
-
 import jwbfs.model.ModelStore;
 import jwbfs.model.utils.WBFSFileConstants;
 import jwbfs.ui.utils.GuiUtils;
@@ -9,9 +7,7 @@ import jwbfs.ui.utils.GuiUtils;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.core.runtime.jobs.Job;
 
 public class ToWBFSConvertHandler extends AbstractHandler {
 
@@ -24,26 +20,30 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 		if(!check()){
 			return false;
 		}
+	
+		Job job = new ToWBFSConvertOperation("Converting "+ModelStore.getSelectedGame().getTitle());
+		job.setUser(true);
+		job.schedule();
+
 		
-
-		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-
-		try {
-
-			new ProgressMonitorDialog(sh).run(true, true, new ToWBFSConvertOperation());
-
-		} catch (InvocationTargetException e) {
-
-			e.printStackTrace();
-
-			return false;
-
-		} catch (InterruptedException e) {
-
-			GuiUtils.showError("Error: "+e.getMessage());
-			return false;
-
-		}
+		//		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+//
+//		try {
+//
+//			new ProgressMonitorDialog(sh).run(true, true, new ToWBFSConvertOperation());
+//
+//		} catch (InvocationTargetException e) {
+//
+//			e.printStackTrace();
+//
+//			return false;
+//
+//		} catch (InterruptedException e) {
+//
+//			GuiUtils.showError("Error: "+e.getMessage());
+//			return false;
+//
+//		}
 
 		return true;
 	}

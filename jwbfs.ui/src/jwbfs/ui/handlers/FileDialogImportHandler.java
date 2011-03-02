@@ -27,7 +27,7 @@ public class FileDialogImportHandler extends AbstractHandler {
 			d.setFilterExtensions(new String[]{"*.iso;*.ISO;*.wbfs;*.WBFS"});	
 
 		
-			String oldValue = bean.getFilePath();
+//			String oldValue = bean.getFilePath();
 			String line = d.open();
 			
 			//If cancel, set the old value

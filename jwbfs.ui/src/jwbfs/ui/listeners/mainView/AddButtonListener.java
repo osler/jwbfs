@@ -37,8 +37,10 @@ public class AddButtonListener extends SelectionAdapter {
 						return;
 					}
 
-					PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_CHECKDISK_ID, null);
-
+					LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+					parametri.put("wbfs","false");
+					ok = (Boolean) GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_CHECKDISK_ID, parametri, null);
+					
 
 					if(ModelStore.getSelectedGame().getId().contains("not a wii disc")){
 						GuiUtils.setDefaultCovers();
@@ -46,11 +48,15 @@ public class AddButtonListener extends SelectionAdapter {
 
 					}
 
-					PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_COVER_UPDATE_ID, null);
+					 parametri = new LinkedHashMap<String,String>();
+					parametri.put("diskID",viewID);
+					GuiUtils.executeParametrizedCommand(
+							CoreConstants.COMMAND_COVER_UPDATE_ID, parametri, null);
+					
 					if(ModelStore.getSelectedGame().isIsoToWbfs()){
 						PlatformUtils.getHandlerService(viewID).executeCommand(CoreConstants.COMMAND_TOWBFS_ID, null);
 					
-						LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+						parametri = new LinkedHashMap<String,String>();
 						parametri.put("diskID",viewID);
 						ok = (Boolean) 		GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);
 						

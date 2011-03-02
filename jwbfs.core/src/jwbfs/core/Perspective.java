@@ -1,6 +1,5 @@
 package jwbfs.core;
 
-import jwbfs.model.ModelStore;
 import jwbfs.model.utils.CoreConstants;
 
 import org.eclipse.ui.IFolderLayout;

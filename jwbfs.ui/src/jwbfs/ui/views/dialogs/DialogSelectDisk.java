@@ -1,10 +1,15 @@
 package jwbfs.ui.views.dialogs;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 
+import jwbfs.i18n.Messages;
 import jwbfs.model.ModelStore;
+import jwbfs.model.beans.CoverPaths;
 import jwbfs.model.beans.CoverSettings;
+import jwbfs.model.beans.DiskBean;
 import jwbfs.model.utils.DiskContants;
 import jwbfs.model.utils.FileUtils;
 import jwbfs.ui.utils.CoverUtils;
@@ -14,6 +19,7 @@ import jwbfs.ui.views.WidgetCreator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -23,24 +29,29 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 
-public class DialogSelectDisk extends Dialog{
+public class DialogSelectDisk extends Dialog implements PropertyChangeListener{
 
 	ArrayList<File> disks;
 	private Combo combo;
 	private ArrayList<File> customDisks = new ArrayList<File>();
+	private String diskID;
+	private DiskBean diskBean;
 	
-	public DialogSelectDisk(Shell parentShell) {
+	public DialogSelectDisk(Shell parentShell, String diskID) {
 		super(parentShell);
+		this.diskID = diskID;
+		diskBean = ModelStore.getDisk(diskID);
 		
+		diskBean.getCoverSettings().addPropertyChangeListener(this);
 	}
 
 
 
 	private boolean check() {
 		
-		String diskPath = ModelStore.getDiskPath(GuiUtils.getActiveViewID());
+		String diskPath = diskBean.getDiskPath();
 		
-		CoverSettings coverSettings = ModelStore.getSettingsBean().getCoverSettings();
+		CoverSettings coverSettings = diskBean.getCoverSettings();
 		String testSubFolder = diskPath+File.separatorChar+DiskContants.WBFS_GAMES_FOLDER;
 		
 		boolean creatingFolders = false;
@@ -48,7 +59,7 @@ public class DialogSelectDisk extends Dialog{
 		//folder doesn't exists
 		if(!diskPath.endsWith(DiskContants.WBFS_GAMES_FOLDER)
 				&& !new File(testSubFolder).exists()){
-			FileUtils.createRootFolderStructures(diskPath);
+			FileUtils.createRootFolderStructures(diskPath,diskID);
 			creatingFolders = true;
 		}
 		//exists a subfolder with wbfs name
@@ -64,9 +75,7 @@ public class DialogSelectDisk extends Dialog{
 			
 			if(creatingFolders){
 				
-				String activeDisk = GuiUtils.getActiveViewID();
-				
-				ModelStore.setDiskPath(activeDisk,testSubFolder);
+				diskBean.setDiskPath(testSubFolder);
 			}
 		}
 		
@@ -88,7 +97,7 @@ public class DialogSelectDisk extends Dialog{
 			return;
 		}
 		
-		CoverUtils.setCoversPathFromDiskPath();	
+		CoverUtils.setCoversPathFromDiskPath(diskID);	
 
 		super.okPressed();
 	}
@@ -104,21 +113,58 @@ public class DialogSelectDisk extends Dialog{
 		createDiskGroup(mainComposite);
 		
 		createGroupUSBLoader(mainComposite);
+		crateGroupCoverSettings(mainComposite);
+		createGroupCoverPath(mainComposite);
 		
 		return parent;
 	}
 
+	private Button cover3dDownloadButton;
+	private Button coverDiscDownloadButton;
+	
+	private void crateGroupCoverSettings(Composite mainComposite) {
+		
+		CoverSettings coverBean = diskBean.getCoverSettings();
+		
+		Group group = WidgetCreator.createGroup(mainComposite, Messages.settings_group_cover,2);
+		WidgetCreator.createCheck(group, 
+				Messages.settings_cover_enable, 
+				coverBean, 
+				"automaticCoverDownload",
+				2,
+				GridData.BEGINNING,
+				GridData.BEGINNING);  
+		WidgetCreator.createSeparator(group, 1, GridData.END, GridData.BEGINNING);
+		cover3dDownloadButton = WidgetCreator.createCheck(group, 
+				Messages.settings_cover_3d_download, 
+				coverBean, 
+				"cover3D",
+				1,
+				GridData.BEGINNING,
+				GridData.BEGINNING);  
+		WidgetCreator.createSeparator(group, 1, GridData.END, GridData.BEGINNING);
+		coverDiscDownloadButton = WidgetCreator.createCheck(group, 
+				Messages.settings_cover_disc_download, 
+				coverBean, 
+				"coverDiscs",
+				1,
+				GridData.BEGINNING,
+				GridData.BEGINNING);  
+
+	}
+
+
+
 	private void createDiskGroup(final Composite mainComposite) {
 		
-		String activeViewID = GuiUtils.getActiveViewID();
-		String diskPath = ModelStore.getDiskPath(activeViewID);
+		String diskPath = diskBean.getDiskPath();
 		
 		Group usbLoaderType = WidgetCreator.createGroup(mainComposite, "USB Loader covers path");
 
 		WidgetCreator.createLabel(usbLoaderType, "Select a Disk");
 		WidgetCreator.createLabel(usbLoaderType, "");
 		
-		combo = WidgetCreator.createCombo(usbLoaderType, new String[]{""}, ModelStore.getDisk(activeViewID), "diskPath");
+		combo = WidgetCreator.createCombo(usbLoaderType, new String[]{""}, diskBean, "diskPath");
 		Button reload = WidgetCreator.createButton(usbLoaderType, "reload");
 		
 
@@ -186,16 +232,34 @@ public class DialogSelectDisk extends Dialog{
 				.createGroup(mainComposite, "USB Loader covers path",3);
 
 		WidgetCreator.createRadio(usbLoaderType, "USBLoaderGX", 
-				ModelStore.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderGX");
+				diskBean.getCoverSettings(), "coverTypeUSBLoaderGX");
 		
 		WidgetCreator.createRadio(usbLoaderType, "Configurable USB Loader", 
-				ModelStore.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderCFG");
+				diskBean.getCoverSettings(), "coverTypeUSBLoaderCFG");
 		
 		WidgetCreator.createRadio(usbLoaderType, "Wiiflow", 
-				ModelStore.getSettingsBean().getCoverSettings(), "coverTypeUSBLoaderWIIFLOW");
+				diskBean.getCoverSettings(), "coverTypeUSBLoaderWIIFLOW");
 		
 	}
 
+	private void createGroupCoverPath(Composite mainComposite) {
+
+		CoverPaths coverBean = diskBean.getCoverSettings().getCoverPaths();
+
+		Group group = WidgetCreator.createGroup(mainComposite, Messages.settings_group_cover_type,3);
+
+		WidgetCreator.createLabel(group,Messages.settings_cover_save_path,3);
+		WidgetCreator.createLabel(group,Messages.settings_cover_2d);
+
+		WidgetCreator.createText(group, false, coverBean, "cover2d",2);  
+
+		WidgetCreator.createLabel(group,Messages.settings_cover_3d);
+		WidgetCreator.createText(group, false, coverBean, "cover3d",2);  
+
+		WidgetCreator.createLabel(group,Messages.settings_cover_disc);
+		WidgetCreator.createText(group, false, coverBean, "coverDisc",2);  
+	}
+	
 
 
 	private void initDisksAvalaible() {
@@ -226,4 +290,31 @@ public class DialogSelectDisk extends Dialog{
 		}
 	}
 
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		String propertyName = evt.getPropertyName();
+		String newValue = evt.getNewValue().toString();
+		String oldValue = evt.getOldValue().toString();
+		
+		System.out.println(propertyName + " changed from "+oldValue+" to "+newValue);  //$NON-NLS-2$
+		
+		propertyChangeDownloadCover(evt);
+	}
+	
+	private void propertyChangeDownloadCover(PropertyChangeEvent evt) {
+
+		String propertyName = evt.getPropertyName();
+		
+		if(propertyName.equals("automaticCoverDownload")){ 
+			
+			boolean enabled = ((Boolean)evt.getNewValue()).booleanValue();
+			
+			cover3dDownloadButton.setEnabled(enabled);
+			coverDiscDownloadButton.setEnabled(enabled);
+			
+		}
+	
+	}
+	
 }

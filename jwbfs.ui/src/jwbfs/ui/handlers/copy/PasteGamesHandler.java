@@ -129,7 +129,7 @@ public class PasteGamesHandler extends AbstractHandler {
 				}
 			}
 
-			String pathFrom = new File(g.getFilePath()).getParent();
+//			String pathFrom = new File(g.getFilePath()).getParent();
 			String pathTo = ModelStore.getDisk(diskTO).getDiskPath().trim();
 			if(pathTo.equals("")){
 				GuiUtils.showError("Select a valid path on destination disk.");
@@ -160,14 +160,14 @@ public class PasteGamesHandler extends AbstractHandler {
 			boolean yesAll, boolean isSkipped ) {
 
 		
-		String pathFrom = new File(g.getFilePath()).getParent();
-		String pathTo = ModelStore.getDisk(diskTO).getDiskPath().trim();
+		String pathFrom = new File(PlatformUtils.convertPath(g.getFilePath())).getParent();
+		String pathTo = PlatformUtils.convertPath(ModelStore.getDisk(diskTO).getDiskPath().trim());
 		if(pathTo.equals("")){
 			GuiUtils.showError("Select a valid path on destination disk.");
 			return false;
 		}
 
-		String folderName = pathFrom.replaceAll(ModelStore.getDisk(diskFrom).getDiskPath(),"");
+		String folderName = pathFrom.replaceAll(ModelStore.getDisk(diskFrom).getDiskPath()+File.separatorChar,"");
 
 		final File newFolder = new File(pathTo+File.separatorChar+folderName);
 

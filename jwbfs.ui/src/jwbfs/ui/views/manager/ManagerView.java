@@ -1,31 +1,34 @@
 package jwbfs.ui.views.manager;
 
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 import jwbfs.i18n.Messages;
 import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.FileUtils;
-import jwbfs.ui.listeners.mainView.AddButtonListener;
-import jwbfs.ui.listeners.mainView.DeleteButtonListener;
 import jwbfs.ui.listeners.mainView.DiskFolderSelectionListener;
-import jwbfs.ui.listeners.mainView.ExportButtonListener;
-import jwbfs.ui.listeners.mainView.UpdateGameListListener;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.views.WidgetCreator;
 import jwbfs.ui.views.table.GameCellModifiers;
 import jwbfs.ui.views.table.GameTitleCellEditor;
 import jwbfs.ui.views.table.ManagerViewContentProvider;
 import jwbfs.ui.views.table.ManagerViewLabelProvider;
+import jwbfs.ui.views.table.ManagerViewTableCellActivationStrategy;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
+import org.eclipse.jface.viewers.ColumnViewerEditor;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
+import org.eclipse.jface.viewers.FocusCellOwnerDrawHighlighter;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerEditor;
+import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -96,6 +99,14 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		tv = new TableViewer(table);
 		tv.setContentProvider(new ManagerViewContentProvider(viewID));
 		tv.setLabelProvider(  new ManagerViewLabelProvider());
+
+		//Controls the cell activation
+		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(tv,new FocusCellOwnerDrawHighlighter(tv));
+        ColumnViewerEditorActivationStrategy actSupport = new ManagerViewTableCellActivationStrategy(tv);
+        	                
+        TableViewerEditor.create(tv, focusCellManager, actSupport, ColumnViewerEditor.TABBING_HORIZONTAL
+        	                                | ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
+        	                                | ColumnViewerEditor.TABBING_VERTICAL | ColumnViewerEditor.KEYBOARD_ACTIVATION);
 		
 	    CellEditor[] editors = new CellEditor[4];
 	    editors[0] = new CheckboxCellEditor(table);
@@ -116,14 +127,14 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		getSite().setSelectionProvider(tv);
 
 		tv.addSelectionChangedListener(this);
-		setProgressBar(WidgetCreator.createProgressBar(parent));
+//		setProgressBar(WidgetCreator.createProgressBar(parent));
 		
 		tv.setInput(ModelStore.getGames(viewID));
 		tv.refresh();
 		
 	}
 
-	protected void updateCellAndTxtFile(final TableEditor editor, SelectionEvent e) {
+	protected void updateCellAndTxtFile(final TableEditor editor, SelectionEvent e) throws Exception {
 		
 
 		// editing the second column
@@ -163,15 +174,15 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	
 	}
 
-	private void addHandlerUpdate(Button button) {
-		button.addSelectionListener(new UpdateGameListListener(viewID));
-
-	}
-	
-	private void deleteAction(Button button) {
-		button.addSelectionListener(new DeleteButtonListener(viewID));
-
-	}
+//	private void addHandlerUpdate(Button button) {
+//		button.addSelectionListener(new UpdateGameListListener(viewID));
+//
+//	}
+//	
+//	private void deleteAction(Button button) {
+//		button.addSelectionListener(new DeleteButtonListener(viewID));
+//
+//	}
 
 	@Override
 	public void setFocus() {
@@ -181,7 +192,9 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 	@SuppressWarnings("unchecked")
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-
+		GameBean oldSelected = ModelStore.getSelectedGame();
+		ModelStore.setActiveDiskID(viewID);
+		
 		ISelection selection = tv.getSelection();
 		IStructuredSelection sel = (IStructuredSelection) selection;
 		
@@ -189,20 +202,22 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		while (iterator.hasNext()) {
 			GameBean selectedGame = iterator.next();
 			ModelStore.setSelectedGame(selectedGame);
-
+			if(selectedGame.equals(oldSelected)){
+				return;
+			}
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					
-					GuiUtils.executeCommand(
-							viewID, 
-							CoreConstants.COMMAND_COVER_UPDATE_ID, 
-							null);
+					LinkedHashMap<String,String> parametri = new LinkedHashMap<String,String>();
+					parametri.put("diskID",viewID);
+					GuiUtils.executeParametrizedCommand(
+							CoreConstants.COMMAND_COVER_UPDATE_ID, parametri, null);
 				}
 			});	
 		}
 	}
 
-	public TableViewer getTv() {
+	public synchronized TableViewer getTv() {
 		return tv;
 	}
 
@@ -210,13 +225,13 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		this.tv = tv;
 	}
 
-	private void exportAction(Button button) {
-		button.addSelectionListener(new ExportButtonListener(viewID));
-	}
+//	private void exportAction(Button button) {
+//		button.addSelectionListener(new ExportButtonListener(viewID));
+//	}
 
-	public void addAction(Button button){
-		button.addSelectionListener(new AddButtonListener(viewID));
-	}
+//	private void addAction(Button button){
+//		button.addSelectionListener(new AddButtonListener(viewID));
+//	}
 
 	public void setProgressBar(ProgressBar progressBar) {
 		this.progressBar = progressBar;

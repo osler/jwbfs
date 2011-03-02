@@ -2,6 +2,7 @@ package jwbfs.ui.handlers;
 
 import jwbfs.model.ModelStore;
 import jwbfs.model.beans.SettingsBean;
+import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.views.dialogs.DialogSelectDisk;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -20,7 +21,7 @@ public class FolderDiskDialogHandler extends AbstractHandler {
 		SettingsBean bean =  ModelStore.getSettingsBean();
 		if(bean != null){
 
-			DialogSelectDisk sel = new DialogSelectDisk(new Shell());
+			DialogSelectDisk sel = new DialogSelectDisk(new Shell(),GuiUtils.getActiveViewID());
 			int ret = sel.open();
 			if(ret == DialogSelectDisk.CANCEL){
 				return false;

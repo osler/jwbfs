@@ -2,6 +2,8 @@ package jwbfs.model.beans;
 
 import java.beans.PropertyChangeEvent;
 
+import jwbfs.model.utils.ConfigUtils;
+
 
 public class CoverSettings extends ModelObject{
 
@@ -13,11 +15,13 @@ public class CoverSettings extends ModelObject{
 	private boolean automaticCoverDownload;
 	private boolean updateCover;
 	private boolean cover3Denabled;
+	private boolean coverFullEnabled;
 	private boolean coverDiscsEnabled;
 	
-	public CoverSettings(){
+	public CoverSettings(String diskID, String fileProps){
 
-		String coverType = System.getProperty("cover.path.type").toString().trim();
+				
+		String coverType =  ConfigUtils.getProperty("cover.path.type", fileProps);
 		
 		if (coverType == null || coverType.equals("null")){
 			coverType = CoverPaths.GX; //TODO make pick one
@@ -36,11 +40,14 @@ public class CoverSettings extends ModelObject{
 			coverTypeUSBLoaderGX = false;
 			coverTypeUSBLoaderCFG = false;
 		}
-		
-		//TODO SAVE AND GET
-		automaticCoverDownload = true;
-		cover3Denabled = true;
-		coverDiscsEnabled = true;
+		String value = ConfigUtils.getProperty("cover.download.auto", fileProps).trim();
+		automaticCoverDownload = value.equals("true") || value.equals("");
+		value = ConfigUtils.getProperty("cover.download.3d", fileProps).trim();
+		cover3Denabled = value.equals("true") || value.equals("");
+		value = ConfigUtils.getProperty("cover.download.disk", fileProps).trim();
+		coverDiscsEnabled = value.equals("true") || value.equals("");
+		value = ConfigUtils.getProperty("cover.download.full", fileProps).trim();
+		coverFullEnabled = value.equals("true") || value.equals("");
 		
 		updateCover = false;
 	}
@@ -126,6 +133,14 @@ public class CoverSettings extends ModelObject{
 
 	public boolean isCoverDiscs() {
 		return coverDiscsEnabled;
+	}
+
+	public void setCoverFullEnabled(boolean coverFullEnabled) {
+		this.coverFullEnabled = coverFullEnabled;
+	}
+
+	public boolean isCoverFullEnabled() {
+		return coverFullEnabled;
 	}
 
 

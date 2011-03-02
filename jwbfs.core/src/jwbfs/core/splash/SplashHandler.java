@@ -1,17 +1,13 @@
 package jwbfs.core.splash;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.splash.AbstractSplashHandler;
 
 public class SplashHandler extends AbstractSplashHandler {
  
-	private static final String BETA_PNG = "splash.png";
-	private static final int BORDER = 10;
+//	private static final String BETA_PNG = "splash.png";
+//	private static final int BORDER = 10;
 	private Image image;
  
 	public SplashHandler() {

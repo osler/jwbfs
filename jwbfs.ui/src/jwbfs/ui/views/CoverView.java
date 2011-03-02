@@ -25,7 +25,7 @@ public class CoverView extends ViewPart {
 	protected Button cover ;
 	protected Button cover3d ;
 	protected Button disk ;
-	protected ProgressBar progressBar;
+//	protected ProgressBar progressBar;
 	
 	
 	public CoverView() {
@@ -70,7 +70,7 @@ public class CoverView extends ViewPart {
 		addHandlerUpdate(cover);
 		addHandlerUpdate(cover3d);
 		addHandlerUpdate(disk);
-		progressBar = WidgetCreator.createProgressBar(parent);
+//		progressBar = WidgetCreator.createProgressBar(parent);
 	
 	}
 
@@ -82,13 +82,13 @@ public class CoverView extends ViewPart {
 		button.addSelectionListener(new UpdateCoverListener(CoreConstants.VIEW_COVER_ID,processBean));	
 	}
 
-	public ProgressBar getProgressBar() {
-		return progressBar;
-	}
-
-	public void setProgressBar(ProgressBar progressBar) {
-		this.progressBar = progressBar;
-	}
+//	public ProgressBar getProgressBar() {
+//		return progressBar;
+//	}
+//
+//	public void setProgressBar(ProgressBar progressBar) {
+//		this.progressBar = progressBar;
+//	}
 
 	/**
 	 * @return the cover

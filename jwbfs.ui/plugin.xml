@@ -84,6 +84,11 @@
             categoryId="jwbfs.ui.commands.category.convert"
             id="it.jwbfs.core.checkDisk"
             name="Check Disk">
+            <commandParameter 
+        		id="wbfs" 
+        		name="wbfs" 
+        		optional="false">
+        	</commandParameter>  
       </command>
       <command
             categoryId="jwbfs.ui.commands.category.convert"
@@ -112,10 +117,20 @@
       <command
             id="it.jwbfs.core.updateCover"
             name="Update Cover">
+             <commandParameter 
+        		id="diskID" 
+        		name="diskID" 
+        		optional="false">
+        	</commandParameter>            
       </command>
       <command
             id="it.jwbfs.core.updateCoverForced"
             name="update Cover Forced">
+             <commandParameter 
+        		id="diskID" 
+        		name="diskID" 
+        		optional="false">
+        	</commandParameter>            
       </command>
       <command
             id="it.jwbfs.core.game.add"

@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 
 import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
@@ -16,19 +15,25 @@ import jwbfs.ui.exceptions.MonitorCancelException;
 import jwbfs.ui.exceptions.NotCorrectDiscFormatException;
 import jwbfs.ui.exceptions.WBFSException;
 import jwbfs.ui.exceptions.WBFSFileExistsException;
+import jwbfs.ui.jobs.UpdateGameListOperation;
 import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.SWT;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.widgets.Display;
 
-public class ToWBFSConvertOperation implements IRunnableWithProgress {
+public class ToWBFSConvertOperation extends Job {
+
+	public ToWBFSConvertOperation(String name) {
+		super(name);
+	}
 
 	GameBean bean = (GameBean) ModelStore.getSelectedGame();
 
 	@Override
-	public void run(IProgressMonitor monitor) throws InvocationTargetException,
-			InterruptedException {
+	public IStatus run(IProgressMonitor monitor) {
 		
 			
 			monitor.beginTask("Creating wbfs-file: "+bean.getTitle(), 
@@ -48,7 +53,7 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 				try {
 					throw new NotCorrectDiscFormatException();
 				} catch (NotCorrectDiscFormatException e) {
-					return;
+					return Status.CANCEL_STATUS;
 				}
 			}
 			
@@ -80,8 +85,15 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 
 			      monitor.done();
 
-			      GuiUtils.showInfo(bean.getTitle()+" Added to:\n"+fileOutPath, SWT.NONE, true);
+//			      GuiUtils.showInfo(bean.getTitle()+" Added to:\n"+fileOutPath, SWT.NONE, true);
 			      
+					Display.getDefault().asyncExec(
+									new UpdateGameListOperation(
+											"Updating games list",
+											GuiUtils.getActiveViewID())
+									);
+					
+		
 			    } catch (IOException e) {
 				  	  monitor.done();
 				  	  e.printStackTrace();
@@ -93,7 +105,9 @@ public class ToWBFSConvertOperation implements IRunnableWithProgress {
 					  	  monitor.done();
 					}
 
-			  monitor.done();	
+			  monitor.done();
+			  
+			return Status.OK_STATUS;	
 	}
 
 

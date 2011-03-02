@@ -36,6 +36,7 @@ http://wiitdb.com/titles.txt?LANG=XX
 	
 	public static final String NOIMAGE = PlatformUtils.getRoot()+"icons"+File.separatorChar+"noimg.png";
 	public static final String NOIMAGE3D = PlatformUtils.getRoot()+"icons"+File.separatorChar+"noimg3d.png";
+	public static final String NOIMAGEFULL = PlatformUtils.getRoot()+"icons"+File.separatorChar+"noimgFull.png";
 	public static final String NODISC = PlatformUtils.getRoot()+"icons"+File.separatorChar+"nodisc.png";
 	
 	public static final String COVER_3D = "3D";
@@ -64,9 +65,9 @@ http://wiitdb.com/titles.txt?LANG=XX
 	public static final String IMAGE_DISC_NAME_WIIFLOW = "notSupportedDisc"; //not supported
 	public static final String IMAGE_FULL_WIIFLOW = "boxcovers";
 	
-	public static String getFolderName(){
+	public static String getFolderName(String diskID){
 
-		CoverSettings settings = ModelStore.getSettingsBean().getCoverSettings();
+		CoverSettings settings = ModelStore.getDisk(diskID).getCoverSettings();
 		
 		if(settings.isCoverTypeUSBLoaderGX()){
 			return IMAGE_FOLDER_NAME_GX;
@@ -81,9 +82,9 @@ http://wiitdb.com/titles.txt?LANG=XX
 		return null;
 	}
 	
-	public static String getImage2D(){
+	public static String getImage2D(String diskID){
 
-		CoverSettings settings = ModelStore.getSettingsBean().getCoverSettings();
+		CoverSettings settings = ModelStore.getDisk(diskID).getCoverSettings();
 		
 		if(settings.isCoverTypeUSBLoaderGX()){
 			return IMAGE_2D_NAME_GX;
@@ -98,9 +99,9 @@ http://wiitdb.com/titles.txt?LANG=XX
 		return null;
 	}
 	
-	public static String getImage3D(){
+	public static String getImage3D(String diskID){
 
-		CoverSettings settings = ModelStore.getSettingsBean().getCoverSettings();
+		CoverSettings settings = ModelStore.getDisk(diskID).getCoverSettings();
 		
 		if(settings.isCoverTypeUSBLoaderGX()){
 			return IMAGE_3D_NAME_GX;
@@ -115,9 +116,9 @@ http://wiitdb.com/titles.txt?LANG=XX
 		return null;
 	}
 	
-	public static String getImageDisc(){
+	public static String getImageDisc(String diskID){
 
-		CoverSettings settings = ModelStore.getSettingsBean().getCoverSettings();
+		CoverSettings settings = ModelStore.getDisk(diskID).getCoverSettings();
 		
 		if(settings.isCoverTypeUSBLoaderGX()){
 			return IMAGE_DISC_NAME_GX;
@@ -132,9 +133,9 @@ http://wiitdb.com/titles.txt?LANG=XX
 		return null;
 	}
 	
-	public static String getImageFullCover(){
+	public static String getImageFullCover(String diskID){
 
-		CoverSettings settings = ModelStore.getSettingsBean().getCoverSettings();
+		CoverSettings settings = ModelStore.getDisk(diskID).getCoverSettings();
 		
 		if(settings.isCoverTypeUSBLoaderGX()){
 			return IMAGE_FULL_GX;

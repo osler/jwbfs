@@ -3,13 +3,25 @@ package jwbfs.model.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import jwbfs.model.utils.ConfigUtils;
+import jwbfs.model.utils.PlatformUtils;
+
 public class DiskBean extends ModelObject {
 
 	private String diskPath;
 	private List<GameBean> games = new ArrayList<GameBean>();
 	
-	public DiskBean(String diskPath){
-		this.diskPath =  diskPath;
+	private CoverSettings coverSettings;
+	private String diskID;
+	private String fileProps; 
+	
+	
+	public DiskBean(String diskID, String fileProps){
+		this.setDiskID(diskID);
+		this.fileProps = fileProps;
+		diskPath = ConfigUtils.getProperty("wbfs.disk.path", fileProps);
+		
+		coverSettings = new CoverSettings(diskID,fileProps);
 	}
 	
 	public void setDiskPath(String diskPath) {
@@ -28,5 +40,25 @@ public class DiskBean extends ModelObject {
 
 	public List<GameBean> getGames() {
 		return games;
+	}
+	
+	public void setCoverSettings(CoverSettings coverSettings) {
+		this.coverSettings = coverSettings;
+	}
+
+	public CoverSettings getCoverSettings() {
+		if(coverSettings == null){
+			coverSettings = new CoverSettings(diskID,fileProps);
+		}
+		return coverSettings;
+	}
+
+	public void setDiskID(String diskID) {
+		propertyChangeSupport.firePropertyChange("diskID", this.diskID,
+				this.diskID = diskID);
+	}
+
+	public String getDiskID() {
+		return diskID;
 	}
 }
