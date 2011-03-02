@@ -146,7 +146,7 @@
                   label="%menu.games.copy.selected">
 <!--DISK1-->
                <command
-                     commandId="it.jwbfs.core.games.paste"
+                     commandId="it.jwbfs.core.games.copy.paste"
                      label="%command.games.copy.to.1"
                      style="push">
                   <parameter
@@ -180,7 +180,7 @@
                </command>                  
 <!--DISK2-->
                <command
-                     commandId="it.jwbfs.core.games.paste"
+                     commandId="it.jwbfs.core.games.copy.paste"
                      label="%command.games.copy.to.2"
                      style="push">
                   <parameter
@@ -214,7 +214,7 @@
                </command>
 <!--DISK3-->
                <command
-                     commandId="it.jwbfs.core.games.paste"
+                     commandId="it.jwbfs.core.games.copy.paste"
                      label="%command.games.copy.to.3"
                      style="push">
                   <parameter
@@ -248,7 +248,7 @@
 
 <!--DISK4-->
                <command
-                     commandId="it.jwbfs.core.games.paste"
+                     commandId="it.jwbfs.core.games.copy.paste"
                      label="%command.games.copy.to.4"
                      style="push">
                   <parameter
@@ -280,7 +280,7 @@
                </command>                  
 <!--DISK5-->
                <command
-                     commandId="it.jwbfs.core.games.paste"
+                     commandId="it.jwbfs.core.games.copy.paste"
                      label="%command.games.copy.to.5"
                      style="push">
                   <parameter
@@ -311,7 +311,7 @@
                </command>
 <!--DISK6-->
                <command
-                     commandId="it.jwbfs.core.games.paste"
+                     commandId="it.jwbfs.core.games.copy.paste"
                      label="%command.games.copy.to.6"
                      style="push">
                   <parameter
@@ -341,16 +341,20 @@
                </command>
 
 
-<!-- menu generic visible when: if only 1 disk no copy commands-->               
+<!-- menu generic visible when: if only 1 disk no copy commands>               
                <visibleWhen>
-               		<not>
    						<with variable="activeContexts">
              					<iterate operator="or">
-             					 	<equals value="jwbfs.context.disk.1"/>
+	         					<or>
+             					 	<equals value="jwbfs.context.disk.2"/>
+             					 	<equals value="jwbfs.context.disk.3"/>
+             					 	<equals value="jwbfs.context.disk.4"/>             					 	<equals value="jwbfs.context.disk.5"/>
+             					 	<equals value="jwbfs.context.disk.5"/>             					 	<equals value="jwbfs.context.disk.5"/>
+             					 	<equals value="jwbfs.context.disk.6"/>             					 	<equals value="jwbfs.context.disk.6"/>
+                			    </or> 
            						</iterate>      	           						      					           							          						
            				</with>
-           			</not>
-				</visibleWhen>
+				</visibleWhen-->
             </menu>
          </menu>
          

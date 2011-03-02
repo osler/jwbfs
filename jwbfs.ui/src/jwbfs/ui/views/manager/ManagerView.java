@@ -8,6 +8,7 @@ import jwbfs.model.ModelStore;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.FileUtils;
+import jwbfs.ui.ContextActivator;
 import jwbfs.ui.listeners.mainView.DiskFolderSelectionListener;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.views.WidgetCreator;
@@ -44,6 +45,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class ManagerView extends ViewPart implements ISelectionChangedListener{
@@ -132,6 +136,29 @@ public class ManagerView extends ViewPart implements ISelectionChangedListener{
 		tv.setInput(ModelStore.getGames(viewID));
 		tv.refresh();
 		
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener(new IPartListener() {
+			
+			@Override
+			public void partOpened(IWorkbenchPart part) {
+				System.out.println("opened");
+				ContextActivator.reloadContext(viewID);
+			}
+			
+			@Override
+			public void partDeactivated(IWorkbenchPart part) {}
+			
+			@Override
+			public void partClosed(IWorkbenchPart part) {
+				System.out.println("closed");
+				ContextActivator.reloadContext();
+			}
+			
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {}
+			
+			@Override
+			public void partActivated(IWorkbenchPart part) {}
+		});
 	}
 
 	protected void updateCellAndTxtFile(final TableEditor editor, SelectionEvent e) throws Exception {

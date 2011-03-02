@@ -112,20 +112,23 @@ public class PasteGamesHandler extends AbstractHandler {
 
 			
 			if(isSkipped && !yesAll){
-				
-				String message = "Game is already present on destination disk:"
-					+"\n\n"
-					+g.toString()
-					+"\n\n"
-					+"Do you want to overwrite it?";
-				int ret  = new ConfirmOverwriteDialog(message).open();
+				try{
+					String message = "Game is already present on destination disk:"
+						+"\n\n"
+						+g.toString()
+						+"\n\n"
+						+"Do you want to overwrite it?";
+					int ret  = new ConfirmOverwriteDialog(message).open();
 
-				switch (ret) {
-				case IDialogConstants.NO_ID: continue; //go on cycling
-				case IDialogConstants.NO_TO_ALL_ID: return true; //exit now
-				case IDialogConstants.YES_ID: break;
-				case IDialogConstants.YES_TO_ALL_ID:  yesAll = true; break;
+					switch (ret) {
+					case IDialogConstants.NO_ID: continue; //go on cycling
+					case IDialogConstants.NO_TO_ALL_ID: return true; //exit now
+					case IDialogConstants.YES_ID: break;
+					case IDialogConstants.YES_TO_ALL_ID:  yesAll = true; break;
 
+					}
+				}catch (Exception e) {
+					return true; //same as exit now to fix thread access
 				}
 			}
 

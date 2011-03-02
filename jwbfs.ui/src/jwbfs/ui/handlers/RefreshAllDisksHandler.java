@@ -19,8 +19,8 @@ public class RefreshAllDisksHandler extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		int numDisks = 6;
-		for(int i=0;i<numDisks;i++){
+		int numDisks = 7;
+		for(int i=1;i<numDisks;i++){
 			String diskID = GuiUtils.decodeDiskID(i);
 			
 			if(ModelStore.getDisk(diskID).getDiskPath().trim().equals("")){
