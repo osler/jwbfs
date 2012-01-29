@@ -117,8 +117,6 @@ public class CheckDisksOperation implements Runnable {
 			String path = new File(filePath).getAbsolutePath();			  	  			  
 			String bin = PlatformUtils.getWBFSpath();
 
-			new File(bin).setExecutable(true);
-
 			String infoCmd = "iso_info";
 
 			String[] checkIso = {bin,path,infoCmd};
