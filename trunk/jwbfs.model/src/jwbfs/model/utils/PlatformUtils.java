@@ -64,17 +64,23 @@ public class PlatformUtils {
 		path = getRoot();
 
 		if(isLinux()){
-			path = path + "wbfs_file/linux/wbfs_file";
+			path = path + "wbfs_file"+File.separatorChar+"wbfs_file_lin";
 		}
 		if(isWindows()){
-			path = path + "wbfs_file/win/wbfs_file.exe";
+			path = path + "wbfs_file"+File.separatorChar+"wbfs_file.exe";
 		}
 		if(isOSX()){
-			path = path + "wbfs_file/mac_osx/wbfs_file";
+			path = path + "wbfs_file"+File.separatorChar+"wbfs_file_mac";
 		}
 
 		System.out.println(path);
 
+		//
+		File execFile = new File(path);
+		if(!(execFile.canExecute())){
+			execFile.setExecutable(true);
+		}
+		
 		return path; 
 	}
 
@@ -99,13 +105,13 @@ public class PlatformUtils {
 		path = getRoot();
 
 		if(isLinux()){
-			path = path + "wbfs_file"+File.separatorChar+"linux"+File.separatorChar+"titles.txt";
+			path = path + "wbfs_file"+File.separatorChar+/*"linux"+File.separatorChar+*/"titles.txt";
 		}
 		if(isWindows()){
-			path = path + "wbfs_file"+File.separatorChar+"win"+File.separatorChar+"titles.txt";
+			path = path + "wbfs_file"+File.separatorChar+/*"win"+File.separatorChar+*/"titles.txt";
 		}
 		if(isOSX()){
-			path = path + "wbfs_file"+File.separatorChar+"mac_osx"+File.separatorChar+"titles.txt";
+			path = path + "wbfs_file"+File.separatorChar+/*"mac_osx"+File.separatorChar+*/"titles.txt";
 		}
 
 		System.out.println(path);
