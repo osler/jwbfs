@@ -13,7 +13,7 @@ import jwbfs.model.ModelStore;
 import jwbfs.model.beans.CopyBean;
 import jwbfs.model.beans.GameBean;
 import jwbfs.model.utils.CoreConstants;
-import jwbfs.model.utils.FileUtils;
+import jwbfs.model.utils.DiskUtils;
 import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.views.dialogs.ConfirmOverwriteDialog;
@@ -48,6 +48,12 @@ public class PasteGamesHandler extends AbstractHandler {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 
+				//diskTO don't have a path
+				if(!DiskUtils.pathExists(diskTO)){
+					GuiUtils.showError("Please select a valid path for destination disk.", true);
+					return Status.CANCEL_STATUS;
+				}
+				
 				List<GameBean> gamesOnDestinationDisk = ModelStore.getGames(diskTO);
 				
 				CopyBean copyBean = ModelStore.getCopyBean();
@@ -55,7 +61,7 @@ public class PasteGamesHandler extends AbstractHandler {
 				
 				diskFrom = copyBean.getDiskIdFrom().trim();
 				if(diskFrom.equals(diskTO)){
-					GuiUtils.showError("Cannot paste into same disk");
+					GuiUtils.showError("Cannot paste into same disk", true);
 					return Status.CANCEL_STATUS;
 				}
 
@@ -145,7 +151,7 @@ public class PasteGamesHandler extends AbstractHandler {
 //		       }
 //		       sub.done();  // don't forget to make sure the sub monitor is done
 
-			processGameSubtask(new SubProgressMonitor(monitor, 1),i,g,gamesTo,gamesOnDestinationDisk,diskTO,diskFrom,yesAll,isSkipped);
+			processGameSubtask(monitor, i,g,gamesTo,gamesOnDestinationDisk,diskTO,diskFrom,yesAll,isSkipped);
 	        
 		}
 		
@@ -156,8 +162,8 @@ public class PasteGamesHandler extends AbstractHandler {
 		return true;
 	}
 	
-	private boolean processGameSubtask(SubProgressMonitor monitor, 
-			int i, GameBean g, 
+	private boolean processGameSubtask(IProgressMonitor mainMonitor,
+			int index, GameBean g, 
 			List<GameBean> gamesTo, 
 			List<GameBean> gamesOnDestinationDisk, String diskTO, String diskFrom, 
 			boolean yesAll, boolean isSkipped ) {
@@ -179,38 +185,67 @@ public class PasteGamesHandler extends AbstractHandler {
 			newFolder.mkdir();
 		}
 		
-		//copy wbfs.
-		String newFileName = newFolder.getAbsolutePath()+File.separatorChar+g.getFileName();
-		File newFile = new File(newFileName);
-		File oldFile = new File(g.getFilePath());
+		//true only when a copy is in progress and user press cancel
+		boolean deleteNewFiles =false;
+		//parent folder
+		String gameFolder = new File(g.getFilePath()).getParent();
+		File[] files = new File(gameFolder).listFiles();
 		
-		int totWorked = Integer.parseInt(PlatformUtils.getMB(oldFile.length()));
-		
-		monitor.beginTask("processing: " +
-							g.toString(), totWorked);
-		monitor.subTask(i+1 + " of " +gamesTo.size()+": "+g.toString());
-		
-		IStatus st = saveNewFile(newFile, g.getFilePath(),monitor);
-		if(st.equals(Status.CANCEL_STATUS)){
-			newFolder.delete();
-			return false;
+		SubProgressMonitor monitor = new SubProgressMonitor(mainMonitor, 1);
+		//first cicle to get info on how many worked int are needed by the monitor
+		int totWorked = 0;
+		for (int j = 0; j < files.length; j++) {
+			File oldFile = files[j];
+			totWorked = totWorked + Integer.parseInt(PlatformUtils.getMB(oldFile.length()));
 		}
+		
+		//set sub monitor total progress and name
+		monitor.beginTask("processing: " +g.toString(), totWorked);
+		
+		//cicle to copy wbfs and txt files
+		for (int j = 0; j < files.length; j++) {
+			//original file
+			File oldFile = files[j];
+			//new file
+			String newFileName = newFolder.getAbsolutePath()+File.separatorChar+oldFile.getName();
+			File newFile = new File(newFileName);
 
-		//copy txt
-		String oldFileTXT = FileUtils.getTxtFile(new File(g.getFilePath()));
-		String newFileTXT = newFileName.replace(".wbfs", ".txt");
-		st = saveNewFile(new File(newFileTXT), oldFileTXT, monitor);
-
-		if(st.equals(Status.CANCEL_STATUS)){
-			newFile.delete();
+			//print debug
+			System.out.println(oldFile.getAbsolutePath());
+			System.out.println(newFile.getAbsolutePath());
+			
+			//set monitor infos
+			monitor.subTask(index+1 + " of " +gamesTo.size()+": "+g.toString());
+			
+			//save file
+			IStatus st = saveNewFile(newFile, oldFile.getAbsolutePath(),monitor);
+			if(st.equals(Status.CANCEL_STATUS)){
+				deleteNewFiles = true;
+				break;
+			}
+		}
+		
+//		//copy txt
+//		String newFileName = newFolder.getAbsolutePath()+File.separatorChar+g.getFileName();
+//		String oldFileTXT = FileUtils.getTxtFile(new File(g.getFilePath()));
+//		String newFileTXT = newFileName.replace(".wbfs", ".txt");
+//		IStatus st = saveNewFile(new File(newFileTXT), oldFileTXT, monitor);
+//
+		//if status cancel, then remove partial files
+		if(deleteNewFiles){
+			File[] newFiles = newFolder.listFiles();
+			for (int j = 0; j < newFiles.length; j++) {
+				newFiles[j].delete(); 
+			}
 			newFolder.delete();
 			return false;
 		}
 		
 		if(ModelStore.getCopyBean().isCut()){
-			oldFile.delete(); 
-			new File(oldFileTXT).delete();
-			new File(oldFile.getParent()).delete();
+			for (int j = 0; j < files.length; j++) {
+				files[j].delete(); 
+			}
+			new File(gameFolder).delete();
 		}
 	
 		monitor.done();
@@ -236,6 +271,7 @@ public class PasteGamesHandler extends AbstractHandler {
 		            
 		            if(tot % 1048576 == 0){
 			            monitor.worked(1);	
+			            System.out.println("progress "+tot/1048576);
 		            }
 		            
 		            if (monitor.isCanceled()){
