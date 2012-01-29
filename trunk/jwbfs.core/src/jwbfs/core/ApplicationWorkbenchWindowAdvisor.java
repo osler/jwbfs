@@ -86,7 +86,13 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	@Override
 	public void postWindowOpen() {
 
-		updateApp();
+		//TODO update exception catch 
+		try{
+			updateApp();
+		}catch (Exception e) {
+			System.out.println("Update error!");
+			e.printStackTrace();
+		}
 
 		Set<String> disksViewsID = ModelStore.getDisks().keySet();
 		Iterator<String> it = disksViewsID.iterator();
