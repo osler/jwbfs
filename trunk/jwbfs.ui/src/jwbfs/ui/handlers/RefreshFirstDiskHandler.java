@@ -30,6 +30,7 @@ public class RefreshFirstDiskHandler extends AbstractHandler {
 		if(ModelStore.getDiskPath(diskID).trim().equals("")
 				|| !new File(ModelStore.getDiskPath(diskID)).exists()){
 
+			ModelStore.setDiskPath(diskID,"");
 			GuiUtils.executeCommand(
 					diskID, 
 					CoreConstants.COMMAND_FOLDER_DISK_DIALOG_ID, 
