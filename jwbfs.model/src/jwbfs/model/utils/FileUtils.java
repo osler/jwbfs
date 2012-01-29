@@ -83,11 +83,11 @@ public class FileUtils {
 		return exist;
 	}
 
-	public static String exist(String path, String coverSubFolder) {
+	public static String exists(String path, String coverSubFolder) {
 //		if(coverSubFolder == null){		
 //			path = System.getProperty("java.io.tmpdir")+File.separatorChar+coverSubFolder;
 //		}
-		path = exist(path);
+		path = validatePath(path);
 
 		path = path+File.separatorChar+coverSubFolder;
 		FileUtils.checkAndCreateFolder(path);
@@ -95,7 +95,12 @@ public class FileUtils {
 		return path;
 	}
 
-	public static String exist(String path) {
+	/**
+	 * Check if the path exists. If not, fallback to java temp dir
+	 * @param path
+	 * @return
+	 */
+	public static String validatePath(String path) {
 
 		File tmp = new File(path);
 		if(!tmp.exists() || tmp.equals("")){
@@ -104,6 +109,23 @@ public class FileUtils {
 		return path;
 	}
 
+	/**
+	 * check if the path exists
+	 * @param path
+	 * @return
+	 */
+	public static boolean exists(String path) {
+		if(path == null || path.equals("")){
+			return false;
+		}
+		
+		File tmp = new File(path);
+		if(tmp.exists()){
+			return true;
+		}
+		return false;
+	}
+	
 	public static ArrayList<File> getDiskAvalaible() {
 		String root = "";
 		ArrayList<File> disks = new ArrayList<File>();
@@ -308,10 +330,10 @@ public class FileUtils {
 	 */
 	public static void createCoverSubFolders(String coverPath, String diskID) {
 		
-		FileUtils.exist(coverPath,CoverConstants.getImage2D(diskID));
-		FileUtils.exist(coverPath,CoverConstants.getImage3D(diskID));
-		FileUtils.exist(coverPath,CoverConstants.getImageDisc(diskID));
-		FileUtils.exist(coverPath,CoverConstants.getImageFullCover(diskID));
+		FileUtils.exists(coverPath,CoverConstants.getImage2D(diskID));
+		FileUtils.exists(coverPath,CoverConstants.getImage3D(diskID));
+		FileUtils.exists(coverPath,CoverConstants.getImageDisc(diskID));
+		FileUtils.exists(coverPath,CoverConstants.getImageFullCover(diskID));
 	}
 		
 }
