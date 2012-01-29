@@ -53,6 +53,7 @@ public class ToWBFSConvertOperation extends Job {
 				try {
 					throw new NotCorrectDiscFormatException();
 				} catch (NotCorrectDiscFormatException e) {
+					e.printStackTrace();
 					return Status.CANCEL_STATUS;
 				}
 			}
@@ -99,8 +100,10 @@ public class ToWBFSConvertOperation extends Job {
 				  	  e.printStackTrace();
 					} catch (WBFSFileExistsException e) {
 					  	  monitor.done();
+						  e.printStackTrace();
 					} catch (WBFSException e) {
 					  	  monitor.done();
+						  e.printStackTrace();
 					} catch (MonitorCancelException e) {
 					  	  monitor.done();
 					}
