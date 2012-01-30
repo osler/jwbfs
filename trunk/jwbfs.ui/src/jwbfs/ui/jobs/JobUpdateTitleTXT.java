@@ -47,8 +47,9 @@ public class JobUpdateTitleTXT extends JwbfsJob {
 	
 			String txtFile = PlatformUtils.getTitlesTXTpath();
 			InputStream in;
+			URL url = null;
 			try {
-				URL url = new URL(checkUrl(address+region));
+				url = new URL(checkUrl(address+region));
 				System.out.println("Checking:\n"+address+region);
 				in = url.openStream();
 				System.out.println("Url correct");
@@ -74,10 +75,10 @@ public class JobUpdateTitleTXT extends JwbfsJob {
 				
 	
 			} catch (MalformedURLException e) {
-				GuiUtils.showError("cannot download titles.TXT", true);
+				GuiUtils.showError("url incorrect: cannot download titles.TXT\n"+url, true);
 				return Status.CANCEL_STATUS;
 			} catch (IOException e) {
-				GuiUtils.showError("cannot download titles.TXT", true);
+				GuiUtils.showError("connection error: cannot download titles.TXT"+url, true);
 				return Status.CANCEL_STATUS;
 			}finally{
 				monitor.done();
