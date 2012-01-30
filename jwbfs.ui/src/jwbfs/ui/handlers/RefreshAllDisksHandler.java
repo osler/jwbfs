@@ -6,18 +6,17 @@ import jwbfs.model.ModelStore;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.ui.utils.GuiUtils;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.TableViewer;
 
-public class RefreshAllDisksHandler extends AbstractHandler {
+public class RefreshAllDisksHandler extends JwbfsAbstractHandler {
 
 
 	public RefreshAllDisksHandler() {
 	}
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object executeJwbfs(ExecutionEvent event) throws ExecutionException {
 
 		int numDisks = 7;
 		for(int i=1;i<numDisks;i++){

@@ -242,7 +242,16 @@
         		name="diskTo" 
         		optional="false">
         	</commandParameter>
-      </command>                  
+      </command>   
+     <command
+            id="it.jwbfs.core.games.import"
+            name="Import WBFS">
+             <commandParameter 
+        		id="diskTo" 
+        		name="diskTo" 
+        		optional="false">
+        	</commandParameter>
+      </command>                      
    </extension>
    
    <extension
@@ -338,7 +347,11 @@
       <handler
             class="jwbfs.ui.handlers.copy.PasteGamesHandler"
             commandId="it.jwbfs.core.games.paste">
-      </handler>                                                  
+      </handler>    
+      <handler
+            class="jwbfs.ui.handlers.copy.ImportWBFSGameHandler"
+            commandId="it.jwbfs.core.games.import">
+      </handler>                                                    
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">

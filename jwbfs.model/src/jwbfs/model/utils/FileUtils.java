@@ -139,21 +139,52 @@ public class FileUtils {
 		}
 //		disks.addAll(Arrays.asList(File.listRoots()));
 
-		if(disks != null && !root.equals("")){
-			for(int f = 0; f<DiskContants.LINUX_MOUNT_FOLDERS.length; f++){
-				File[] tmp = new File(root+File.separatorChar+DiskContants.LINUX_MOUNT_FOLDERS[f]).listFiles();
-				for(int x = 0; x<tmp.length;x++){
-					File testMedia = tmp[x];
-					File testWBFS = new File(testMedia.getAbsolutePath()+File.separatorChar+DiskContants.WBFS_GAMES_FOLDER);
+		if(PlatformUtils.isLinux()){
+			try{
 
-					if(testWBFS.exists()){
-						disks.add(testWBFS);
+				if(disks != null && !root.equals("")){
+					for(int f = 0; f<DiskContants.LINUX_MOUNT_FOLDERS.length; f++){
+						File[] tmp = new File(root+File.separatorChar+DiskContants.LINUX_MOUNT_FOLDERS[f]).listFiles();
+						for(int x = 0; x<tmp.length;x++){
+							File testMedia = tmp[x];
+							File testWBFS = new File(testMedia.getAbsolutePath()+File.separatorChar+DiskContants.WBFS_GAMES_FOLDER);
+
+							if(testWBFS.exists()){
+								disks.add(testWBFS);
+							}
+						}
 					}
 				}
-			}
 
+			}catch (Exception e) {
+				System.out.println("cannot get info on linux mount folders");
+				e.printStackTrace();
+			}
 		}
 
+		//TODO common path for mac
+		if(PlatformUtils.isOSX()){
+			try{
+
+				if(disks != null && !root.equals("")){
+					for(int f = 0; f<DiskContants.OSX_MOUNT_FOLDERS.length; f++){
+						File[] tmp = new File(root+File.separatorChar+DiskContants.OSX_MOUNT_FOLDERS[f]).listFiles();
+						for(int x = 0; x<tmp.length;x++){
+							File testMedia = tmp[x];
+							File testWBFS = new File(testMedia.getAbsolutePath()+File.separatorChar+DiskContants.WBFS_GAMES_FOLDER);
+
+							if(testWBFS.exists()){
+								disks.add(testWBFS);
+							}
+						}
+					}
+				}
+
+			}catch (Exception e) {
+				System.out.println("cannot get info on mac osx mount folders");
+				e.printStackTrace();
+			}
+		}
 
 		return  disks;
 	}

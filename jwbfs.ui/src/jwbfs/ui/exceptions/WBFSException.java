@@ -14,7 +14,7 @@ public class WBFSException extends Exception {
 	}
 	
 	public WBFSException(String line) {
-		GuiUtils.showError(line,true);
+		GuiUtils.showError("error: "+line,true);
 	}
 
 }

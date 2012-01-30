@@ -67,7 +67,7 @@ public class DialogSelectDisk extends Dialog implements PropertyChangeListener{
 			//maybe selected root...propose a subfolder
 			if(!creatingFolders){
 			
-			creatingFolders = GuiUtils.showConfirmDialog("The folder you chose contains a wbfs subfolder with possible games. Maybe you mean to use that?\n"+
+			creatingFolders = GuiUtils.showConfirmDialog("The folder you chose contains a wbfs subfolder with possible games. Do you want to use that?\n"+
 					"("+testSubFolder+") which contains "+ new File(testSubFolder).list().length 
 					+" files/folders");
 			

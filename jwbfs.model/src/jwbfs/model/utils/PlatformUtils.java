@@ -135,7 +135,7 @@ public class PlatformUtils {
 
 	public static File getWbfsINI(){
 		String ini = getFile("configs"+File.separatorChar+CoreConstants.wbfsINI);
-		System.out.println(ini);
+		System.out.println("obtaining file '" +ini+"'");
 		return new File(ini);
 	}
 	

@@ -37,6 +37,7 @@ public class CoreConstants {
 		public static final String COMMAND_COPY_PASTE_GAME_ID	   = "it.jwbfs.core.games.copy.paste";
 		public static final String COMMAND_CUT_GAMES_ID	  	   = "it.jwbfs.core.games.cut";
 		public static final String COMMAND_PASTE_GAMES_ID	   = "it.jwbfs.core.games.paste";
+		public static final String COMMAND_IMPORT_WBFS_GAME	   = "it.jwbfs.core.games.import";
 		
 		public static final String BUNDLE_CORE = "jwbfs.core";
 		public static final String BUNDLE_MODEL = "jwbfs.model";
@@ -56,5 +57,12 @@ public class CoreConstants {
 		public static final String CONTEXT_DISK_4 = "jwbfs.context.disk.4";
 		public static final String CONTEXT_DISK_5 = "jwbfs.context.disk.5";
 		public static final String CONTEXT_DISK_6 = "jwbfs.context.disk.6";
+
+		public static final String PARAM_DISK_TO = "diskTo";
+		public static final String PARAM_DISK_FROM = "diskFrom";
+		public static final String PARAM_DISK_ID = "diskID";
+		public static final String PARAM_WBFS = "wbfs";
+
+		public static final String NOT_A_WII_DISK = "not a wii disc";
 	
 }

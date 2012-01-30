@@ -18,37 +18,39 @@ public class CopyGamesHandler extends AbstractHandler {
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-	
-		String diskFrom = event.getParameter("diskFrom").trim();
-		
-		if(diskFrom.trim().equals("activeID")){
-			diskFrom = GuiUtils.getActiveViewID();
-		}
-		
-		ArrayList<GameBean> gamesTo = new ArrayList<GameBean>();
-		try {
-			gamesTo = GuiUtils.getSelectedGames(diskFrom);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		
-		if(gamesTo.size() == 0){
-			GuiUtils.showError("Select at least a game");
+		try{
+			String diskFrom = event.getParameter("diskFrom").trim();
+
+			if(diskFrom.trim().equals("activeID")){
+				diskFrom = GuiUtils.getActiveViewID();
+			}
+
+			ArrayList<GameBean> gamesTo = new ArrayList<GameBean>();
+			try {
+				gamesTo = GuiUtils.getSelectedGames(diskFrom);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+
+			if(gamesTo.size() == 0){
+				GuiUtils.showError("Select at least a game");
+				addSelectedGamesToModel(gamesTo,diskFrom);
+				return false;
+			}
+
 			addSelectedGamesToModel(gamesTo,diskFrom);
-			return false;
+		}catch (Exception e) {
+			GuiUtils.showErrorWithSaveFile("Copy/Cut game model Error \n", e, true);
 		}
-		
-		addSelectedGamesToModel(gamesTo,diskFrom);
-	
 		return true;
 	}
 
 	protected void addSelectedGamesToModel(ArrayList<GameBean> gamesTo,
 			String diskFrom) {
-		
+
 		CopyBean copyBean = new CopyBean(gamesTo,diskFrom);
-		
+
 		ModelStore.setCopyBean(copyBean);
 	}
 
