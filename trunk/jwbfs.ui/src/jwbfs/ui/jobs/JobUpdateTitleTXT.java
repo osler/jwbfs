@@ -1,10 +1,9 @@
-package jwbfs.ui.handlers;
+package jwbfs.ui.jobs;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -15,28 +14,30 @@ import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.utils.GuiUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Image;
 
-public class UpdateTitleTXTOperation implements IRunnableWithProgress {
+public class JobUpdateTitleTXT extends JwbfsJob {
 
 	private SettingsBean settingsBean;
 
+	public JobUpdateTitleTXT(String string) {
+		super(string);
+	}
+
 	@Override
-	public void run(IProgressMonitor monitor) throws InvocationTargetException,
-			InterruptedException {
+	public IStatus runJwbfs(IProgressMonitor monitor) throws Exception{
 
 		settingsBean = (SettingsBean) ModelStore.getSettingsBean();
 		
 		monitor.beginTask("Downloading Titles TXT file",
 				IProgressMonitor.UNKNOWN);
 		
-		downloadTXT(monitor);
-
-		monitor.done();
+		return downloadTXT(monitor);
 	}
 
-	private void downloadTXT(IProgressMonitor monitor) {
+	private IStatus downloadTXT(IProgressMonitor monitor) {
 		
 		int progress = 5;
 			monitor.worked(progress);
@@ -53,7 +54,7 @@ public class UpdateTitleTXTOperation implements IRunnableWithProgress {
 				System.out.println("Url correct");
 	
 				if(in == null){
-					return;
+					return Status.CANCEL_STATUS;
 				}
 				
 				FileOutputStream out = new FileOutputStream(txtFile);
@@ -74,18 +75,19 @@ public class UpdateTitleTXTOperation implements IRunnableWithProgress {
 	
 			} catch (MalformedURLException e) {
 				GuiUtils.showError("cannot download titles.TXT", true);
-				monitor.done();
-				return;
+				return Status.CANCEL_STATUS;
 			} catch (IOException e) {
 				GuiUtils.showError("cannot download titles.TXT", true);
+				return Status.CANCEL_STATUS;
+			}finally{
 				monitor.done();
-				return;
 			}
 	
 			if(fileExist(txtFile)){
 			System.out.println("titles.TXT downloaded!");
 			}
-			
+		
+			return Status.OK_STATUS;
 	}
 
 	private boolean fileExist(String coverPath) {

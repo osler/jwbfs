@@ -1,44 +1,28 @@
 package jwbfs.ui.handlers;
 
-import java.lang.reflect.InvocationTargetException;
+import jwbfs.ui.jobs.JobUpdateTitleTXT;
 
-import jwbfs.ui.utils.GuiUtils;
-
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 
-public class UpdateTitlesTXTHandler extends AbstractHandler {
+public class UpdateTitlesTXTHandler extends JwbfsAbstractHandler {
 	public static final String ID = "updateTitles";
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object executeJwbfs(ExecutionEvent event) throws Exception {
 
 	
-		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-		.getShell();
+//		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+//		.getShell();
 
-		try {
+		Job job = new JobUpdateTitleTXT("Updating titles.txt");
+		job.setUser(true);
+		job.schedule();
+		
+//		new ProgressMonitorDialog(sh).run(true, true, new UpdateTitleTXTOperation());
 
-			new ProgressMonitorDialog(sh).run(true, true, new UpdateTitleTXTOperation());
-
-		} catch (InvocationTargetException e) {
-
-			e.printStackTrace();
-
-			return null;
-
-		} catch (InterruptedException e) {
-
-			GuiUtils.showError("Error: "+e.getMessage());
-			return null;
-
-		}
-
-		return null;
+		return Status.OK_STATUS;
 	
 		
 	}
