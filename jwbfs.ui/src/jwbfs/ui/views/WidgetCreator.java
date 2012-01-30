@@ -293,6 +293,23 @@ public class WidgetCreator {
 		return button;
 	}
 	
+	public static Button createImage(Group group, int width,int height) {
+		
+		GridData gridBtn = new GridData();
+		gridBtn.grabExcessHorizontalSpace = true;
+		gridBtn.grabExcessVerticalSpace = true;
+		gridBtn.horizontalAlignment = GridData.CENTER;
+		gridBtn.verticalAlignment = GridData.CENTER;
+		gridBtn.horizontalSpan = 1;
+		gridBtn.widthHint = width;
+		gridBtn.heightHint = height;
+		
+		Button button = new Button(group, SWT.PUSH);
+		button.setLayoutData(gridBtn);
+		
+		return button;
+	}
+	
 	public static Button createImage(Group group) {
 		
 		GridData gridBtn = new GridData();
@@ -301,7 +318,7 @@ public class WidgetCreator {
 		gridBtn.horizontalAlignment = GridData.CENTER;
 		gridBtn.verticalAlignment = GridData.CENTER;
 		gridBtn.horizontalSpan = 1;
-	
+		
 		Button button = new Button(group, SWT.PUSH);
 		button.setLayoutData(gridBtn);
 		

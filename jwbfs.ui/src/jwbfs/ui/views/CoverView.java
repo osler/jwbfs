@@ -14,7 +14,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.ui.part.ViewPart;
 
 public class CoverView extends ViewPart {
@@ -50,19 +49,20 @@ public class CoverView extends ViewPart {
 		Group group =  WidgetCreator.createGroup(parent, Messages.view_cover,2);
 		
 		Image image = new Image( GuiUtils.getDisplay(),CoverConstants.NOIMAGE);
-		cover = WidgetCreator.createImage(group);
+		cover = WidgetCreator.createImage(group, 180, 255);
+//		disk.setSize(50,50);
 		cover.setImage(image);
 		
 		image = new Image( GuiUtils.getDisplay(),CoverConstants.NOIMAGE3D);
-		cover3d = WidgetCreator.createImage(group);
+		cover3d = WidgetCreator.createImage(group, 180, 255);
 		cover3d.setSize(50,50);
 		cover3d.setImage(image);
 		
 		group = WidgetCreator.createGroup(parent, Messages.view_cover_disc);
 		
 		image = new Image( GuiUtils.getDisplay(),CoverConstants.NODISC);
-		disk = WidgetCreator.createImage(group);
-		disk.setSize(50,50);
+		disk = WidgetCreator.createImage(group, 180,180);
+//		disk.setSize(50,50);
 		disk.setImage(image);
 		
 		WidgetCreator.createComposite(parent); //FILLER
