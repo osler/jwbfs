@@ -14,10 +14,10 @@ public class CutGamesHandler extends CopyGamesHandler {
 
 	protected void addSelectedGamesToModel(ArrayList<GameBean> gamesTo,
 			String diskFrom) {
-		
+
 		CopyBean copyBean = new CopyBean(gamesTo,diskFrom);
 		copyBean.setCut(true);
-		
+
 		ModelStore.setCopyBean(copyBean);
 	}
 }

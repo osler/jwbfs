@@ -1,6 +1,12 @@
 package jwbfs.ui.utils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,6 +37,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MessageBox;
@@ -64,14 +71,14 @@ public class GuiUtils {
 
 		} catch (Exception e) {
 			try{
-			view = (ViewPart) PlatformUI.getWorkbench().getWorkbenchWindows()[0].getActivePage().findView(ID);
+				view = (ViewPart) PlatformUI.getWorkbench().getWorkbenchWindows()[0].getActivePage().findView(ID);
 			}catch (Exception e2) {
 				return false;
 			}
 		}
 		return view != null;
 	}
-	
+
 	public static Device getDisplay() {
 		return PlatformUI.getWorkbench().getDisplay();
 	}
@@ -94,6 +101,61 @@ public class GuiUtils {
 			);	
 		}else{
 			showError(message);
+		}
+
+	}
+
+	public static void showErrorWithSaveFile(final String message, final Exception e, boolean async){
+		if(async){
+			Display.getDefault().asyncExec(								
+					new Runnable(){
+						public void run() {
+							GuiUtils.showErrorWithSaveFile(message, e);
+						}
+					}
+			);	
+		}else{
+			showErrorWithSaveFile(message,e);
+		}
+
+	}
+
+	public static void showErrorWithSaveFile(String message, Exception e) {
+		
+		message = message + "\n" +"Save diagnostic to file to help developers?";
+		if(e.getMessage() != null){
+			 message = message + "\n"+ e.getMessage();
+		}
+		
+		boolean ret =  MessageDialog.openConfirm(new Shell(), "Error", message);
+
+		if(ret){
+
+			DirectoryDialog d = new DirectoryDialog(new Shell()) ;
+			d.setMessage("Please select an output folder");
+			d.setText("Please select an output folder");
+
+			String file = d.open();
+
+			//If cancel, set the old value
+			if(file != null && !file.equals("")){
+				
+				String outName = "jwbfs_error_"+new Date().getTime()+".txt";
+				file = file + File.separatorChar+outName;
+				try{
+					StringWriter sw = new StringWriter();
+					e.printStackTrace(new PrintWriter(sw));
+					String out = message + "\n" +e.getMessage() + "\n" + sw.toString();
+					File  export = new File(file);
+					BufferedWriter w = new BufferedWriter(new FileWriter(export));
+					w.write(out);
+					w.close();
+				}catch (Exception ex) {
+					System.out.println("file not saved");
+				}
+			}
+
+
 		}
 
 	}
@@ -177,37 +239,37 @@ public class GuiUtils {
 	}
 
 	private static void setCover(final String coverPath) {
-		
 
-				System.out.println("Setting cover:");
-				System.out.println(coverPath);
-				final Image img = new Image(GuiUtils.getDisplay(),coverPath);
 
-				Display.getDefault().asyncExec(								
-						new Runnable(){
-							public void run() {
-								((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getCover().setImage(img);								
-							}
-						}
-				);	
-				
+		System.out.println("Setting cover:");
+		System.out.println(coverPath);
+		final Image img = new Image(GuiUtils.getDisplay(),coverPath);
+
+		Display.getDefault().asyncExec(								
+				new Runnable(){
+					public void run() {
+						((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getCover().setImage(img);								
+					}
+				}
+		);	
+
 
 	}
 
 	private static void setCover3d(final String coverPath) {
-		
-				System.out.println("Setting cover3d:");
-				System.out.println(coverPath);
-				final Image img = new Image(GuiUtils.getDisplay(),coverPath);
-				
-				Display.getDefault().asyncExec(								
-						new Runnable(){
-							public void run() {
-								((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getCover3d().setImage(img);								
-							}
-						}
-				);	
-				
+
+		System.out.println("Setting cover3d:");
+		System.out.println(coverPath);
+		final Image img = new Image(GuiUtils.getDisplay(),coverPath);
+
+		Display.getDefault().asyncExec(								
+				new Runnable(){
+					public void run() {
+						((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getCover3d().setImage(img);								
+					}
+				}
+		);	
+
 	}
 
 	private static void setCoverDisc(String coverPath) {
@@ -232,14 +294,14 @@ public class GuiUtils {
 		final Image img2 = img;
 
 
-				Display.getDefault().asyncExec(								
-						new Runnable(){
-							public void run() {
-								((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getDisk().setImage(img2);								
-							}
-						}
-				);	
-		
+		Display.getDefault().asyncExec(								
+				new Runnable(){
+					public void run() {
+						((CoverView) GuiUtils.getView(CoreConstants.VIEW_COVER_ID)).getDisk().setImage(img2);								
+					}
+				}
+		);	
+
 	}
 
 	public static void setDefaultCovers() {
@@ -307,15 +369,15 @@ public class GuiUtils {
 			diskSelected = PlatformUI.getWorkbench()
 			.getActiveWorkbenchWindow()
 			.getActivePage().getActivePart().getSite().getId();
-			
+
 		}catch(Exception e){
 			try{
-			//if a dialog is open
-			diskSelected = PlatformUI.getWorkbench()
-			.getWorkbenchWindows()[0]
-			                       .getActivePage()
-			                       .getActivePart()
-			                       .getSite().getId();
+				//if a dialog is open
+				diskSelected = PlatformUI.getWorkbench()
+				.getWorkbenchWindows()[0]
+				                       .getActivePage()
+				                       .getActivePart()
+				                       .getSite().getId();
 			}catch(Exception e2){
 				diskSelected = ModelStore.getActiveDiskID();			if(diskSelected.equals(CoreConstants.VIEW_COVER_ID)
 						|| diskSelected.equals(CoreConstants.VIEW_SETTINGS_ID)){
@@ -328,7 +390,7 @@ public class GuiUtils {
 				|| diskSelected.equals(CoreConstants.VIEW_SETTINGS_ID)){
 			diskSelected = ModelStore.getActiveDiskID();
 		}
-		
+
 		return diskSelected;
 	}
 
@@ -391,23 +453,23 @@ public class GuiUtils {
 
 
 			Object ret = PlatformUtils.getHandlerService().executeCommand(parmCommand, event);
-//			boolean ok = false;
-//			if(ret instanceof Status){
-//				ok = ret.equals(Status.OK_STATUS);
-//			}else{
-//				ok = (Boolean) ok;
-//			}
-//			if(ok){
-//				Display.getDefault().asyncExec(								
-//						new Runnable(){
-//							public void run() {
-//								ContextActivator.reloadContext();
-//							}
-//						}
-//				);
-//
-//			}
-			
+			//			boolean ok = false;
+			//			if(ret instanceof Status){
+			//				ok = ret.equals(Status.OK_STATUS);
+			//			}else{
+			//				ok = (Boolean) ok;
+			//			}
+			//			if(ok){
+			//				Display.getDefault().asyncExec(								
+			//						new Runnable(){
+			//							public void run() {
+			//								ContextActivator.reloadContext();
+			//							}
+			//						}
+			//				);
+			//
+			//			}
+
 			return ret;
 
 		} catch (NotDefinedException e) {

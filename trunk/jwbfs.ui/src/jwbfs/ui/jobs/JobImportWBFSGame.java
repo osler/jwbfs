@@ -1,6 +1,7 @@
-package jwbfs.ui.handlers.copy;
+package jwbfs.ui.jobs;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,86 +19,61 @@ import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.utils.GuiUtils;
 import jwbfs.ui.views.dialogs.ConfirmOverwriteDialog;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IDialogConstants;
 
-public class PasteGamesHandler extends AbstractHandler {
+public class JobImportWBFSGame extends JwbfsJob {
 
 	private ArrayList<GameBean> skipped;
-	String diskTO ="";
-	String diskFrom ="";
-	public PasteGamesHandler() {
+	private String diskTO;
+	
+	public JobImportWBFSGame(String name, String diskTO) {
+		super(name);
+		this.diskTO = diskTO;
 	}
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-
-		diskTO = event.getParameter("diskTo").trim();
-
-		if(diskTO.equals("activeID")){
-			diskTO = GuiUtils.getActiveViewID();
+	@Override
+	protected IStatus runJwbfs(IProgressMonitor monitor) throws Exception{
+		//diskTO don't have a path
+		if(!DiskUtils.pathExists(diskTO)){
+			GuiUtils.showError("Please select a valid path for destination disk.", true);
+			return Status.CANCEL_STATUS;
 		}
 
-		Job job = new Job("Copying Games") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+		List<GameBean> gamesOnDestinationDisk = ModelStore.getGames(diskTO);
 
-				try{
-					//diskTO don't have a path
-					if(!DiskUtils.pathExists(diskTO)){
-						GuiUtils.showError("Please select a valid path for destination disk.", true);
-						return Status.CANCEL_STATUS;
-					}
+		CopyBean copyBean = ModelStore.getCopyBean();
+		ArrayList<GameBean> gamesTo = copyBean.getGamesToCopy();
 
-					List<GameBean> gamesOnDestinationDisk = ModelStore.getGames(diskTO);
+		//				diskFrom = copyBean.getDiskIdFrom().trim();
+		//				if(diskFrom.equals(diskTO)){
+		//					GuiUtils.showError("Cannot paste into same disk", true);
+		//					return Status.CANCEL_STATUS;
+		//				}
 
-					CopyBean copyBean = ModelStore.getCopyBean();
-					ArrayList<GameBean> gamesTo = copyBean.getGamesToCopy();
+		int tot = gamesTo.size();
+		monitor.beginTask("processing", tot);
 
-					diskFrom = copyBean.getDiskIdFrom().trim();
-					if(diskFrom.equals(diskTO)){
-						GuiUtils.showError("Cannot paste into same disk", true);
-						return Status.CANCEL_STATUS;
-					}
+		skipped = new ArrayList<GameBean>();
+		boolean ok = processGames(gamesTo,gamesOnDestinationDisk,diskTO,monitor);
 
-					int tot = gamesTo.size();
-					monitor.beginTask("processing", tot);
+		if(!ok){
+			return Status.CANCEL_STATUS;
+		}
 
-					skipped = new ArrayList<GameBean>();
-					boolean ok = processGames(gamesTo,gamesOnDestinationDisk,diskTO,diskFrom,monitor);
-
-					if(!ok){
-						return Status.CANCEL_STATUS;
-					}
-
-					if(skipped.size()>0){
-						ok = processGames(gamesTo,gamesOnDestinationDisk,diskTO,diskFrom,monitor);
-						if(!ok){
-							return Status.CANCEL_STATUS;
-						}
-					}
-
-					monitor.done();
-
-					//Update all
-					GuiUtils.executeCommand(diskFrom,CoreConstants.COMMAND_REFRESH_ALL_DISK_ID,null,true);	
-				}catch (Exception e) {
-					GuiUtils.showErrorWithSaveFile("Paste Error \n", e, true);
-				}
-
-				return Status.OK_STATUS;
+		if(skipped.size()>0){
+			ok = processGames(gamesTo,gamesOnDestinationDisk,diskTO,monitor);
+			if(!ok){
+				return Status.CANCEL_STATUS;
 			}
+		}
 
-		};
-		job.setUser(true);
-		job.schedule();
+		monitor.done();
 
+		GuiUtils.executeCommand(diskTO,CoreConstants.COMMAND_REFRESH_ALL_DISK_ID,null,true);	
 
 		return Status.OK_STATUS;
 	}
@@ -105,7 +81,7 @@ public class PasteGamesHandler extends AbstractHandler {
 	private boolean processGames(ArrayList<GameBean> gamesTo,
 			List<GameBean> gamesOnDestinationDisk, 
 			final String diskTO, 
-			String diskFrom, IProgressMonitor monitor) {
+			IProgressMonitor monitor) throws Exception {
 
 
 		boolean yesAll = false;
@@ -144,20 +120,14 @@ public class PasteGamesHandler extends AbstractHandler {
 				}
 			}
 
-			//			String pathFrom = new File(g.getFilePath()).getParent();
 			String pathTo = ModelStore.getDisk(diskTO).getDiskPath().trim();
 			if(pathTo.equals("")){
 				GuiUtils.showError("Select a valid path on destination disk.");
 				return false;
 			}
 
-			//		     SubProgressMonitor sub=new SubProgressMonitor(monitor, 1);
-			//		       for(int ix =0;ix<10;ix++){
-			//		    	   sub.worked(1);
-			//		       }
-			//		       sub.done();  // don't forget to make sure the sub monitor is done
 
-			processGameSubtask(monitor, i,g,gamesTo,gamesOnDestinationDisk,diskTO,diskFrom,yesAll,isSkipped);
+			processGameSubtask(monitor, i,g,gamesTo,gamesOnDestinationDisk,diskTO,yesAll,isSkipped);
 
 		}
 
@@ -171,19 +141,18 @@ public class PasteGamesHandler extends AbstractHandler {
 	private boolean processGameSubtask(IProgressMonitor mainMonitor,
 			int index, GameBean g, 
 			List<GameBean> gamesTo, 
-			List<GameBean> gamesOnDestinationDisk, String diskTO, String diskFrom, 
-			boolean yesAll, boolean isSkipped ) {
+			List<GameBean> gamesOnDestinationDisk, String diskTO,
+			boolean yesAll, boolean isSkipped ) throws Exception {
 
 
-		String pathFrom = new File(PlatformUtils.convertPath(g.getFilePath())).getParent();
+
 		String pathTo = PlatformUtils.convertPath(ModelStore.getDisk(diskTO).getDiskPath().trim());
 		if(pathTo.equals("")){
 			GuiUtils.showError("Select a valid path on destination disk.");
 			return false;
 		}
 
-		String folderName = pathFrom.replace(ModelStore.getDisk(diskFrom).getDiskPath()+File.separatorChar,"");
-
+		String folderName = getGameFolderName(g);
 		final File newFolder = new File(pathTo+File.separatorChar+folderName);
 
 		//make folder
@@ -195,7 +164,16 @@ public class PasteGamesHandler extends AbstractHandler {
 		boolean deleteNewFiles =false;
 		//parent folder
 		String gameFolder = new File(g.getFilePath()).getParent();
-		File[] files = new File(gameFolder).listFiles();
+		File[] files = new File(gameFolder).listFiles(new FileFilter() {
+			@Override
+			public boolean accept(File arg0) {
+				boolean isWbfs = arg0.getName().toLowerCase().endsWith(".wbfs".toLowerCase());
+				boolean isWbfsSplit = arg0.getName().toLowerCase().endsWith(".wbf1".toLowerCase())
+				|| arg0.getName().toLowerCase().endsWith(".wbf2".toLowerCase());
+				boolean isTxt = arg0.getName().toLowerCase().endsWith(".txt".toLowerCase());
+				return isWbfs || isTxt || isWbfsSplit;
+			}
+		});
 
 		SubProgressMonitor monitor = new SubProgressMonitor(mainMonitor, 1);
 		//first cicle to get info on how many worked int are needed by the monitor
@@ -231,12 +209,6 @@ public class PasteGamesHandler extends AbstractHandler {
 			}
 		}
 
-		//		//copy txt
-		//		String newFileName = newFolder.getAbsolutePath()+File.separatorChar+g.getFileName();
-		//		String oldFileTXT = FileUtils.getTxtFile(new File(g.getFilePath()));
-		//		String newFileTXT = newFileName.replace(".wbfs", ".txt");
-		//		IStatus st = saveNewFile(new File(newFileTXT), oldFileTXT, monitor);
-		//
 		//if status cancel, then remove partial files
 		if(deleteNewFiles){
 			File[] newFiles = newFolder.listFiles();
@@ -247,18 +219,23 @@ public class PasteGamesHandler extends AbstractHandler {
 			return false;
 		}
 
-		if(ModelStore.getCopyBean().isCut()){
-			for (int j = 0; j < files.length; j++) {
-				files[j].delete(); 
-			}
-			new File(gameFolder).delete();
-		}
-
 		monitor.done();
 		return true;
 	}
 
-	private IStatus saveNewFile(File newFile, String originalFile, IProgressMonitor monitor) {
+	/**
+	 * The folder name of the game we want to copy 
+	 * @return
+	 */
+	private String getGameFolderName(GameBean g) {
+		String name = g.getTitle()+" ["+g.getId()+"]";
+		//String pathFrom = new File(PlatformUtils.convertPath(g.getFilePath())).getParent();
+		//File folderName = new File(pathFrom);
+		//String name = folderName.getName;
+		return name;
+	}
+
+	private IStatus saveNewFile(File newFile, String originalFile, IProgressMonitor monitor) throws Exception {
 
 		try {
 			File f = new  File(originalFile);
@@ -295,14 +272,15 @@ public class PasteGamesHandler extends AbstractHandler {
 			out.close();
 
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			throw e;
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			throw e;
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw e;
 		}
 
 		return Status.OK_STATUS;
 	}
+
 
 }

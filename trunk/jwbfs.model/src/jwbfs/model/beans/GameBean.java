@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class GameBean extends ModelObject  {
 
 	public static final String INDEX = "gameBean";
-	private boolean isoToWbfs = true;
+	private boolean isoToWbfs = false;
 	private boolean wbfsToIso = false;
 	//PATH
 	private String filePath = "";
@@ -193,4 +193,5 @@ public class GameBean extends ModelObject  {
 		}
 		return this.id.trim().equals(((GameBean)obj).getId());
 	}
+
 }

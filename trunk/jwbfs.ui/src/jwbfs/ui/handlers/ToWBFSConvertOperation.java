@@ -96,17 +96,20 @@ public class ToWBFSConvertOperation extends Job {
 					
 		
 			    } catch (IOException e) {
+			  	  monitor.done();
+			  	  e.printStackTrace();
+				} catch (WBFSFileExistsException e) {
 				  	  monitor.done();
-				  	  e.printStackTrace();
-					} catch (WBFSFileExistsException e) {
-					  	  monitor.done();
-						  e.printStackTrace();
-					} catch (WBFSException e) {
-					  	  monitor.done();
-						  e.printStackTrace();
-					} catch (MonitorCancelException e) {
-					  	  monitor.done();
-					}
+					  e.printStackTrace();
+				} catch (WBFSException e) {
+				  	  monitor.done();
+					  e.printStackTrace();
+				} catch (MonitorCancelException e) {
+				  	  monitor.done();
+				} catch (Exception e) {
+					 monitor.done();
+					 e.printStackTrace();
+				}
 
 			  monitor.done();
 			  
@@ -114,7 +117,7 @@ public class ToWBFSConvertOperation extends Job {
 	}
 
 
-	private  boolean  checkProcessMessages(Process p, IProgressMonitor monitor) throws IOException, WBFSException, WBFSFileExistsException, MonitorCancelException {
+	private  boolean  checkProcessMessages(Process p, IProgressMonitor monitor) throws Exception{
 
 		  String line;
 	      int bar = 0;

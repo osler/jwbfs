@@ -92,6 +92,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		}catch (Exception e) {
 			System.out.println("Update error!");
 			e.printStackTrace();
+			GuiUtils.showErrorWithSaveFile("Update error ", e, true);
 		}
 
 		Set<String> disksViewsID = ModelStore.getDisks().keySet();
@@ -103,25 +104,30 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 //		parametri.put("numDisks",String.valueOf(numDisks));
 //		GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_DISKS_PERSPECTIVE,parametri,null);
 		
+		try{
 		//refresh games list for every disks
-		while (it.hasNext()) {
+			while (it.hasNext()) {
 
 				String diskViewID = (String) it.next();
-			if(numDisks > counter){
-				if(ModelStore.getDisk(diskViewID).getDiskPath().trim().equals("")){ 
-					continue;
-				}
+				if(numDisks > counter){
+					if(ModelStore.getDisk(diskViewID).getDiskPath().trim().equals("")){ 
+						continue;
+					}
 
-				LinkedHashMap<String,String>  parametri = new LinkedHashMap<String,String>();
-				parametri.put("diskID",diskViewID);
-				if(counter == 0){
-					GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_REFRESH_FIRST_DISK_ID,parametri,null);
-				}else{
-					GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);
+					LinkedHashMap<String,String>  parametri = new LinkedHashMap<String,String>();
+					parametri.put("diskID",diskViewID);
+					if(counter == 0){
+						GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_REFRESH_FIRST_DISK_ID,parametri,null);
+					}else{
+						GuiUtils.executeParametrizedCommand(CoreConstants.COMMAND_GAMELIST_UPDATE_ID,parametri,null);
+					}
+					CoverUtils.setCoversPathFromDiskPath(diskViewID);	
 				}
-				CoverUtils.setCoversPathFromDiskPath(diskViewID);	
+				counter++;
 			}
-			counter++;
+		}catch (Exception e) {
+			System.out.println("sorry, i could not update list on startup...");
+			e.printStackTrace();
 		}
 		
 		ContextActivator.reloadContext();

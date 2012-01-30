@@ -16,7 +16,7 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
+		
 		if(!check()){
 			return false;
 		}
@@ -24,26 +24,6 @@ public class ToWBFSConvertHandler extends AbstractHandler {
 		Job job = new ToWBFSConvertOperation("Converting "+ModelStore.getSelectedGame().getTitle());
 		job.setUser(true);
 		job.schedule();
-
-		
-		//		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-//
-//		try {
-//
-//			new ProgressMonitorDialog(sh).run(true, true, new ToWBFSConvertOperation());
-//
-//		} catch (InvocationTargetException e) {
-//
-//			e.printStackTrace();
-//
-//			return false;
-//
-//		} catch (InterruptedException e) {
-//
-//			GuiUtils.showError("Error: "+e.getMessage());
-//			return false;
-//
-//		}
 
 		return true;
 	}
