@@ -23,6 +23,7 @@ public class ConfigUtils {
 	
 	public static void initConfigFile(){
 		initConfigFile("configs"+File.separatorChar+CoreConstants.wbfsINI);
+		initConfigFile("configs"+File.separatorChar+CoreConstants.defaultINI);
 		initConfigFile("configs"+File.separatorChar+"disk1.ini");
 		initConfigFile("configs"+File.separatorChar+"disk2.ini");
 		initConfigFile("configs"+File.separatorChar+"disk3.ini");
@@ -178,6 +179,10 @@ public class ConfigUtils {
 		if(line.contains("settings.split.partitions")){
 			return subLine + bean.getCopyPartitions();
 		}
+		if(line.contains("wbfs.update.server")){
+			return subLine + bean.getUpdateSite();
+		}
+		
 		
 		return line;
 	}
