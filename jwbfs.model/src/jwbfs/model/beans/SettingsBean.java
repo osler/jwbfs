@@ -16,6 +16,7 @@ public class SettingsBean extends ModelObject {
 	
 	private SystemSettings systemSettings; 
 
+	private String updateSite;
 	
 	public SettingsBean(){
 		this.addPropertyChangeListener(this);
@@ -28,6 +29,9 @@ public class SettingsBean extends ModelObject {
 		
 		//WIITDB SETTINGS
 		region = System.getProperty("cover.region");
+		
+		//update site
+		updateSite = System.getProperty("wbfs.update.server");
 
 	}
 
@@ -78,6 +82,25 @@ public class SettingsBean extends ModelObject {
 			systemSettings = new SystemSettings();
 		}
 		return systemSettings;
+	}
+
+	public void setUpdateSite(String updateSite) {
+		propertyChangeSupport.firePropertyChange("updateSite", this.updateSite,
+				this.updateSite = updateSite);	
+	}
+	
+	/**
+	 * reset the value to default
+	 * @param updateSite
+	 */
+	public void resetUpdateSite() {
+		String defaultVal = System.getProperty("default.wbfs.update.server");
+		setUpdateSite(defaultVal);
+	}
+
+	
+	public String getUpdateSite() {
+		return updateSite;
 	}
 
 }

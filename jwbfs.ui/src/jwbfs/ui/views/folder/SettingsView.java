@@ -13,6 +13,8 @@ import jwbfs.ui.listeners.settings.UpdateTitlesTXTListener;
 import jwbfs.ui.views.WidgetCreator;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -74,6 +76,20 @@ public class SettingsView extends ViewPart implements PropertyChangeListener{
 		WidgetCreator.createLabel(group,"titles.TXT",2);  
 		Button button = WidgetCreator.createButton(group,Messages.settings_update);
 		addHandlerUpdateTXT(button);
+		
+		//update site
+		WidgetCreator.createLabel(group,"update site",2);  
+		Button buttonReset = WidgetCreator.createButton(group,"default");
+		buttonReset.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				getTabBean().resetUpdateSite();
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		WidgetCreator.createText(group, true, getTabBean(), "updateSite",3); 
 		
 		return tab;
 	}
