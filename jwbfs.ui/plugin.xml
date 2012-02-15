@@ -251,11 +251,25 @@
         		name="diskTo" 
         		optional="false">
         	</commandParameter>
-      </command>                      
+      </command> 
+      <command
+            categoryId="jwbfs.ui.commands.category.help"
+            id="it.jwbfs.core.createShortcut"
+            name="Create Shortcut">
+            <commandParameter 
+        		id="confirm" 
+        		name="confirm" 
+        		optional="true">
+        	</commandParameter>  
+      </command>      
    </extension>
    
    <extension
          point="org.eclipse.ui.handlers">
+      <handler
+            class="jwbfs.ui.handlers.CreateShortcutHandler"
+            commandId="it.jwbfs.core.createShortcut">
+      </handler>         
       <handler
             class="jwbfs.ui.handlers.SaveSettingsHandler"
             commandId="it.jwbfs.core.settings.save">

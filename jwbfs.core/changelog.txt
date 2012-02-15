@@ -1,0 +1,4 @@
+-Menu shortcut creation in linux
+-About page
+-Update on request
+-Configurable update site

@@ -1,7 +1,12 @@
 
 package jwbfs.model.utils;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
@@ -13,6 +18,7 @@ import org.eclipse.ui.handlers.IHandlerService;
 
 public class PlatformUtils {
 
+	
 	public static String convertPath(String path) {
 		if (isWindows()) {
 			System.out.print(path);
@@ -148,7 +154,6 @@ public class PlatformUtils {
 		return new File(ini);
 	}
 
-
 	public static String getRoot () {
 		String path = null;
 		try {
@@ -242,4 +247,88 @@ public class PlatformUtils {
 	}
 
 
+	/**
+	 * Check if devel flag exists
+	 * @return
+	 */
+	public static boolean isDevelopment() {
+		return new File(PlatformUtils.getRoot()+"noUpdate").exists();
+	}
+	
+	/**
+	 * The text content of changelog.txt
+	 * @return
+	 */
+	public static String getChangelog() {
+		String ret = "";
+		
+		try{
+			File f = new File(getFile(CoreConstants.changelog));
+			BufferedReader r = new BufferedReader(new FileReader(f));
+			String line = r.readLine();
+			while (line!=null) {
+				ret = ret+line+"\n";
+				line = r.readLine();
+			}
+			
+			if(!ret.equals("")){
+				ret = ret + getUpdateReport();
+			}
+			
+		}catch (Exception e) {
+			ret = "";
+		}
+		return ret;
+	}
+	
+	/**
+	 * The content of the update report file
+	 * @return
+	 */
+	public static String getUpdateReport() {
+		String ret = "";
+		
+		try{
+			File f = new File(getInstallDir()+CoreConstants.updateReport);
+			BufferedReader r = new BufferedReader(new FileReader(f));
+			String line = r.readLine();
+			while (line!=null) {
+				ret = ret+line+"\n";
+				line = r.readLine();
+			}
+			
+		}catch (Exception e) {
+			ret = "";
+		}
+		return ret;
+	}
+	
+	/**
+	 * The text content of install report
+	 * @return
+	 * @throws IOException 
+	 */
+	public static void createInstallReport(String content) throws IOException {
+
+		File f = new File(getInstallDir()+CoreConstants.updateReport);
+		if(!f.exists()){
+			f.createNewFile();
+		}
+		BufferedWriter r = new BufferedWriter(new FileWriter(f));
+		r.write(content);
+	}
+	
+	public static void clearChangelog() {
+		
+		try{
+			File f = new File(getFile(CoreConstants.changelog));
+			if(f.exists()){
+				File bak = new File(getFile(CoreConstants.changelog)+".old");
+				f.renameTo(bak);
+			}
+		}catch (Exception e) {
+			System.out.println("cannot remove changelog file");
+			e.printStackTrace();
+		}
+	}
 }

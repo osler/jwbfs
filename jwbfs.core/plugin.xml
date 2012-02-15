@@ -386,6 +386,24 @@
                   label="About"
                   style="push">
             </command>
+            <command
+                  commandId="it.jwbfs.core.createShortcut"
+                  label="Create Shortcut"
+                  style="push">
+                  <parameter 
+               		name="confirm" 
+               		value="false"> 
+         		  </parameter>                   
+            </command>
+            <command
+                  commandId="it.jwbfs.core.update"
+                  label="Update"
+                  style="push">
+                  <parameter 
+               		name="confirm" 
+               		value="false"> 
+         		  </parameter>                   
+            </command>            
          </menu>
       </menuContribution>
       <menuContribution
@@ -706,8 +724,24 @@
             id="referenceToMenuId.dropdown"
             name="referenceToMenuId.dropdown">
       </command>
+	  <command
+            categoryId="jwbfs.ui.commands.category.help"
+            id="it.jwbfs.core.update"
+            name="Update">
+            <commandParameter 
+        		id="confirm" 
+        		name="confirm" 
+        		optional="true">
+        	</commandParameter>  
+      </command>        
    </extension>
-   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="jwbfs.core.handlers.UpdateHandler"
+            commandId="it.jwbfs.core.update">
+      </handler>  
+   </extension> 
    <!--extension point="org.eclipse.ui.splashHandlers">
       <splashHandler
             class="jwbfs.core.splash.SplashHandler"

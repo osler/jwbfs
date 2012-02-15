@@ -366,17 +366,49 @@ public class FileUtils {
 		FileUtils.exists(coverPath,CoverConstants.getImageDisc(diskID));
 		FileUtils.exists(coverPath,CoverConstants.getImageFullCover(diskID));
 	}
-		
+	
 	/**
-	 * Create a menu entry in ~/.local/share/applications
-	 * @param applicationPath the folder where jwbfs is installed
+	 * Get the default path for launchers in current OS
+	 * <p>TODO so far it supports only linux
+	 * @param applicationPath
+	 * @return
+	 * @throws Exception
 	 */
-	public static void createMenuIcon(String applicationPath){
-		
-		try{
+	public static String getOSShortcutPath(){
+		if(PlatformUtils.isLinux()){
 			String home = System.getProperty("user.home");
 			String path = home+"/.local/share/applications/";
-
+			return path;
+		}
+	
+		return "";
+	}
+	
+	/**
+	 * Get the path for jwbfs launcher in current OS
+	 * <p>TODO so far it supports only linux
+	 * @param applicationPath
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getJwbfsShortcutPath(){
+		if(PlatformUtils.isLinux()){
+			return getOSShortcutPath()+CoreConstants.launcherLinux;
+		}
+	
+		return "";
+	}
+	
+	/**
+	 * Create a menu entry in ~/.local/share/applications
+	 * <p>TODO so far it supports only linux
+	 * @param applicationPath the folder where jwbfs is installed
+	 */
+	public static void createMenuShortcut(String applicationPath) throws Exception{
+		
+			//path to write the link file
+			String path = getOSShortcutPath();
+		
 			String content = "#!/usr/bin/env xdg-open\n" +
 					"\n" +
 					"[Desktop Entry]\n"+
@@ -384,12 +416,12 @@ public class FileUtils {
 					"Name=jwbfs\n"+
 					"Exec="+applicationPath+"jwbfs\n"+
 					"Terminal=false\n"+
-					"Icon="+applicationPath+"jwbfs.xpm\n"+
+					"Icon="+applicationPath+"icon.xpm\n"+
 					"Type=Application\n"+
-					"Categories=Games;";
+					"Categories=Game;";
 
 			new File(path).mkdirs();
-			File f = new File(path+"jwbfs.desktop");
+			File f = new File(getJwbfsShortcutPath());
 			if(!f.exists()){
 				f.createNewFile();
 			}
@@ -398,9 +430,8 @@ public class FileUtils {
 			w.close();
 			
 			f.setExecutable(true);
-		}catch (Exception e) {
-			System.err.println("error creating icon");
-			e.printStackTrace();
-		}
+
 	}
+
+
 }
