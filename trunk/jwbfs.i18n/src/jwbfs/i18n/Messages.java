@@ -4,6 +4,11 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "jwbfs.i18n.messages"; //$NON-NLS-1$
+	public static String generic_not_linux;
+	public static String icon_creation_creating;
+	public static String icon_creation_error;
+	public static String icon_creation_exists;
+	public static String icon_creation_prompt;
 	public static String settings_cover_2d;
 	public static String settings_cover_3d;
 	public static String settings_cover_3d_download;
