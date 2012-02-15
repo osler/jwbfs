@@ -1,4 +1,4 @@
--Menu shortcut creation in linux
+-Menu shortcut creation in linux [i know it's an horrible icon :) ]
 -About page
 -Update on request
 -Configurable update site
