@@ -3,6 +3,11 @@ package jwbfs.model.utils;
 public class CoreConstants {
 
 		public static final String wbfsINI = "wbfs.ini";
+		public static final String defaultINI = "defaults.ini";
+		public static final String changelog = "changelog.txt";
+		public static final String updateReport = "updateReport.txt";
+		
+		public static final String launcherLinux = "jwbfs.desktop";
 
 		public static final String VIEW_DISK_1_ID = "it.jwbfs.ui.DiskView1";
 		public static final String VIEW_DISK_2_ID = "it.jwbfs.ui.DiskView2";
@@ -28,8 +33,10 @@ public class CoreConstants {
 		public static final String COMMAND_GAMELIST_UPDATE_ID		= "it.jwbfs.core.updateGameList";
 		public static final String COMMAND_EXIT 					= "it.jwbfs.core.exit";
 		public static final String COMMAND_DISKS_PERSPECTIVE		= "it.jwbfs.core.changeDisksPerspective";
+		public static final String COMMAND_CREATE_SHORTCUT			= "it.jwbfs.core.createShortcut";
+		public static final String COMMAND_UPDATE					= "it.jwbfs.core.update";
 		
-		public static final String COMMAND_ADD_GAME_ID	   = "it.jwbfs.core.game.add";
+		public static final String COMMAND_ADD_GAME_ID		   = "it.jwbfs.core.game.add";
 		public static final String COMMAND_EXPORT_GAME_ID	   = "it.jwbfs.core.game.export";
 		public static final String COMMAND_DELETE_GAME_ID	   = "it.jwbfs.core.game.delete";
 
@@ -62,6 +69,7 @@ public class CoreConstants {
 		public static final String PARAM_DISK_FROM = "diskFrom";
 		public static final String PARAM_DISK_ID = "diskID";
 		public static final String PARAM_WBFS = "wbfs";
+		public static final String PARAM_CONFIRM = "confirm";
 
 		public static final String NOT_A_WII_DISK = "not a wii disc";
 	
