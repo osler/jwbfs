@@ -31,3 +31,4 @@ Export-Package: jwbfs.ui,
  jwbfs.ui.views.folder,
  jwbfs.ui.views.manager,
  jwbfs.ui.views.table
+Bundle-Vendor: Take These Coins

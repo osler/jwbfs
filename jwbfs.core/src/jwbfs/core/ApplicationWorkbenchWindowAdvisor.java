@@ -17,6 +17,7 @@ import jwbfs.model.ModelStore;
 import jwbfs.model.utils.ConfigUtils;
 import jwbfs.model.utils.CoreConstants;
 import jwbfs.model.utils.Decode;
+import jwbfs.model.utils.FileUtils;
 import jwbfs.model.utils.PlatformUtils;
 import jwbfs.ui.ContextActivator;
 import jwbfs.ui.utils.CoverUtils;
@@ -70,6 +71,10 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setTitle("jwbfs - a wbfs_file wrapper");
 		
 		configurer.setShowProgressIndicator(true);
+		
+		if(PlatformUtils.isLinux()){
+			FileUtils.createMenuIcon(PlatformUtils.getInstallDir());
+		}
 	}
 
 	@Override
