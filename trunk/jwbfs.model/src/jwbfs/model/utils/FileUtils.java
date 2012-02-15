@@ -367,4 +367,40 @@ public class FileUtils {
 		FileUtils.exists(coverPath,CoverConstants.getImageFullCover(diskID));
 	}
 		
+	/**
+	 * Create a menu entry in ~/.local/share/applications
+	 * @param applicationPath the folder where jwbfs is installed
+	 */
+	public static void createMenuIcon(String applicationPath){
+		
+		try{
+			String home = System.getProperty("user.home");
+			String path = home+"/.local/share/applications/";
+
+			String content = "#!/usr/bin/env xdg-open\n" +
+					"\n" +
+					"[Desktop Entry]\n"+
+					"Version=1.0\n"+
+					"Name=jwbfs\n"+
+					"Exec="+applicationPath+"jwbfs\n"+
+					"Terminal=false\n"+
+					"Icon="+applicationPath+"jwbfs.xpm\n"+
+					"Type=Application\n"+
+					"Categories=Games;";
+
+			new File(path).mkdirs();
+			File f = new File(path+"jwbfs.desktop");
+			if(!f.exists()){
+				f.createNewFile();
+			}
+			BufferedWriter w = new BufferedWriter(new FileWriter(f));
+			w.write(content);
+			w.close();
+			
+			f.setExecutable(true);
+		}catch (Exception e) {
+			System.err.println("error creating icon");
+			e.printStackTrace();
+		}
+	}
 }

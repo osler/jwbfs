@@ -162,6 +162,20 @@ public class PlatformUtils {
 
 		return path;
 	}
+	
+	public static String getInstallDir () {
+		String path = null;
+		try {
+			path = Platform.getInstallLocation().getURL().getPath();
+
+		} catch (Exception e) {
+			e.printStackTrace ();
+
+		}
+
+		return path;
+	}
+
 
 
 	public static IHandlerService getHandlerService(String viewID) {

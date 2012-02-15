@@ -24,10 +24,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="jwbfs.core.application"
-            name="JWBFS">
+            name="jwbfs">
          <property
                name="appName"
-               value="JWBFS">
+               value="jwbfs">
          </property>
          <property
                name="startupForegroundColor"
@@ -44,6 +44,14 @@
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/jwbfs.png">
+         </property>
+         <property
+               name="aboutText"
+               value="jwbfs provides a gui to wbfs_file utility (v.2.9). Credits for wbfs_file goes to oggzee&#x0A;homepage: http://code.google.com/p/jwbfs/&#x0A;blog: http://www.takethesecoins.it&#x0A;&#x0A;Keep in mind that this is a free software. If you like it, please  donate.&#x0A;http://www.takethesecoins.it/donate">
          </property>
       </product>
    </extension>
@@ -368,6 +376,15 @@
                      name="diskID"
                      value="activeDiskID">
                </parameter>
+            </command>
+         </menu>
+         <menu
+               id="helpMenu"
+               label="Help">
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  label="About"
+                  style="push">
             </command>
          </menu>
       </menuContribution>

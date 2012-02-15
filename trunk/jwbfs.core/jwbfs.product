@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="JWBFS" uid="jwbfs.products" id="jwbfs.core.product" application="jwbfs.core.application" useFeatures="true" includeLaunchers="true">
+<product name="jwbfs" uid="jwbfs.products" id="jwbfs.core.product" application="jwbfs.core.application" useFeatures="true" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="/jwbfs.core/icons/jwbfs.png"/>
+      <text>
+         jwbfs provides a gui to wbfs_file utility (v.2.9). 
+All credits for wbfs_file goes to oggzee.
+
+project homepage:  http://code.google.com/p/jwbfs/
+developer&apos;s blog: http://www.takethesecoins.it
+
+Keep in mind that this is a free software. If you like it, buy me a bear.
+http://www.takethesecoins.it/donate
+      </text>
+   </aboutInfo>
 
    <configIni use="default">
    </configIni>
@@ -26,8 +40,16 @@
       </win>
    </launcher>
 
+
    <vm>
    </vm>
+
+   <license>
+        <url>http://code.google.com/p/jwbfs/</url>
+   </license>
+
+   <plugins>
+   </plugins>
 
    <features>
       <feature id="Feature.jwbfs.libs" version="1.0.0.qualifier"/>
